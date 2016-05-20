@@ -15,7 +15,7 @@ config :hex_faktor, HexFaktor.Endpoint,
   http: [port: {:system, "PORT"}],
   url: [host: "hexfaktor.org", port: 80],
   cache_static_manifest: "priv/static/manifest.json",
-  check_origin: ["//beta.hexfaktor.org"]
+  check_origin: ["//beta.hexfaktor.org", "//hexfaktor.org"]
 
 
 # Do not print debug messages in production
