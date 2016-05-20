@@ -1,5 +1,5 @@
-# HexFaktor
+# HexFaktor Website
 
-This will become the open sourced repo of the hexfaktor.org webservice.
+This is the Phoenix app that runs http://hexfaktor.org
 
-**FOR NOW** this serves as [Issue Tracker for the Beta](https://github.com/hexfaktor/hex_faktor_web/issues).
+Please report any issue, so we can improve this service together.

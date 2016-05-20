@@ -1,0 +1,48 @@
+<%= render HexFaktor.ComponentView, "alert.html", text: get_flash(@conn, :info) %>
+
+<%= if is_nil(@current_user.email_verified_at) do %>
+  <div class="alert alert--danger">
+    You have not yet verified your e-mail and <strong>will not receive e-mails</strong>.
+    <%= link "Check your settings.", to: user_path(@conn, :edit) %>
+  </div>
+<% end %>
+
+<div class="form-section">
+  <%= form_for @conn, project_path(@conn, :update_settings, @project.id), [as: :edit], fn _ -> %>
+    <p>
+      Notifications are generated for the following branches:
+    </p>
+    <%= for branch <- @git_branches do %>
+      <div class="form-section__input form-section__input--checkbox">
+        <label class="form-section__label">
+          <input type="checkbox" name="notification_branches[]" value="<%= branch.name %>" <%= if @settings.notification_branches |> Enum.member?(branch.name), do: "checked=\"checked\"" %>>
+          <%= branch.name %>
+        </label>
+      </div>
+    <% end %>
+
+    <hr>
+
+    <%= if @current_user.email_notification_frequency == "none" do %>
+      <p>
+        You do <strong>not</strong> receive notifications to <strong>rf@bamaru.de</strong> because you opted out.
+        (<a href="/settings">opt back in</a>).
+      </p>
+    <% else %>
+      <div class="form-section__input form-section__input--checkbox">
+        <label class="form-section__label">
+          <input type="hidden" name="email_enabled" value="false">
+          <input type="checkbox" name="email_enabled" value="true" <%= if @settings.email_enabled, do: "checked=\"checked\"" %>>
+          Enable e-mail summaries for this project
+        </label>
+      </div>
+      <p>
+        If enabled, you will receive <strong><%= @current_user.email_notification_frequency %></strong> summaries of all notifications to <strong><%= @current_user.email %></strong>
+        (<a href="/settings">change the frequency/address</a>).
+      </p>
+      <div class="form-section__actions">
+        <%= submit "Save changes", class: "btn btn--primary" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

@@ -1,0 +1,4 @@
+<div class="motd-banner">
+  HexFaktor is <strong>in beta</strong> and likely not bug-free yet.
+  Please <a href="<%= hex_faktor_issues_url %>" target="_blank">report any bugs</a> you find.
+</div>

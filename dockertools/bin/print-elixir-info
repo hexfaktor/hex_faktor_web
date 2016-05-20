@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+echo "Elixir version information"
+echo "=========================="
+echo "Elixir: `elixir --version`"
+echo "Mix: `mix --version`"
+
+mix hex > /tmp/hex_info
+echo "Hex: `head -n1 /tmp/hex_info`"
+echo ""

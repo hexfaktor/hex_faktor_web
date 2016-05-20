@@ -1,0 +1,15 @@
+<div class="user-title">
+  <%= if @user.provider == "github" do %>
+    <%= @user.user_name %>
+    <a href="https://github.com/<%= @user.user_name %>" target="_blank"><i class="icon-octopus"></i></a>
+  <% end %>
+
+
+  <%= if @include_last_sync? do %>
+    <small class="user-title__sync-hint">
+      Last GitHub sync:
+      <strong><%= @user.last_github_sync %></strong>
+    </small>
+  <% end %>
+</div>
+

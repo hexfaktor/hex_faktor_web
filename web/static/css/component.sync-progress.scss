@@ -1,0 +1,48 @@
+@import "_config";
+
+.sync-progress {
+  position: relative;
+  color: #eee;
+  background-color: #515151;
+  border-radius: 4px;
+  text-shadow: 1px 1px 1px #000;
+
+  a {
+    color: #fff;
+    text-decoration: underline;
+  }
+}
+.sync-progress__bar {
+  background-color: #454F56;
+  border-radius: 4px;
+  height: 48px;
+}
+.sync-progress__inner {
+  position: absolute;
+  padding: 10px;
+}
+
+.sync-progress--loading .sync-progress__bar {
+  background-size: 90px 30px;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, .15) 25%, transparent 25%,
+                      transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%,
+                      transparent 75%, transparent);
+
+  animation: animate-stripes-slow 2s linear infinite;
+}
+
+.sync-progress--building .sync-progress__bar {
+  background-size: 90px 30px;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, .15) 25%, transparent 25%,
+                      transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%,
+                      transparent 75%, transparent);
+
+  animation: animate-stripes-slow-rtl 2s linear infinite;
+}
+
+@keyframes animate-stripes-slow {
+    0% {background-position: 0 0;} 100% {background-position: 90px 0;}
+}
+@keyframes animate-stripes-slow-rtl {
+    0% {background-position: 90px 0;} 100% {background-position: 0 0;}
+}

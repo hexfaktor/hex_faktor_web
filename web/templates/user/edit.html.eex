@@ -1,0 +1,7 @@
+<%= render HexFaktor.ComponentView, "user-title.html", user: @current_user, include_last_sync?: true %>
+
+<%= render HexFaktor.UserView, "_tab_nav_edit.html", assigns %>
+
+<%= render HexFaktor.ComponentView, "alert.html", text: get_flash(@conn, :info) %>
+
+<%= render HexFaktor.UserView, "_edit.#{@current_section}.html", assigns %>

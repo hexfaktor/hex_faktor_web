@@ -1,0 +1,13 @@
+<div class="project-title">
+  Ayyyy, need Help!
+</div>
+
+<p>
+  This section, like this whole service, is currently being built by volunteers:
+</p>
+<ul>
+  <li><%= link "How do the colors of the badges work?", to: help_path(@conn, :badge) %></li>
+</ul>
+<p>
+  If you have any further questions, please <a href="<%= hex_faktor_issues_url %>" target="_blank">create an issue on GitHub</a> so we can expand this FAQ.
+</p>

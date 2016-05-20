@@ -1,0 +1,22 @@
+@import "_config";
+
+.alert {
+  display:block;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.alert--default {
+  background: #ffa;
+}
+
+.alert--danger {
+  background: #fcc;
+  color: #c00;
+}
+
+.alert--info {
+  background: #eee;
+  color: #1A2642;
+}

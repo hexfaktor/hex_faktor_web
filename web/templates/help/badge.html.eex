@@ -1,0 +1,43 @@
+<div class="project-title">
+  Badges: How do they work?
+</div>
+
+<div class="tab-nav">
+  <div class="tab-nav__inner">
+    <div class="tab-nav__tab tab-nav__tab--active">
+      <a href="#">About</a>
+    </div>
+  </div>
+</div>
+
+<p>
+  So, what do the colors in the bar represent?
+</p>
+
+<p>
+  <img src="<%= static_path(@conn, "/images/badge.svg") %>" class="logo"/>
+</p>
+
+<p>
+  From left to right:
+</p>
+
+<ol>
+  <li>
+    <strong>Dark green:</strong> Prod deps which are up-to-date.
+  </li>
+  <li>
+    <strong>Dark yellow/orange:</strong> Prod deps which are outdated.
+  </li>
+  <li>
+    <em>Light green:</em> Other deps which are up-to-date.
+  </li>
+  <li>
+    <em>Light yellow:</em> Other deps which are outdated.
+  </li>
+</ol>
+
+<p>
+  The basis for determining whether or not something is outdated is always the version requirement set in <code>mix.exs</code>.
+  You will never get a yellow/orange slice just because a new version of a package has been released, unless that release is inside your version requirement.
+</p>

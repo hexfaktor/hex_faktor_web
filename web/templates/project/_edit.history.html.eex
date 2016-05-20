@@ -1,0 +1,34 @@
+<p>
+  Here you can see the build history of your project.
+</p>
+<p>
+  HexFaktor will generate a <a href="/notifications">notification</a> whenever your deps are updated.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Revision</th>
+      <th>Status</th>
+      <th>Started</th>
+      <th>Duration</th>
+    </tr>
+  </thead>
+  <%= for build <- @builds do %>
+    <% build_job = build.build_jobs |> List.first %>
+    <%= if build_job do %>
+      <tr>
+        <td>#<%= build.nr %></td>
+        <td><%= github_revision_link(@project, build_job.git_revision) %></td>
+        <td><%= build_job.status %></td>
+        <td>
+          <span title="<%= build_job.inserted_at %> UTC">
+            <%= time_ago_in_words build_job.inserted_at %>
+          </span>
+        </td>
+        <td><%= build_job_duration build_job %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>

@@ -1,0 +1,22 @@
+<%= link "Back", to: "/packages" %>
+
+<h2>Show package</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @package.name %>
+  </li>
+
+  <li>
+    <strong>Source:</strong>
+    <%= @package.source %>
+  </li>
+
+  <li>
+    <strong>Source url:</strong>
+    <%= @package.source_url %>
+  </li>
+
+</ul>

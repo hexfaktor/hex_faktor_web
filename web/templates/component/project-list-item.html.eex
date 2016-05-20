@@ -1,0 +1,24 @@
+<div class="project-list-item <%= project_list_item_classes(@project) %>" id="project-list-item-<%= @project.id %>">
+  <div class="project-list-item__inner">
+    <div class="project-list-item__title">
+      <%= link_project @project %>
+    </div>
+    <div class="project-list-item__meta">
+      <%= if @project.project_hooks |> Enum.any?(&(&1.active)) do %>
+        <div class="project-list-item__webhook project-list-item__webhook--active">
+          <a href="#" data-loadable data-ajax-post="<%= "/projects/#{@project.id}/deactivate_webhook" %>">monitored</a>
+        </div>
+      <% else %>
+        <div class="project-list-item__webhook">
+          <a href="#" data-loadable data-ajax-post="<%= "/projects/#{@project.id}/activate_webhook" %>">monitor this</a>
+        </div>
+      <% end %>
+
+      <div class="project-list-item__status">
+        <%= if @project.latest_build_job_id do %>
+          <a href="/<%= @project.provider %>/<%= @project.name %>"><img src="/badge/all/github/<%= @project.name %>.svg<%= if assigns[:no_cache], do: "?#{@no_cache}" %>"></a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

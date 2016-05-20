@@ -1,0 +1,121 @@
+@import "_config";
+
+$padding: 10px;
+
+$border_color_prod: #46B01E;
+$border_color_prod_outdated: #FF911D;
+$border_color_not_prod_outdated: #FFE100;
+
+.project-list-item {
+  border: 1px solid #fff;
+  border-radius: 3px;
+  border-bottom: 1px solid #eee;
+}
+.project-list-item:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.project-list-item a {
+  color: $implicit_link_color;
+}
+.project-list-item .text {
+  font-size: 12px;
+  color: #aaa;
+  display: block;
+}
+
+.project-list-item--active {
+  &.project-list-item--outdated--not-prod {
+    border-left: 3px solid $border_color_not_prod_outdated;
+    background: lighten($border_color_not_prod_outdated, 42%);
+  }
+  &.project-list-item--outdated--prod {
+    border-left: 3px solid $border_color_prod_outdated;
+    background: lighten($border_color_prod_outdated, 40%);
+  }
+  &.project-list-item--up-to-date {
+    border-left: 3px solid #0c0;
+  }
+}
+
+// .project-list-item__inner {}
+
+.project-list-item__title,
+.project-list-item__meta,
+.project-list-item__status,
+.project-list-item__webhook {
+  float: left;
+}
+.project-list-item__webhook,
+.project-list-item__status {
+  padding: $padding;
+}
+.project-list-item__title {
+  font-size: 26px;
+  width: 70%;
+
+  a {
+    display: block;
+    padding: $padding;
+  }
+}
+.project-list-item__title {
+  width: 100%;
+}
+.project-list-item__meta {
+  width: 100%;
+}
+.project-list-item__webhook {
+  width: 30%;
+}
+.project-list-item__status {
+  width: 30%;
+}
+.project-list-item__webhook {
+  font-size: 0.75rem;
+
+  a {
+    display: inline-block;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: #eee;
+    white-space: nowrap;
+
+    &.loading {
+      @include darkLoadingStripes;
+    }
+  }
+}
+
+.project-list-item__webhook--active {
+  a {
+    background-color: #46B01E;
+    color: #fff;
+
+    &.loading {
+      @include lightLoadingStripes;
+    }
+  }
+}
+
+@include phablet_landscape_and_bigger {
+  .project-list-item {
+    border-bottom-color: #fff;
+  }
+  .project-list-item__title {
+    width: 70%;
+  }
+  .project-list-item__meta {
+    width: 30%;
+    text-align: right;
+  }
+  .project-list-item__status {
+    width: 50%;
+    padding-top: 10px + 4px; // vertically align with __webhook
+  }
+  .project-list-item__webhook {
+    width: 50%;
+    text-align: center
+  }
+}

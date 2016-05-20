@@ -1,0 +1,64 @@
+<!--
+  DESKTOP navi
+-->
+<div class="tab-nav tab-nav--desktop<%= if @current_project_filter == "search", do: " tab-nav--search-active" %>">
+  <div class="tab-nav__inner">
+    <%= if @add_project? do %>
+      <div class="tab-nav__tab<%= if @current_project_filter == "latest", do: " tab-nav__tab--active" %>">
+        <a href="?filter=latest">Latest projects</a>
+      </div>
+    <% else %>
+      <div class="tab-nav__tab<%= if is_nil(@current_project_filter), do: " tab-nav__tab--active" %>">
+        <a href="?filter=">Monitored</a>
+      </div>
+    <% end %>
+    <%= for project_filter <- @project_filters do %>
+      <%= render HexFaktor.ProjectView, "_tab-project_filter.html", [class: "tab-nav__tab", active?: @current_project_filter == project_filter, project_filter: project_filter] %>
+    <% end %>
+    <div class="tab-nav__tab tab-nav__tab--right tab-nav__tab--search<%= if @current_project_filter == "search", do: " tab-nav__tab--active" %>">
+      <%= form_for @conn, "/projects", [method: :get, as: :edit], fn _ -> %>
+        <input type="hidden" name="filter" value="search">
+        <div class="tab-nav__tab__search-icon">
+          <i class="icon-magnifying"></i>
+        </div>
+        <input type="text" class="tab-nav__tab__search" name="q" value="<%= @search %>" placeholder="Search your projects ..." autocomplete="off"<%= if @current_project_filter == "search", do: " data-auto-select" %>>
+        <div class="tab-nav__tab__search-cancel">
+          <a href="<%= project_path(@conn, :index) %>"><i class="icon-cross_mark"></i></a>
+        </div>
+        <%= submit "Go", class: "btn btn--primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!--
+  MOBILE navi
+-->
+<div class="tab-nav tab-nav--mobile">
+  <div class="tab-nav__inner">
+    <div class="tab-nav__tab<%= if is_nil(@current_project_filter), do: " tab-nav__tab--active" %>">
+      <a href="?filter=">Monitored</a>
+    </div>
+    <%= if @current_project_filter do %>
+      <%= render HexFaktor.ProjectView, "_tab-project_filter.html", [class: "tab-nav__tab", active?: true, project_filter: @current_project_filter] %>
+    <% end %>
+    <%= render HexFaktor.ComponentView, "_tab_hamburger.html" %>
+  </div>
+
+  <input type="checkbox" class="tab-nav__dropdown-checkbox" id="tab-nav__dropdown-checkbox">
+  <div class="tab-nav__dropdown">
+    <div class="tab-nav__dropdown__tab<%= if is_nil(@current_project_filter), do: " tab-nav__dropdown__tab--active" %>">
+      <a href="?filter=">Monitored</a>
+    </div>
+    <%= for project_filter <- @project_filters do %>
+      <%= render HexFaktor.ProjectView, "_tab-project_filter.html", [class: "tab-nav__dropdown__tab", active?: @current_project_filter == project_filter, project_filter: project_filter] %>
+    <% end %>
+    <div class="tab-nav__dropdown__tab tab-nav__dropdown__tab--search<%= if @current_project_filter == "search", do: " tab-nav__dropdown__tab--active" %>">
+      <%= form_for @conn, "/projects", [method: :get, as: :edit], fn _ -> %>
+        <input type="hidden" name="filter" value="search">
+        <input type="text" class="tab-nav__dropdown__tab__search" name="q" value="<%= @search %>" placeholder="Search your projects ...">
+        <%= submit "Go", class: "btn btn--primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>

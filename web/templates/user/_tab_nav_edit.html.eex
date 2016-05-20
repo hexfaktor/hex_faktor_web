@@ -1,0 +1,29 @@
+<!--
+  DESKTOP navi
+-->
+<div class="tab-nav tab-nav--desktop">
+  <div class="tab-nav__inner">
+    <%= for {section, label} <- @sections do %>
+      <%= render HexFaktor.UserView, "_tab-edit.html", [class: "tab-nav__tab", active?: section == @current_section, section: section, label: label] %>
+    <% end %>
+  </div>
+</div>
+
+<!--
+  MOBILE navi
+-->
+<div class="tab-nav tab-nav--mobile">
+  <div class="tab-nav__inner">
+    <%= if @current_section do %>
+      <%= render HexFaktor.UserView, "_tab-edit.html", [class: "tab-nav__tab", active?: true, section: @current_section] %>
+    <% end %>
+    <%= render HexFaktor.ComponentView, "_tab_hamburger.html" %>
+  </div>
+
+  <input type="checkbox" class="tab-nav__dropdown-checkbox" id="tab-nav__dropdown-checkbox">
+  <div class="tab-nav__dropdown">
+    <%= for {section, label} <- @sections do %>
+      <%= render HexFaktor.UserView, "_tab-edit.html", [class: "tab-nav__dropdown__tab", active?: section == @current_section, section: section, label: label] %>
+    <% end %>
+  </div>
+</div>

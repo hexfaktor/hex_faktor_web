@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="csrf" content="<%= Plug.CSRFProtection.get_csrf_token() %>">
+    <%= if logged_in?(@conn) do %>
+      <meta name="hf:user_id" content="<%= @current_user.id %>">
+      <meta name="hf:user_name" content="<%= @current_user.user_name %>">
+      <meta name="hf:user_token" content="<%= assigns[:user_socket_token] %>">
+    <% end %>
+    <%= if assigns[:project] do %>
+      <meta name="hf:project_id" content="<%= assigns[:project].id %>">
+    <% end %>
+
+    <title>HexFaktor</title>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+  </head>
+  <body>
+    <%= render HexFaktor.LayoutView, "_sidebar.html", conn: @conn, current_user: assigns[:current_user] %>
+    <%= render HexFaktor.LayoutView, "_motd-banner.html", assigns %>
+
+    <div class="content">
+      <div class="content__inner">
+        <%= render @view_module, @view_template, assigns %>
+      </div>
+    </div>
+
+    <%= render HexFaktor.LayoutView, "_footer.html", assigns %>
+
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>

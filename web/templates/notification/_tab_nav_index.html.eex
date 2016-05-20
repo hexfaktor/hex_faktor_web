@@ -1,0 +1,14 @@
+<!--
+  DESKTOP navi
+-->
+<div class="tab-nav">
+  <div class="tab-nav__inner">
+    <div class="tab-nav__tab<%= if is_nil(@current_filter), do: " tab-nav__tab--active" %>">
+      <a href="?filter=">Unread</a>
+    </div>
+    <div class="tab-nav__tab<%= if @current_filter == "all", do: " tab-nav__tab--active" %>">
+      <a href="?filter=all">All notifications</a>
+    </div>
+  </div>
+</div>
+

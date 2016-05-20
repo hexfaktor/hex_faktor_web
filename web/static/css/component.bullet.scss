@@ -1,0 +1,18 @@
+@import "_config";
+
+.bullet {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-bottom: 2px;
+  border-radius: 25%;
+}
+.bullet--outdated-prod {
+  background-color: #FF911D;
+}
+.bullet--outdated-not-prod {
+  background-color: #FFE100;
+}
+.bullet--unknown {
+  background-color: #ccc;
+}

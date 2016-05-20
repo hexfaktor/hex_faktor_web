@@ -1,0 +1,8 @@
+Greetings from <strong>HexFaktor</strong>,<br>
+<br>
+if you want to get email notifications about your project's Hex dependencies, please click the link below to confirm your email address:<br>
+<br>
+<%= raw button_link("Verify my email address", @validation_url) %><br>
+<br>
+Thanks!<br>
+<a href="https://github.com/rrrene">@rrrene</a> from <a href="<%= @base_url %>">HexFaktor</a>

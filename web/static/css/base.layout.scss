@@ -1,0 +1,57 @@
+@import "_config";
+
+/*
+ * Body resets
+ *
+ * Update the foundational and global aspects of the page.
+ */
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.footer,
+.content {
+  margin-left:  auto;
+  margin-right: auto;
+  padding: 2.5rem 1rem 1rem 1rem;
+}
+.footer {
+  font-size: 14px;
+  color: #aaa;
+  border-top: 2px solid #eee;
+  text-align: center;
+}
+
+@include tablet_portrait_and_bigger {
+  .content,
+  .footer {
+    max-width: 740px;
+  }
+}
+
+@include tablet_landscape_and_bigger {
+  .content,
+  .footer {
+    margin-left: 16rem;
+    padding-left: 3rem;
+    padding-right: 1rem;
+  }
+}
+
+@include desktop_and_bigger {
+  .content,
+  .footer {
+    margin-left: 20rem;
+    max-width: 890px;
+  }
+}

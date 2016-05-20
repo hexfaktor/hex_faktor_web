@@ -1,0 +1,58 @@
+<div class="form-section">
+  <div class="form-section__title">Monitoring</div>
+
+  <%= if @monitored? do %>
+    <p>
+        <strong>This project is currently being monitored.</strong>
+    </p>
+    <p>
+      You can disable monitoring so you won't get notified about updates for this project.
+    </p>
+    <%= form_for @conn, project_hook_path(@conn, :deactivate_webhook, @project.id), [as: :edit], fn _ -> %>
+      <%= submit "Stop monitoring", class: "btn btn--danger" %>
+    <% end %>
+  <% else %>
+    <p>
+      This project is not being monitored.
+    </p>
+    <p>
+      You can enable monitoring so you will get notified about updates for this project.
+    </p>
+
+    <%= form_for @conn, project_hook_path(@conn, :activate_webhook, @project.id), [as: :edit], fn _ -> %>
+      <%= submit "Start monitoring", class: "btn btn--primary" %>
+    <% end %>
+  <% end %>
+</div>
+
+<%= if @monitored? do %>
+  <div class="form-section">
+    <div class="form-section__title">Analysis</div>
+
+    <%= form_for @changeset, project_path(@conn, :update, @project.id), fn(f) -> %>
+
+      <div class="form-section__input form-section__input--radio">
+        <label class="form-section__label">
+          <%= radio_button(f, :use_lock_file, false) %>
+          Ignore <code>mix.lock</code>
+        </label>
+        ("Library mode")
+        &ndash;
+        Notifies you when new versions outside of your requirements are released. This can help you keep your library/package up-to-date with the larger eco-system.
+      </div>
+      <div class="form-section__input form-section__input--radio">
+        <label class="form-section__label">
+          <%= radio_button(f, :use_lock_file, true) %>
+          Use deps in <code>mix.lock</code>
+        </label>
+        ("Application mode")
+        &ndash;
+        Notifies you of any new versions.
+        This is typically useful when monitoring applications rather than libraries. You can also use this mode to make sure that your CI always runs against up-to-date versions of your locked dependencies.
+      </div>
+
+      <%= submit "Save settings", class: "btn btn--primary" %>
+    <% end %>
+  </div>
+<% end %>
+

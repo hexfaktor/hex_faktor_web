@@ -1,0 +1,49 @@
+<!--
+  DESKTOP navi
+-->
+<div class="tab-nav tab-nav--desktop">
+  <div class="tab-nav__inner">
+    <div class="tab-nav__tab<%= if is_nil(@current_mix_env) && is_nil(@current_deps_filter), do: " tab-nav__tab--active" %>">
+      <a href="?branch=<%= if @branch, do: @branch.name %>&env=">All envs</a>
+    </div>
+    <%= for mix_env <- @mix_envs do %>
+      <%= render HexFaktor.ProjectView, "_tab-mix_env.html", class: "tab-nav__tab", active?: @current_mix_env == mix_env, mix_env: mix_env, branch: @branch, outdated_deps: @project.outdated_deps |> Enum.filter(&(HexFaktor.DepsObjectFilter.current_mix_env?(&1.mix_envs, mix_env))) %>
+    <% end %>
+    <%= if @user_can_edit? do %>
+      <div class="tab-nav__tab tab-nav__tab--right">
+        <a href="/projects/<%= @project.id %>/settings?section=notifications">Manage notifications</a>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+<!--
+  MOBILE navi
+-->
+<div class="tab-nav tab-nav--mobile">
+  <div class="tab-nav__inner">
+    <div class="tab-nav__tab<%= if is_nil(@current_mix_env) && is_nil(@current_deps_filter), do: " tab-nav__tab--active" %>">
+      <a href="?branch=<%= if @branch, do: @branch.name %>&env=">All envs</a>
+    </div>
+    <%= if @current_mix_env do %>
+      <%= render HexFaktor.ProjectView, "_tab-mix_env.html", class: "tab-nav__tab", active?: true, mix_env: @current_mix_env, branch: @branch, outdated_deps: @project.outdated_deps |> Enum.filter(&(HexFaktor.DepsObjectFilter.current_mix_env?(&1.mix_envs, @current_mix_env))) %>
+    <% end %>
+    <%= render HexFaktor.ComponentView, "_tab_hamburger.html" %>
+  </div>
+
+  <input type="checkbox" class="tab-nav__dropdown-checkbox" id="tab-nav__dropdown-checkbox">
+  <div class="tab-nav__dropdown">
+    <div class="tab-nav__dropdown__tab<%= if is_nil(@current_mix_env) && is_nil(@current_deps_filter), do: " tab-nav__dropdown__tab--active" %>">
+      <a href="?branch=<%= if @branch, do: @branch.name %>&env=">All envs</a>
+    </div>
+    <%= for mix_env <- @mix_envs do %>
+      <%= render HexFaktor.ProjectView, "_tab-mix_env.html", class: "tab-nav__dropdown__tab", active?: mix_env == @current_mix_env, mix_env: mix_env, branch: @branch, branch: @branch, outdated_deps: @project.outdated_deps |> Enum.filter(&(HexFaktor.DepsObjectFilter.current_mix_env?(&1.mix_envs, mix_env))) %>
+    <% end %>
+    <%= if @user_can_edit? do %>
+    <div class="tab-nav__dropdown__tab">
+      <a href="/projects/<%= @project.id %>/settings?section=notifications">Manage notifications</a>
+    </div>
+    <% end %>
+  </div>
+</div>

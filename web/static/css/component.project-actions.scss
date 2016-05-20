@@ -1,0 +1,44 @@
+@import "_config";
+
+.project-actions {
+  @include clearAfter;
+
+  border-top: 3px solid #eee;
+}
+
+.project-actions__link {
+  float: left;
+}
+.project-actions__link--right {
+  float: right;
+}
+.project-actions__link a {
+  padding: 0.6rem 1rem;
+  display: block;
+  border-top: 3px solid transparent;
+  margin-top: -3px;
+}
+
+.project-actions__link--label {
+  color: #666;
+  border-top: 3px solid #999;
+  padding: 0.6rem 1rem 0.6rem 0;
+  display: block;
+  border-top: 3px solid transparent;
+  margin-top: -3px;
+  display: none;
+}
+
+.project-actions__link--search input[type=text] {
+  border: none;
+  padding: 0.6rem 0;
+  line-height: 1.5;
+  margin-top: -3px;
+  text-align: right;
+  &:focus {
+    outline: none;
+  }
+}
+.project-actions__link--search input[type=submit] {
+  display: none;
+}

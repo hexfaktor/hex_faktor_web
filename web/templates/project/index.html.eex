@@ -1,0 +1,53 @@
+<%= render HexFaktor.ComponentView, "user-title.html", user: @current_user, include_last_sync?: false %>
+
+<div class="sync-progress sync-progress--loading" style="display: none;">
+  <div class="sync-progress__inner">
+    <span>&gt;</span> Syncing your repos now! This might take a minute ...
+  </div>
+  <div class="sync-progress__bar" id="sync-progress-indicator" style="width: 10%"></div>
+</div>
+
+<%= if @fresh_user? do %>
+  <div data-sync-github-repos></div>
+<% end %>
+
+<div class="project-toolbar">
+  <%= if @fresh_user? do %>
+    Howdy!
+  <% else %>
+    <div class="project-toolbar__btn-group-left">
+      <%= if @active_projects_count == 0 do %>
+        Howdy! Let's start monitoring your deps:
+      <% else %>
+        <%= @active_projects_count %> monitored projects,
+        <%= if @outdated_projects_count == 0 do %>
+          no outdated dependencies.
+        <% else %>
+          <a href="?filter=outdated"><%= @outdated_projects_count %> w/ outdated dependencies</a>.
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="project-toolbar__btn-group-right">
+    <a href="/projects_syncing" data-ajax-post="/projects/sync_github" data-syncing-label="<i class=icon-refresh></i> Syncing GitHub ..." class="btn btn--default"><i class="icon-refresh"></i> Sync GitHub</a>
+    <a href="/settings" class="btn btn--default"><i class="icon-settings"></i></a>
+  </div>
+</div>
+
+
+<%= if @fresh_user? do %>
+  <!-- TODO: put text here -->
+<% else %>
+  <%= render HexFaktor.ProjectView, "_tab_nav_index.html", assigns %>
+
+  <%= if @projects |> Enum.empty? do %>
+    <p>
+      No projects in this list.
+    </p>
+  <% else %>
+    <%= for project <- @projects do %>
+      <%= render HexFaktor.ComponentView, "project-list-item.html", project: project %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="csrf" content="<%= Plug.CSRFProtection.get_csrf_token() %>">
+    <%= if logged_in?(@conn) do %>
+      <meta name="hf:user_id" content="<%= @current_user.id %>">
+      <meta name="hf:user_name" content="<%= @current_user.user_name %>">
+    <% end %>
+
+    <title>HexFaktor</title>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+
+    <%= if logged_in?(@conn) do %>
+      <script>
+        window.userId = "<%= assigns[:current_user].id %>";
+        window.userToken = "<%= assigns[:user_socket_token] %>";
+      </script>
+    <% end %>
+  </head>
+
+  <body>
+    <%= render HexFaktor.LayoutView, "_sidebar.html", conn: @conn, current_user: assigns[:current_user] %>
+
+    <div class="content">
+      <div class="content__inner">
+
+
+
+<div class="error-404">
+  <h1>Page not found</h1>
+
+  <p>
+    The page you were expecting could not be found. Since HexFaktor is still in beta, this might very well be a bug.
+  </p>
+  <p>
+    If you think it is, you would help this project by reporting it on GitHub:
+  </p>
+  <p>
+    <a href="https://github.com/hexfaktor/hex_faktor_web/issues"><i class="icon-octopus"></i> hexfaktor/hex_faktor_web</a>
+  </p>
+</div>
+
+
+
+
+      </div>
+    </div>
+
+    <%= render HexFaktor.LayoutView, "_footer.html", conn: @conn %>
+
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>
+
+
+

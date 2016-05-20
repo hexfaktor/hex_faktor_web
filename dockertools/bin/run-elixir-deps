@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+print-container-info
+print-elixir-info
+
+RESULT_FILE=/job/eval/result.json
+
+cd /tools/mix/hex_faktor
+
+#mix faktor /job/code --json > $RESULT_FILE
+mix run --no-compile -e 'HexFaktor.CLI.main ["/job/code", "--json"]' > $RESULT_FILE
+
+echo "JSON written (`wc --bytes $RESULT_FILE`)"
+echo ""
+echo "Deps Analysis complete."

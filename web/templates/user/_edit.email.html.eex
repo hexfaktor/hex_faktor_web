@@ -1,0 +1,55 @@
+<%= if is_nil(@current_user.email_verified_at) do %>
+  <div class="alert alert--danger">
+    You have not yet verified your e-mail and <strong>will not receive e-mails</strong>.
+  </div>
+<% end %>
+
+<div class="form-section">
+  <%= form_for @changeset, "/settings", fn f -> %>
+    <div class="form-section__input">
+      <label class="form-section__label">E-Mail</label>
+      <%= text_input f, :email, id: "user_email", class: class_with_error(f, :email, "user-email") %>
+      <%= if f.model.email_verified_at do %>
+        <span class="user-email--verified">
+          <i class="icon-check_circle"></i>
+          verified address
+        </span>
+      <% else %>
+        <span class="user-email--not-verified">not verified</span>
+        <span class="user-email__hint">(<a href="?section=resend_validation">resend confirmation?</a>)</span>
+      <% end %>
+    </div>
+
+    <label class="form-section__label">Frequency</label>
+    <div class="form-section__input form-section__input--radio">
+      <label class="form-section__label form-section__label--weekly-frequency">
+        <%= radio_button(f, :email_notification_frequency, "weekly") %>
+        Weekly status report (every Monday)
+      </label>
+    </div>
+    <div class="form-section__input form-section__input--radio">
+      <label class="form-section__label form-section__label--daily-frequency">
+        <%= radio_button(f, :email_notification_frequency, "daily") %>
+        Daily status report in case of new updates (if there are none, you do not get an email)
+      </label>
+    </div>
+    <div class="form-section__input form-section__input--radio">
+      <label class="form-section__label form-section__label--no-frequency">
+        <%= radio_button(f, :email_notification_frequency, "none") %>
+        Do not send status report
+      </label>
+    </div>
+
+    <div class="form-section__input form-section__input--checkbox">
+      <label class="form-section__label form-section__label--newsletter">
+        <%= checkbox(f, :email_newsletter) %>
+        Subscribe to newsletter
+      </label>
+       (covers projects like <a href="https://github.com/rrrene/elixirstatus-web" target="_blank">ElixirStatus</a>, <a href="https://github.com/rrrene/credo" target="_blank">Credo</a> and <a href="https://inch-ci.org/" target="_blank">Inch CI</a> next to new features and developments for HexFaktor)
+    </div>
+
+    <div class="form-section__actions">
+      <input type="submit" class="btn btn--primary" value="Save changes">
+    </div>
+  <% end %>
+</div>

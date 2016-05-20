@@ -1,0 +1,58 @@
+
+<div class="sidebar">
+  <div class="sidebar__inner">
+    <div class="sidebar-header">
+      <a href="/"><img src="<%= static_path(@conn, "/images/logo.png") %>" class="logo"/></a>
+      <h1><a href="/">HexFaktor</a></h1>
+      <p>Monitor your Hex deps.</p>
+      <%= if !@current_user do %>
+        <a href="/auth" class="btn btn--sign-in">Sign in</a>
+      <% end %>
+    </div>
+  </div>
+  <div class="sidebar__inner sidebar-nav-container">
+    <label for="sidebar-checkbox" class="sidebar-toggle">
+      <%= if !is_nil(@conn.assigns[:notification_count]) && @conn.assigns[:notification_count] != 0 do %>
+        <span class="sidebar-toggle__notification-indicator"></span>
+      <% end %>
+      <i class="icon-user"></i>
+    </label>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+    <input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-separator"></div>
+      <%= if @current_user do %>
+
+        <a href="/add_project?filter=elixir" class="btn btn--add-project">Add a project</a>
+        <a class="sidebar-nav-item" href="/projects?filter=elixir">My Projects</a>
+        <%= render HexFaktor.ComponentView, "notification-counter.html", current_user: @current_user, notification_count: @conn.assigns[:notification_count] %>
+        <div class="sidebar-nav-separator"></div>
+        <a class="sidebar-nav-item" href="<%= help_path(@conn, :index) %>">Help</a>
+        <a class="sidebar-nav-item" href="/settings">
+          <%= if is_nil(@current_user.email_verified_at) do %>
+          <i class="icon-warning sidebar-nav-item__icon--warning"></i>
+          <i class="icon-mail sidebar-nav-item__icon--warning"></i>
+          <% end %>
+          Settings
+        </a>
+        <a class="sidebar-nav-item" href="/auth/sign_out">Logout</a>
+
+      <% else %>
+
+        <a href="/auth" class="btn btn--sign-in">Sign in with GitHub</a>
+        <div class="sidebar-nav-separator"></div>
+        <div class="sidebar__text">
+          HexFaktor monitors your project's deps and notifies you when they need to be updated.
+          <span style="white-space: nowrap">It basically combines the power of</span> <code style="white-space: nowrap">mix hex.outdated</code> with the peace of mind a CI system provides.
+        </div>
+        <div class="sidebar-nav-separator"></div>
+        <div class="sidebar__text">
+          Brought to you by <a href="http://elixirstatus.com" target="_blank">@elixirstatus</a>
+        </div>
+
+      <% end %>
+    </nav>
+  </div>
+</div>

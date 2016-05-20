@@ -1,0 +1,30 @@
+<div class="footer">
+  <div class="footer__inner">
+    <p>
+      HexFaktor monitors your project's dependencies and notifies you when they need to be updated.
+      <span style="white-space: nowrap">It basically combines the power of</span> <code style="white-space: nowrap">mix hex.outdated</code> with the peace of mind a CI system provides.
+    </p>
+
+    <p>
+      Oh, and it's <a href="<%= hex_faktor_repo_url %>" target="_blank">open source!</a>, built by community members using <a href="http://elixir-lang.org" target="_blank">Elixir</a>, <a href="http://phoenixframework.org" target="_blank">Phoenix</a> and the <a href="https://mfglabs.github.io/mfglabs-iconset/" target="_blank">MFG Labs icon set</a>.
+    </p>
+
+    <p>
+      Please contact René Föhring (<a href="https://twitter.com/rrrene" target="_blank">@rrrene</a>) or <a href="<%= hex_faktor_issues_url %>" target="_blank">create an issue</a> if anything seems broken or worthy of improvement.
+    </p>
+
+    <p>
+      <%= if logged_in?(@conn) do %>
+        <a href="/auth/sign_out">Sign out</a>
+      <% else %>
+        <a href="/auth">Sign in with GitHub</a>
+      <% end %>
+      |
+      <a href="http://trivelop.de/imprint/">Contact</a>
+      |
+      <a href="http://trivelop.de/imprint/">Imprint</a>
+      |
+      <a href="http://trivelop.de/">Blog</a>
+    </p>
+  </div>
+</div>

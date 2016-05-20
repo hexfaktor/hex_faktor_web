@@ -1,0 +1,13 @@
+<%= render HexFaktor.ComponentView, "project-title.html", project: @project, branch: @project.git_repo_branches |> Enum.find(&(&1.name == @project.default_branch)) %>
+
+<div class="project-toolbar">
+  <div class="project-toolbar__btn-group-left">
+    <a href="/<%= @project.provider %>/<%= @project.name %>">&larr; back to project</a>
+  </div>
+</div>
+
+<%= render HexFaktor.ProjectView, "_tab_nav_edit.html", assigns %>
+
+<%= render HexFaktor.ComponentView, "alert.html", text: get_flash(@conn, :info) %>
+
+<%= render HexFaktor.ProjectView, "_edit.#{@current_section}.html", assigns %>

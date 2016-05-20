@@ -1,0 +1,33 @@
+<%= render HexFaktor.ComponentView, "user-title.html", user: @current_user, include_last_sync?: true %>
+
+<div class="project-toolbar">
+  <div class="project-toolbar__btn-group-left">
+    Add a project by clicking "monitor this":
+  </div>
+
+  <div class="project-toolbar__btn-group-right">
+    <a href="/projects_syncing" data-ajax-post="/projects/sync_github" data-syncing-label="<i class=icon-refresh></i> Syncing GitHub ..." class="btn btn--default"><i class="icon-refresh"></i> Sync GitHub</a>
+    <a href="/settings" class="btn btn--default"><i class="icon-settings"></i></a>
+  </div>
+</div>
+
+<%= if @fresh_user? do %>
+  <div data-sync-github-repos></div>
+<% else %>
+  <%= render HexFaktor.ProjectView, "_tab_nav_index.html", assigns %>
+
+  <%= if @projects |> Enum.empty? do %>
+    <p>
+      No projects in this list.
+    </p>
+  <% else %>
+    <%= for project <- @projects do %>
+      <%= render HexFaktor.ComponentView, "project-list-item.html", project: project, outdated_project?: @outdated_project_ids |> Enum.member?(project.id) %>
+    <% end %>
+
+    <div class="alert alert--info">
+      <i class="icon-information_black"></i>
+       Already monitored projects are omitted from this list.
+    </div>
+  <% end %>
+<% end %>

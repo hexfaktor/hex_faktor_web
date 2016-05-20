@@ -1,0 +1,124 @@
+@import "_config";
+
+.btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-radius: 4px;
+  white-space: nowrap;
+  padding: 0.555555rem 0.888888rem;
+  font-size: 0.888888rem;
+  line-height: 1.333333;
+}
+.btn.focus,
+.btn:focus,
+.btn:hover {
+  text-decoration: none;
+}
+
+.btn--default {
+  color: #333;
+  border-color: #ddd;
+  background-color: #f0f0f0;
+}
+
+.btn--sign-in {
+  color: #fff;
+  background-color: #268BDA;
+  border-color: #1B639A;
+}
+.btn--sign-in:hover {
+  color: #fff;
+  background-color: #268BDA;
+  border-color: #1B639A;
+}
+
+.btn--tweet {
+  color: #fff;
+  text-decoration: none;
+  background-color: #428bca;
+  border-color: #357ebd;
+  &:visited,
+  &:link,
+  &:active {
+    color: #fff;
+  }
+}
+.btn--tweet:hover {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74;
+}
+
+.btn--add-project {
+  color: #fff;
+  text-decoration: none;
+  background-color: #5c913b;
+  border-color: #426B28;
+  &:visited,
+  &:link,
+  &:active {
+    color: #fff;
+  }
+}
+.btn--add-project:hover {
+  color: #fff;
+  background-color: #64864F;
+  border-color: #426B28;
+}
+
+.btn--primary {
+  color: #fff;
+  background-color: #87AE10;
+  border-color: #687B2B;
+}
+.btn--primary:hover {
+  color: #fff;
+  background-color: #9BC714;
+  border-color: #819836;
+}
+
+.btn--danger {
+  color: #fff;
+  background-color: #c33;
+  border-color: #913939;
+}
+.btn--danger:hover {
+  color: #fff;
+  background-color: #F01515;
+  border-color: #B84040;
+}
+
+.btn--scheduled {
+  color: #C9F0A9;
+  background-color: #86BB92;
+  border-color: #61AD71;
+}
+.btn--scheduled:hover {
+  color: #C9F0A9;
+  background-color: #86BB92;
+  border-color: #61AD71;
+}
+
+.btn--sync {
+  color: #FFFFFF;
+  background-color: #444444;
+  border-color: #000000;
+}
+
+.btn--loading {
+  @include lightLoadingStripes;
+}
+.btn--loading.btn--default {
+  @include darkLoadingStripes;
+}
+
+@keyframes animate-stripes {
+    0% {background-position: 60px 0;} 100% {background-position: 0 0;}
+}

@@ -1,0 +1,10 @@
+<div class="<%= @class %><%= if @active?, do: " #{@class}--active" %>">
+  <a href="?branch=<%= if @branch, do: @branch.name %>&env=<%= @mix_env %>">
+    <%= if @outdated_deps |> Enum.any? do %>
+      <!--
+      <div class="bullet bullet--outdated-<%= if @mix_env == "prod", do: "prod", else: "not-prod" %>"></div>
+      -->
+    <% end %>
+    <%= assigns[:label] || @mix_env %>
+  </a>
+</div>

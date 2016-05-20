@@ -1,0 +1,3 @@
+<%= if @text do %>
+  <div class="alert alert--default"><%= @text %></div>
+<% end %>

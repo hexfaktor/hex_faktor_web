@@ -1,0 +1,16 @@
+<%#= render HexFaktor.ComponentView, "user-title.html", user: @current_user %>
+
+<%= if @success do %>
+  <h1>Yay, success!</h1>
+
+  Congrats, you verified your e-mail!
+<% else %>
+  <h1>It did not work!</h1>
+  <p>
+    Could <strong>not</strong> verify your e-mail. Did you click on an old verification mail?
+  </p>
+<% end %>
+
+<%= if !HexFaktor.Auth.current_user(@conn) do %>
+  <a href="/auth">Sign in now!</a>
+<% end %>

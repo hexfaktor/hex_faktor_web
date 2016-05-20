@@ -1,0 +1,53 @@
+<br><br>
+
+<h1><a href="http://elixirstatus.com/" target="_blank">ElixirStatus</a> presents: HexFaktor</h1>
+
+<p>
+This is a new service that wants to provide <b>monitoring for your Hex deps</b>.
+</p>
+
+<img src="<%= static_path(@conn, "/images/deps.svg") %>">
+
+<h2>Is this ready?</h2>
+<p>
+  Yes and no. I tested this version of the software for a couple of weeks myself, but now the code needs some "real world experience". </p><p>You can join the beta by signing in via GitHub:
+</p>
+<%= unless logged_in?(@conn) do %>
+<p>
+  <a href="/auth" class="btn btn--primary"><i class="icon-git"></i> Join the Beta</a>
+</p>
+<% end %>
+
+
+<h2>Thanks!</h2>
+<p>
+  This, like my other Elixir projects, would not have been possible without consistent support by our fantastic community. Thank you so much!
+</p>
+
+<hr>
+<br><br><br>
+<h2>Wait! Who are you?</h2>
+<p>
+  I'm <a href="https://github.com/rrrene" target="_blank">@rrrene</a>. I've been around Elixir for a while and created <a href="https://github.com/rrrene/credo" target="_blank">Credo</a> and <a href="http://elixirstatus.com/" target="_blank">ElixirStatus</a>.
+</p>
+
+
+<h2>Embargo?</h2>
+<p>
+  There is no reason why you should not share your thoughts, excitement and/or critique about this project on Twitter, in a blog post or in the <a href="https://github.com/hexfaktor/hex_faktor_web">issues section of the GitHub repo</a>.
+</p>
+<p>
+  The project will, however, remain under the <code>beta.*</code> domain for a couple of weeks so we can ensure everything is working properly.
+</p>
+
+
+<h2>Open Source?</h2>
+<p>
+  Removing the <code>beta</code> tag will mean two things:
+  <ol>
+    <li>HexFaktor will then be reachable via hexfaktor.org (obviously). All links, badges etc. to the beta version will be properly redirected and still work.</li>
+    <li>I will open source everything in <a href="https://github.com/hexfaktor/hex_faktor_web">this repo on GitHub</a> (I currently maintain a *very* quick-n-dirty copy of the project in a private repo and want to make sure I clean that copy of any keys, secrets or leftovers from previous prototype iterations before open sourcing it).</li>
+  </ol>
+</p>
+
+<h2>Thanks again!</h2>

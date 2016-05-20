@@ -1,0 +1,22 @@
+<%= link "Back to projects", to: "/projects" %>
+
+<h1><%= @project.name %> <%= link "GitHub", to: @project.html_url, target: "_blank" %></h1>
+
+
+<table>
+  <thead>
+    <tr>
+      <td>Number</td>
+      <td>Revision</td>
+      <td>Status</td>
+    </tr>
+  </thead>
+  <%= for build <- @builds do %>
+    <% build_job = build.build_jobs |> List.first %>
+    <tr>
+      <td>#<%= build.nr %></td>
+      <td><%= build_job.git_revision_id %></td>
+      <td><%= build_job.status %></td>
+    </tr>
+  <% end %>
+</table>

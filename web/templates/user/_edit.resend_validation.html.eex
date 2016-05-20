@@ -1,0 +1,10 @@
+<div class="form-section">
+  <div class="form-section__input form-section__input--radio">
+    <p>
+      If you have not received the confirmation email sent to <strong><%= @current_user.email %></strong>, you can resend it.
+    </p>
+    <%= if is_nil(@user.email_verified_at) do %>
+      <%= link "Resend validation e-mail.", to: user_path(@conn, :resend_verify_email), method: "POST", class: "btn btn--default" %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+@import "_config";
+
+.news {
+  border: 1px solid #fff;
+  border-radius: 3px;
+  padding: 10px;
+}
+.news:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.news__icon {
+  position: absolute;
+  z-index: 100;
+  opacity: 0.5;
+}
+.news__icon--seen {
+  opacity: 0.1;
+}
+.news__text,
+.news__effect,
+.news__time {
+  margin-left: 3rem;
+}
+.news__time {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+.news__text code {
+  background: #FFF184;
+}
+.news__env-link--prod code {
+  background: #F9BE33;
+  color: #fff;
+}

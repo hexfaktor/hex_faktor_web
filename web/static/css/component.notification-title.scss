@@ -1,0 +1,47 @@
+@import "_config";
+
+.notification-title {
+  text-rendering: optimizeLegibility;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 2rem;
+  color: #313131;
+
+  @include clearAfter;
+}
+.notification-title__branch {
+  display: inline-block;
+  float: right;
+  font-size: 1rem;
+  font-weight: normal;
+  color: #666;
+}
+.notification-title__btn-group {
+  float: right;
+}
+
+
+
+.notification-toolbar {
+  text-rendering: optimizeLegibility;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  color: #313131;
+
+  @include clearAfter;
+}
+.notification-toolbar__btn-group-left {
+  width: 70%;
+  float: left;
+}
+.notification-toolbar__btn-group-right {
+  width: 40%;
+  float: right;
+  text-align: right;
+
+  form {
+    display: inline;
+  }
+}

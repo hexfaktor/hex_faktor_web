@@ -1,0 +1,6 @@
+<p>
+  You can sync this project's info and branches with GitHub at any time.
+</p>
+
+
+<%= link("Sync branches & info", to: "/projects/sync_github/#{@project.name}", class: "btn btn--default", method: "POST") %>

@@ -1,0 +1,18 @@
+@import "_config";
+
+.motd-banner {
+  background: #ffe;
+  border-bottom: 1px solid #fa0;
+  padding: 4px;
+  padding-top: 45px;
+}
+@include tablet_landscape_and_bigger {
+  .motd-banner {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 4px;
+    padding-left: 17rem;
+  }
+}

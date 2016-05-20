@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+echo "Test pipe into file" > /job/eval/stdout.log
+echo "{\"foo\": 42}" > /job/eval/result
+
+>&2 echo "Warning on stderr!"
+echo "Test complete."

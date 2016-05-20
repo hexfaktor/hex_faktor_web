@@ -1,0 +1,6 @@
+<a href="<%= @base_url %>" style="color: #aaa">HexFaktor.org</a>:
+ monitor your project's deps and get notified when they are updated.
+<br>
+<%= if assigns[:unsubcribe_url] do %>
+  You can easily unsubscribe from these emails in the <a href="<%= assigns[:unsubcribe_url] %>" style="color: #aaa">settings</a>.
+<% end %>

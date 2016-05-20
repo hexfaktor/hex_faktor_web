@@ -1,0 +1,40 @@
+<div class="project-title">
+  <%= if @project.provider == "github" do %>
+    <%= @project.name %>
+    <a href="<%= @project.html_url %>" target="_blank"><i class="icon-octopus"></i></a>
+  <% end %>
+
+  <%= if @project.latest_build_job_id do %>
+    <div class="project-title__badge-container">
+      <a href="/projects/<%= @project.id %>/settings?section=badges"><img src="/badge/all/github/<%= @project.name %>.svg?branch=<%= if @branch, do: @branch.name %>"></a>
+    </div>
+  <% end %>
+
+  <%= if @branch do %>
+    <span class="project-title__branch">
+      <label for="project-title__branch-checkbox" class="project-title__branch-toggle">
+        <i class="icon-hashtag"></i>
+        <b><%= @branch.name %></b>
+      </label>
+    </span>
+  <% end %>
+</div>
+
+<%= if @branch do %>
+  <input type="checkbox" class="project-title__branch-checkbox" id="project-title__branch-checkbox">
+  <div class="project-title__branch-nav">
+    <div class="project-title__branch-nav__inner">
+      <%= for branch <- @project.git_repo_branches do %>
+        <div class="project-title__branch-nav__item">
+          <%= if branch == @branch do %>
+            <i class="icon-node"></i>
+            <%= branch.name %>
+          <% else %>
+            <i class="icon-node"></i>
+            <a href="<%= project_url(@project) %>?branch=<%= branch.name %>"><%= branch.name %></a>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

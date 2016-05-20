@@ -1,0 +1,5 @@
+<p>
+  You can sync your account with GitHub at any time.
+</p>
+
+<%= link("Sync projects", to: "/projects/sync_github", class: "btn btn--default", method: "POST") %>

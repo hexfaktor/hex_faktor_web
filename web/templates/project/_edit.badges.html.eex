@@ -1,0 +1,36 @@
+<p>
+  HexFaktor provides 2 badges to display your deps status:
+  (<a href="<%= help_path(@conn, :badge) %>">how do the colors work?</a>)
+</p>
+<p>
+  To display the badge, just copy-n-paste one of these snippets into your project's README:
+</p>
+
+
+<h2>Deps badge</h2>
+
+<pre>
+<img src="<%= badge_url(@project, :all) %>" title="Deps Status">
+
+<span class="snippet-comment"># Markdown:</span>
+
+[![Deps Status](<%= badge_url(@project, :all) %>)](<%= project_url(@project) %>)
+
+<span class="snippet-comment"># Raw Image URL:</span>
+
+<%= badge_url(@project, :all) %>
+</pre>
+
+<h2>Production dependencies only badge</h2>
+
+<pre>
+<img src="<%= badge_url(@project, :prod) %>" title="Deps Status">
+
+<span class="snippet-comment"># Markdown:</span>
+
+[![Deps Status](<%= badge_url(@project, :prod) %>)](<%= project_url(@project) %>)
+
+<span class="snippet-comment"># Raw Image URL:</span>
+
+<%= badge_url(@project, :prod) %>
+</pre>

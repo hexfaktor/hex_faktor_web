@@ -1,0 +1,147 @@
+<%= render HexFaktor.ComponentView, "project-title.html", project: @project, branch: @branch %>
+
+<%= if @enqueued_build? do %>
+  <div data-auto-reload="on-build-end"></div>
+<% end %>
+
+<div id="sync-progress-inject">
+  <%= if @enqueued_build? do %>
+    <div class="sync-progress sync-progress--building">
+      <div class=sync-progress__inner>
+        <span>&gt;</span> Analysis in progress ...
+      </div>
+      <div class="sync-progress__bar"></div>
+    </div>
+  <% end %>
+</div>
+
+<div class="project-toolbar">
+  <div class="project-toolbar__btn-group-left">
+    <%= if @unsynced_project? do %>
+      This project has not been synced yet. Syncing now ...
+
+      <div data-sync-github-repo="<%= @project.name %>"></div>
+      <div data-auto-reload="on-sync-github-repo"></div>
+    <% end %>
+
+    <%= if @deps_objects |> Enum.any? do %>
+
+      <%= if !@unsynced_project? do %>
+        <%= @deps_total_count %> top-level dependencies,
+        <%= if @deps_outdated_count == 0 do %>
+          none outdated,
+        <% else %>
+
+          <%= if @project.outdated_deps |> Enum.filter(&(HexFaktor.DepsObjectFilter.current_mix_env?(&1.mix_envs, "prod"))) |> Enum.any? do %>
+            <div class="bullet bullet--outdated-prod"></div>
+          <% end %>
+          <%= if @project.outdated_deps |> Enum.filter(&(!HexFaktor.DepsObjectFilter.current_mix_env?(&1.mix_envs, "prod"))) |> Enum.any? do %>
+            <div class="bullet bullet--outdated-not-prod"></div>
+          <% end %>
+
+          <a href="?filter=outdated"><%= @deps_outdated_count %> outdated</a>,
+        <% end %>
+        <%= if @deps_unknown_count == 0 do %>
+          none unknown.
+        <% else %>
+          <div class="bullet bullet--unknown"></div>
+          <a href="?filter=unknown"><%= @deps_unknown_count %> unknown</a>.
+        <% end %>
+      <% end %>
+
+    <% else %>
+      <!-- NO DEPS/BUILD -->
+
+      <%= if @build_job do %>
+        <%= if @build_job.status == "success" do %>
+          This project does not seem to have any dependencies.
+        <% end %>
+        <%= if @build_job.status == "failure" do %>
+          <%= if @build_job.debug_info == "{:error, \"file_not_found: mix.exs\"}" do %>
+            No mix.exs file found!
+          <% end %>
+          <%= if @build_job.debug_info == "{:error, \"file_not_found: mix.lock\"}" do %>
+            No <code>mix.lock</code> file found!
+          <% end %>
+        <% end %>
+      <% end %>
+
+    <% end %>
+  </div>
+
+  <div class="project-toolbar__btn-group-right">
+    <a href="#" data-ajax-post="<%= "/projects/#{@project.id}/rebuild?branch=#{if @branch, do: @branch.name}" %>" class="btn btn--default"><i class="icon-refresh"></i></a>
+    <%= if @user_can_edit? do %>
+      <a href="/projects/<%= @project.id %>/settings" class="btn btn--default"><i class="icon-settings"></i></a>
+    <% end %>
+  </div>
+</div>
+
+
+<%= if @deps_objects |> Enum.any? do %>
+  <%= render HexFaktor.ProjectView, "_tab_nav_show.html", assigns %>
+<% end %>
+
+
+<%= if @build do %>
+  <%= for dep <- @deps_objects do %>
+    <%= render HexFaktor.ComponentView, "dep.html", dep: dep, project: @project %>
+  <% end %>
+
+  <%= if @user_can_edit? do %>
+    <div class="project-actions">
+      <div class="project-actions__inner">
+        <div class="project-actions__link project-actions__link--label">
+          More actions:
+        </div>
+        <div class="project-actions__link">
+          <a href="/projects/<%= @project.id %>/settings?section=history">Build History</a>
+        </div>
+        <div class="project-actions__link">
+          <a href="/projects/<%= @project.id %>/settings?section=badges">Get your Badge!</a>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="legend">
+    <div class="legend__headline">Notes:</div>
+    <div class="legend__item">
+      A green requirement in "required" means the given requirement matches the current version.
+    </div>
+    <div class="legend__item">
+      A green version in "locked" means you have the current version of a given package locked.
+    </div>
+    <div class="legend__item">
+      Outdated dependencies are marked based on their Mix env:
+    </div>
+    <div class="legend__item">
+      <div class="bullet bullet--outdated-prod"></div>
+      for prod dependencies
+    </div>
+    <div class="legend__item">
+      <div class="bullet bullet--outdated-not-prod"></div>
+      for other dependencies (e.g. <code>dev</code> or <code>test</code>)
+    </div>
+  </div>
+
+<% else %>
+  <!-- NO BUILD -->
+
+  <%= if @deps_objects |> Enum.empty? do %>
+    <%= if @build_job do %>
+      <%= if @build_job.status == "success" do %>
+        NO_DEPS_FOUND
+      <% end %>
+      <%= if @build_job.status == "failure" do %>
+        <%= if @build_job.debug_info == "{:error, \"file_not_found: mix.exs\"}" do %>
+          NO_MIX_EXS_FOUND
+        <% end %>
+        <%= if @build_job.debug_info == "{:error, \"file_not_found: mix.lock\"}" do %>
+          NO_MIX_LOCK_FOUND
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+<% end %>

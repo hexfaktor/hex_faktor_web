@@ -1,0 +1,6 @@
+.user-email--not-verified {
+  color: #c00;
+}
+.user-email--verified {
+  color: #5C913B;
+}

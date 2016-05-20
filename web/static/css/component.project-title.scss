@@ -1,0 +1,94 @@
+@import "_config";
+
+$color: $headline_color;
+
+.project-title {
+  text-rendering: optimizeLegibility;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 2rem;
+  color: $color;
+
+  @include clearAfter;
+
+  @include phablet_landscape_and_bigger {
+    font-size: 2rem;
+  }
+
+  a,
+  a:hover {
+    color: $color;
+    text-decoration: none;
+  }
+}
+.project-title__badge-container {
+  display: inline;
+  white-space: nowrap;
+}
+.project-title__branch {
+  display: inline-block;
+  float: right;
+  font-size: 1rem;
+  font-weight: normal;
+  color: $text_color;
+}
+.project-title__btn-group {
+  float: right;
+}
+
+
+.project-title__branch-nav {
+  display: none;
+  @include clearAfter;
+}
+#project-title__branch-checkbox:checked ~ .project-title__branch-nav {
+  display: block;
+}
+/* Hide the branch checkbox that we toggle with `.project-title__branch-toggle` */
+.project-title__branch-checkbox {
+  display: none;
+}
+.project-title__branch-toggle {
+  cursor: pointer;
+}
+.project-title__branch-toggle:active,
+#project-title__branch-checkbox:checked ~ .project-title__branch-toggle {
+  opacity: 0.6;
+}
+.project-title__branch-nav__inner {
+  float: right;
+  width: auto;
+  background: #fefefe;
+}
+
+
+
+.project-toolbar {
+  text-rendering: optimizeLegibility;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  color: $color;
+
+  @include clearAfter;
+}
+.project-toolbar__sync-hint {
+  display: block;
+}
+.project-toolbar__btn-group-left {
+}
+.project-toolbar__btn-group-right {
+}
+
+@include phablet_landscape_and_bigger {
+  .project-toolbar__btn-group-left {
+    width: 70%;
+    float: left;
+  }
+  .project-toolbar__btn-group-right {
+    width: 30%;
+    float: right;
+    text-align: right;
+  }
+}

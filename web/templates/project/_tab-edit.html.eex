@@ -1,0 +1,3 @@
+<div class="<%= @class %><%= if @active?, do: " #{@class}--active" %>">
+  <a href="?section=<%= @section %>"><%= assigns[:label] || @section |> String.capitalize %></a>
+</div>

@@ -1,0 +1,66 @@
+<div class="dep dep--<%= prod_or_not(@dep) %> dep--<%= outdated_or_not(@dep, @project) %> dep--<%= use_lock_file_or_not(@project) %>" id="dep-<%= @dep.id %>">
+  <div class="dep__inner">
+    <div class="dep__title">
+      <a href="#" data-ajax-get="/component/dep/<%= @dep.id %>" data-ajax-replace="#dep-<%= @dep.id %>"><%= @dep.name %></a>
+    </div>
+    <div class="dep__meta">
+      <div class="dep__requirement">
+        <span class="text">required:</span>
+        <%= @dep.required_version %>
+        <%= if @dep.required_version && !newest_version_matches_requirement?(@dep) do %>
+          <span class="dep__requirement-not-matching-latest" title="Latest version: <%= @dep.available_versions |> newest_version() %>">
+            <i class="icon-warning_alt"></i>
+          </span>
+        <% end %>
+      </div>
+
+      <div class="dep__latest">
+        <span class="text">current:</span>
+        <span title="Latest version">
+          <%= @dep.available_versions |> newest_version() |> shorten_or_placeholder("?") %>
+        </span>
+      </div>
+
+      <div class="dep__locked">
+        <span class="text">locked:</span>
+        <%= @dep.locked_version |> shorten_or_placeholder %>
+      </div>
+
+      <div class="dep__status">
+        <span class="text">status:</span>
+        <%= human_readable_severity(@dep, @project) %>
+      </div>
+    </div>
+  </div>
+
+  <%= if assigns[:xhr] do %>
+    <div class="dep__package-info">
+      <p>
+        Mix envs:
+        <%= if @dep.mix_envs |> Enum.empty? do %>
+          <small class="dep__env dep__env--prod">prod</small>
+        <% end %>
+        <%= for mix_env <- @dep.mix_envs do %>
+          <small class="dep__env dep__env--<%= prod_or_not(@dep) %>"><%= mix_env %></small>
+        <% end %>
+      </p>
+      <%= if @dep.severity == "none" do %>
+        <p>
+          <small>This dependency is <strong>up-to-date</strong>.</small>
+        </p>
+      <% else %>
+        <p>
+          <small>This dependency can be updated:</small>
+        </p>
+        <p>
+          <code>mix deps.update <%= @dep.name %></code>
+        </p>
+      <% end %>
+      <p>
+        <small>
+          More about <a href="https://hex.pm/packages/<%= @dep.name %>" target="_blank"><strong><%= @dep.name %></strong> on hex.pm</a>
+        </small>
+      </p>
+    </div>
+  <% end %>
+</div>

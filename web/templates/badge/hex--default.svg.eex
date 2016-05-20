@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="20">
+  <linearGradient id="a" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient>
+  <rect rx="3" width="80" height="20" fill="#555"/>
+  <rect rx="3" x="30" width="50" height="20" fill="url(#gradU)"/>
+  <rect rx="0" x="5" width="30" height="20" fill="#555"/>
+
+  <linearGradient id="gradA" x2="0" y2="100%">
+    <stop offset="0" stop-color="#46b01e" />
+    <stop offset=".1" stop-color="#46b01e" />
+    <stop offset=".5" stop-color="#46b01e" />
+    <stop offset=".9" stop-color="#46b01e" />
+    <stop offset="1" stop-color="#46b01e" />
+  </linearGradient>
+  <linearGradient id="gradB" x2="0" y2="100%">
+    <stop offset="0" stop-color="#88cc33" />
+    <stop offset=".1" stop-color="#88cc33" />
+    <stop offset=".5" stop-color="#88cc33" />
+    <stop offset=".9" stop-color="#88cc33" />
+    <stop offset="1" stop-color="#88cc33" />
+  </linearGradient>
+  <linearGradient id="gradC" x2="0" y2="100%">
+    <stop offset="0" stop-color="#FFE100" />
+    <stop offset=".1" stop-color="#FFE100" />
+    <stop offset=".5" stop-color="#FFE100" />
+    <stop offset=".9" stop-color="#FFE100" />
+    <stop offset="1" stop-color="#FFE100" />
+  </linearGradient>
+  <linearGradient id="gradD" x2="0" y2="100%">
+    <stop offset="0" stop-color="#F9BE33" />
+    <stop offset=".1" stop-color="#F9BE33" />
+    <stop offset=".5" stop-color="#F9BE33" />
+    <stop offset=".9" stop-color="#F9BE33" />
+    <stop offset="1" stop-color="#F9BE33" />
+  </linearGradient>
+  <linearGradient id="gradE" x2="0" y2="100%">
+    <stop offset="0" stop-color="#ee6f47" />
+    <stop offset=".1" stop-color="#ee6f47" />
+    <stop offset=".5" stop-color="#ee6f47" />
+    <stop offset=".9" stop-color="#ee6f47" />
+    <stop offset="1" stop-color="#ee6f47" />
+  </linearGradient>
+  <linearGradient id="gradU" x2="0" y2="100%">
+    <stop offset="0" stop-color="#7a67a0" />
+    <stop offset=".1" stop-color="#7a67a0" />
+    <stop offset=".5" stop-color="#7a67a0" />
+    <stop offset=".9" stop-color="#7a67a0" />
+    <stop offset="1" stop-color="#7a67a0" />
+  </linearGradient>
+    <linearGradient id="gradN" x2="0" y2="100%">
+      <stop offset="0" stop-color="#9B9B9B" />
+      <stop offset=".1" stop-color="#9B9B9B" />
+      <stop offset=".5" stop-color="#9B9B9B" />
+      <stop offset=".9" stop-color="#9B9B9B" />
+      <stop offset="1" stop-color="#9B9B9B" />
+    </linearGradient>
+
+  <g fill="#fff" text-anchor="left" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+    <text x="4.5" y="14">Hex</text>
+  </g>
+  <g fill="#fff" text-anchor="right" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+    <text x="40" y="14">v0.2.5</text>
+  </g>
+</svg>

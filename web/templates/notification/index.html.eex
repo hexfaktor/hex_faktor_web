@@ -1,0 +1,14 @@
+<div class="notification-title">
+  Notifications
+  <div class="notification-toolbar__btn-group-right">
+    <%= link("Mark all as read", to: "/notifications/mark_all_as_read", class: "btn btn--default", method: "POST") %>
+    <a href="/settings" class="btn btn--default"><i class="icon-settings"></i></a>
+  </div>
+</div>
+
+<%= render HexFaktor.NotificationView, "_tab_nav_index.html", assigns %>
+
+
+<%= for {{project_name, _project_id, _git_branch_id}, notifications} <- @notification_map do %>
+  <%= render HexFaktor.ComponentView, "news.html", current_user: @current_user, project_name: project_name, notifications: notifications %>
+<% end %>
