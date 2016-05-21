@@ -5,6 +5,18 @@ print-elixir-info
 
 RESULT_FILE=/job/eval/result.json
 
+if [ ! -f /job/code/mix.lock ]; then
+  echo "== File mix.lock not found! ===================================================="
+  echo ""
+
+  cd /job/code
+  mix deps.get
+
+  echo ""
+  echo "================================================================================"
+  echo ""
+fi
+
 cd /tools/mix/hex_faktor
 
 #mix faktor /job/code --json > $RESULT_FILE

@@ -4,4 +4,3 @@ echo "Build system for linux-docker-worker-`hostname` ..."
 echo ""
 echo "Date and time: `date`"
 echo ""
-
