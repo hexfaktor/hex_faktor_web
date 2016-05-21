@@ -104,14 +104,14 @@ defmodule HexFaktor.ProjectProvider do
   end
 
   @doc "Returns Build, BuildJob, DepsObjects for the last build."
-  def latest_evaluation(nil), do: {nil, nil, nil}
+  def latest_evaluation(nil), do: {nil, nil, []}
   def latest_evaluation(branch) do
     build_job = BuildJob.latest(branch.id, [:build])
     {get_build(build_job), build_job, get_deps_objects(build_job)}
   end
 
   @doc "Returns Build, BuildJob, DepsObjects for the last successful build."
-  def latest_successful_evaluation(nil), do: {nil, nil, nil}
+  def latest_successful_evaluation(nil), do: {nil, nil, []}
   def latest_successful_evaluation(branch) do
     build_job = BuildJob.latest_with_status(branch.id, "success", [:build])
     {get_build(build_job), build_job, get_deps_objects(build_job)}
@@ -121,9 +121,7 @@ defmodule HexFaktor.ProjectProvider do
   defp get_build(build_job), do: build_job.build
 
   defp get_deps_objects(nil), do: []
-  defp get_deps_objects(build_job) do
-    Persistence.find_by_job_id(build_job.id) || []
-  end
+  defp get_deps_objects(build_job), do: Persistence.find_by_job_id(build_job.id)
 
   defp nil_if_empty(""), do: nil
   defp nil_if_empty(val), do: val
