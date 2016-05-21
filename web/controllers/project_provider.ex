@@ -121,7 +121,9 @@ defmodule HexFaktor.ProjectProvider do
   defp get_build(build_job), do: build_job.build
 
   defp get_deps_objects(nil), do: []
-  defp get_deps_objects(build_job), do: Persistence.find_by_job_id(build_job.id)
+  defp get_deps_objects(build_job) do
+    Persistence.find_by_job_id(build_job.id) || []
+  end
 
   defp nil_if_empty(""), do: nil
   defp nil_if_empty(val), do: val
