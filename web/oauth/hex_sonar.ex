@@ -27,5 +27,4 @@ defmodule HexSonar do
         {:error, reason}
     end
   end
-
 end

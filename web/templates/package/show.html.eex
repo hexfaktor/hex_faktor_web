@@ -1,5 +1,7 @@
 <%= link "Back", to: "/packages" %>
 
+<a href="#" data-ajax-post="<%= "/packages/#{@package.id}/rebuild" %>" class="btn btn--default"><i class="icon-refresh"></i></a>
+
 <h2>Show package</h2>
 
 <ul>
@@ -17,6 +19,11 @@
   <li>
     <strong>Source url:</strong>
     <%= @package.source_url %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @package.description %>
   </li>
 
 </ul>

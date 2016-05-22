@@ -58,6 +58,8 @@ defmodule HexFaktor.Router do
 
     get "/", PackageController, :index
     get "/:name", PackageController, :show
+
+    post "/:id/rebuild", PackageController, :rebuild_via_web
   end
 
   scope "/help", HexFaktor do
