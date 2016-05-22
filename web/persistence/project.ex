@@ -93,6 +93,15 @@ defmodule HexFaktor.Persistence.Project do
     Repo.one(query)
   end
 
+  def find_by_html_url(html_url, preload_list \\ []) do
+    query = from r in Project,
+            where: r.html_url == ^html_url,
+            select: r,
+            preload: ^preload_list,
+            limit: 1
+    Repo.one(query)
+  end
+
   def find_by_uid(uid, provider \\ "github") do
     query = from u in Project,
             where: u.uid == ^uid and u.provider == ^provider,

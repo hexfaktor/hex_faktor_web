@@ -28,15 +28,18 @@ defmodule HexFaktor.PageController do
   end
 
   # TODO: move to a proper controller
-  def hex_package_update(conn, %{"name" => name, "github_url" => _github_url}) do
+  def hex_package_update(conn, %{"name" => name, "github_url" => github_url}) do
     Logger.info "Received Hex package update: #{name}"
     HexFaktor.Endpoint.broadcast!("feeds:lobby", "update", %{name: name})
 
-    dependent_projects = Project.all_with_dep(name)
+    package_project = Project.find_by_html_url(github_url, [:git_repo_branches])
+    dependent_projects_with_branches =
+      [package_project] ++ Project.all_with_dep(name)
 
-    AppEvent.log(:hex_package_update, name, dependent_projects)
+    AppEvent.log(:hex_package_update, name, dependent_projects_with_branches)
 
-    dependent_projects
+    dependent_projects_with_branches
+    |> Enum.reject(&is_nil/1)
     |> Enum.each(&ProjectBuilder.run_notification_branches(&1, "package_update"))
 
     render(conn, "ok.json")
