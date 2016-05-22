@@ -33,6 +33,7 @@ defmodule HexFaktor.PageController do
     HexFaktor.Endpoint.broadcast!("feeds:lobby", "update", %{name: name})
 
     package_project = Project.find_by_html_url(github_url, [:git_repo_branches])
+
     dependent_projects_with_branches =
       [package_project] ++ Project.all_with_dep(name)
 

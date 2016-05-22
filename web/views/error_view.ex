@@ -6,4 +6,7 @@ defmodule HexFaktor.ErrorView do
   def template_not_found(_template, assigns) do
     render "500.html", assigns
   end
+
+  def render("404.json", _), do: %{error: true, reason: 404}
+  def render("500.json", _), do: %{error: true, reason: 500}
 end
