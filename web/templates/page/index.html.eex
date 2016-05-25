@@ -43,11 +43,7 @@ This is a new service that wants to provide <b>monitoring for your Hex deps</b>.
 
 <h2>Open Source?</h2>
 <p>
-  Removing the <code>beta</code> tag will mean two things:
-  <ol>
-    <li>HexFaktor will then be reachable via hexfaktor.org (obviously). All links, badges etc. to the beta version will be properly redirected and still work.</li>
-    <li>I will open source everything in <a href="https://github.com/hexfaktor/hex_faktor_web">this repo on GitHub</a> (I currently maintain a *very* quick-n-dirty copy of the project in a private repo and want to make sure I clean that copy of any keys, secrets or leftovers from previous prototype iterations before open sourcing it).</li>
-  </ol>
+  Yes! Everything can be found here: <a href="https://github.com/hexfaktor/hex_faktor_web" target="_blank">hexfaktor/hex_faktor_web</a>
 </p>
 
 <h2>Thanks again!</h2>
