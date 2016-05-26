@@ -140,9 +140,23 @@ defmodule Refaktor.Job.Elixir.Deps do
     # no newest_version probably always means it is a git-dependency
     :none
   end
-  defp severity_for(a, a, _newest_version) do
-    # there is a newer release outside the specified requirements
-    :newer_major_release
+  defp severity_for(locked_version, locked_version, newest_version) do
+    if pre_version?(locked_version) do
+      case Version.compare(locked_version, newest_version) do
+        :lt ->
+          # locked_version is a pre version and the newest regular version
+          # is more recent than the locked version
+          :newer_major_release
+        _ ->
+          # locked_version is a pre version and the newest regular version
+          # is older than that
+          :none
+      end
+    else
+      # there is a newer release outside the specified requirements
+      :newer_major_release
+    end
+
   end
   defp severity_for(_locked_version, a, a) do
     # there is a newer release within the specified requirements

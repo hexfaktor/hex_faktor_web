@@ -55,15 +55,21 @@ defmodule HexFaktor.ComponentView do
     |> Enum.find(&Version.match?(&1, requirement))
   end
 
-  def newest_version(versions) do
+  def newest_version(versions, include_pre_versions \\ false)
+  def newest_version(versions, false) do
     versions
     |> reject_pre_versions()
     |> List.last
   end
+  def newest_version(versions, true) do
+    versions
+    |> List.last
+  end
 
   def newest_version_matches_requirement?(dep) do
+    include_pre_versions = pre_version?(dep.locked_version)
     dep.available_versions
-    |> newest_version()
+    |> newest_version(include_pre_versions)
     |> case do
         nil -> true
         val -> val |> Version.match?(dep.required_version)
@@ -72,12 +78,29 @@ defmodule HexFaktor.ComponentView do
 
   defp reject_pre_versions(versions) do
     versions
-    |> Enum.filter(fn(version) ->
-        case Version.parse(version) do
-          {:ok, %Version{pre: []}} -> true
-          _ -> false
-        end
-      end)
+    |> Enum.reject(&pre_version?/1)
+  end
+
+  def pre_version?(version) do
+    case Version.parse(version) do
+      {:ok, %Version{pre: []}} -> false # no pre version
+      {:ok, _} -> true
+      _ -> false
+    end
+  end
+
+  def pre_requirement?(nil), do: false
+  def pre_requirement?(requirement) do
+    versions =
+      requirement
+      |> String.split(~r/\s+(and|or)\s+/)
+      |> Enum.map(&requirement_to_version/1)
+      |> Enum.any?(&pre_version?/1)
+  end
+
+  defp requirement_to_version(requirement) do
+    requirement
+    |> String.replace(~r/[=~><\s]/, "")
   end
 
 

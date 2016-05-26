@@ -2,6 +2,9 @@
   <div class="dep__inner">
     <div class="dep__title">
       <a href="#" data-ajax-get="/component/dep/<%= @dep.id %>" data-ajax-replace="#dep-<%= @dep.id %>"><%= @dep.name %></a>
+        <%= if @dep.required_version |> pre_requirement?() do %>
+          <span class="label label--pre-version-requirement">using pre version</span>
+        <% end %>
     </div>
     <div class="dep__meta">
       <div class="dep__requirement">
