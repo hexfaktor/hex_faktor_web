@@ -297,6 +297,8 @@ defmodule HexFaktor.ProjectController do
   def rebuild_via_hook(conn, payload) do
     project =
       case payload do
+        %{"pull_request" => _pull_request} ->
+          nil
         %{"repository" => %{"id" => uid}} ->
           Project.find_by_uid(uid)
         value ->
