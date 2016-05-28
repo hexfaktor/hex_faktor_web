@@ -8,6 +8,14 @@ defmodule HexFaktor.Persistence.Package do
     Repo.all(Package)
   end
 
+  def all_by_query(search_query) do
+    search_query = "%#{search_query}%"
+    query = from r in Package,
+            where: like(r.name, ^search_query),
+            select: r
+    Repo.all(query)
+  end
+
   def create_from_hex(:econnrefused, _name) do
     nil
   end

@@ -1,0 +1,54 @@
+<!--
+  DESKTOP navi
+-->
+<div class="tab-nav tab-nav--desktop<%= if @current_package_filter == "search", do: " tab-nav--search-active" %>">
+  <div class="tab-nav__inner">
+    <div class="tab-nav__tab<%= if is_nil(@current_package_filter), do: " tab-nav__tab--active" %>">
+      <a href="?filter=">Recently updated</a>
+    </div>
+
+    <div class="tab-nav__tab tab-nav__tab--right tab-nav__tab--search<%= if @current_package_filter == "search", do: " tab-nav__tab--active" %>">
+      <%= form_for @conn, "/packages", [method: :get, as: :edit], fn _ -> %>
+        <input type="hidden" name="filter" value="search">
+        <div class="tab-nav__tab__search-icon">
+          <i class="icon-magnifying"></i>
+        </div>
+        <input type="text" class="tab-nav__tab__search" name="q" value="<%= @search %>" placeholder="Search ..." autocomplete="off"<%= if @current_package_filter == "search", do: " data-auto-select" %>>
+        <div class="tab-nav__tab__search-cancel">
+          <a href="<%= package_path(@conn, :index) %>"><i class="icon-cross_mark"></i></a>
+        </div>
+        <%= submit "Go", class: "btn btn--primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!--
+  MOBILE navi
+-->
+<div class="tab-nav tab-nav--mobile">
+  <div class="tab-nav__inner">
+    <div class="tab-nav__tab<%= if is_nil(@current_package_filter), do: " tab-nav__tab--active" %>">
+      <a href="?filter=">Recently updated</a>
+    </div>
+    <%= if @current_package_filter do %>
+      <%= render HexFaktor.PackageView, "_tab-package_filter.html", [class: "tab-nav__tab", active?: true, package_filter: @current_package_filter] %>
+    <% end %>
+    <%= render HexFaktor.ComponentView, "_tab_hamburger.html" %>
+  </div>
+
+  <input type="checkbox" class="tab-nav__dropdown-checkbox" id="tab-nav__dropdown-checkbox">
+  <div class="tab-nav__dropdown">
+    <div class="tab-nav__dropdown__tab<%= if is_nil(@current_package_filter), do: " tab-nav__dropdown__tab--active" %>">
+      <a href="?filter=">Recently updated</a>
+    </div>
+
+    <div class="tab-nav__dropdown__tab tab-nav__dropdown__tab--search<%= if @current_package_filter == "search", do: " tab-nav__dropdown__tab--active" %>">
+      <%= form_for @conn, "/packages", [method: :get, as: :edit], fn _ -> %>
+        <input type="hidden" name="filter" value="search">
+        <input type="text" class="tab-nav__dropdown__tab__search" name="q" value="<%= @search %>" placeholder="Search ...">
+        <%= submit "Go", class: "btn btn--primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>

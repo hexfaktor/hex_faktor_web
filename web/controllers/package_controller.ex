@@ -5,9 +5,29 @@ defmodule HexFaktor.PackageController do
 
   @hex_mirror HexSonar
 
-  def index(conn, _params) do
-    packages = Package.all
-    render(conn, "index.html", packages: packages)
+  @filter_all "all"
+  @filter_search "search"
+
+  def index(conn, params) do
+    search_query = params["q"] |> nil_if_empty
+    current_package_filter = params["filter"] |> nil_if_empty
+
+    if current_package_filter == @filter_search && is_nil(search_query) do
+      current_package_filter = @filter_all
+    end
+
+    packages =
+      case current_package_filter do
+        @filter_search -> Package.all_by_query(search_query)
+        _ -> Package.all
+      end
+
+    assigns = [
+      current_package_filter: current_package_filter,
+      packages: packages,
+      search: search_query
+    ]
+    render(conn, "index.html", assigns)
   end
 
   def rebuild_via_web(conn, %{"id" => package_id} = params) do

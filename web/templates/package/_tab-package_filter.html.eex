@@ -1,0 +1,5 @@
+<div class="<%= @class %><%= if @active?, do: " #{@class}--active" %>">
+  <a href="?filter=<%= @package_filter %>">
+    <%= assigns[:label] || "#{@package_filter} packages" |> String.capitalize %>
+  </a>
+</div>

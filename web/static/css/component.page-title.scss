@@ -1,0 +1,25 @@
+@import "_config";
+
+$color: $headline_color;
+
+.page-title {
+  text-rendering: optimizeLegibility;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 2rem;
+  color: $color;
+
+  @include clearAfter;
+
+  @include phablet_landscape_and_bigger {
+    font-size: 2rem;
+  }
+
+  a,
+  a:hover {
+    color: $color;
+    text-decoration: none;
+  }
+}
