@@ -9,13 +9,19 @@ defmodule HexFaktor.Package do
     field :language, :string
     field :description, :string
 
-    field :available_versions, {:array, :string}
+    field :releases, {:array, :map}
+
+    # these are the current_user's project dependent on the package
+    # set optionally in the controller if user is logged in
+    field :dependent_projects_by_current_user, {:array, :any}, virtual: true
 
     timestamps
+
+    belongs_to :project, HexFaktor.Project
   end
 
   @required_fields ~w(name source)
-  @optional_fields ~w(source_url language description available_versions)
+  @optional_fields ~w(source_url language description releases project_id)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

@@ -24,7 +24,8 @@ defmodule HexFaktor.Persistence.Package do
       name: name,
       source: "hex",
       source_url: params["github_url"],
-      description: params["description"]
+      description: params["description"],
+      releases: params["releases"] |> reduce_releases()
     } |> Repo.insert!
   end
 
@@ -63,7 +64,36 @@ defmodule HexFaktor.Persistence.Package do
     |> Package.changeset(%{
         source_url: params["github_url"],
         description: params["description"],
+        releases: params["releases"] |> reduce_releases()
       })
     |> Repo.update!
+  end
+
+  def update_project_id(package, project_id) do
+    package
+    |> Package.changeset(%{project_id: project_id})
+    |> Repo.update!
+  end
+
+  defp reduce_releases(releases) do
+    releases
+    |> Enum.map(fn(release) ->
+        %{
+          "version" => release["version"],
+          "updated_at" => cast_time(release["updated_at"])
+        }
+      end)
+    |> Enum.sort_by(&(&1["version"]))
+    |> Enum.reverse
+  end
+
+  defp cast_time(string) do
+    string
+    |> String.replace(~r/^(\d\d\d\d-\d\d-\d\dT\d\d\:\d\d\:\d\d)(.+Z)/, "\\1Z")
+    |> Ecto.DateTime.cast
+    |> case do
+        {:ok, datetime} -> datetime
+        _ -> nil
+      end
   end
 end

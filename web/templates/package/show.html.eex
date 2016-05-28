@@ -16,3 +16,11 @@
 <%= if @package.source == "hex" do %>
   <a href="https://hex.pm/packages/<%= @package.name %>" target="_blank"><%= @package.name %> on hex.pm</a>
 <% end %>
+
+<pre><%= inspect @package.releases %></pre>
+
+<pre><%= inspect @package.project_id %></pre>
+
+<% if @package.dependent_projects_by_current_user do %>
+
+<% end %>

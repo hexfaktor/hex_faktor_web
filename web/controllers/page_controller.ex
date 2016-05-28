@@ -33,9 +33,13 @@ defmodule HexFaktor.PageController do
     Logger.info "Received Hex package update: #{name}"
     HexFaktor.Endpoint.broadcast!("feeds:lobby", "update", %{name: name})
 
-    Package.ensure_and_update(name, payload)
+    package = Package.ensure_and_update(name, payload)
 
     package_project = Project.find_by_html_url(github_url, [:git_repo_branches])
+
+    if package_project && package_project.id != package.project_id do
+      package |> Package.update_project_id(package_project.id)
+    end
 
     dependent_projects_with_branches =
       ([package_project] ++ Project.all_with_dep(name))
