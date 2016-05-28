@@ -9,18 +9,44 @@
     <%= @package.description %>
   </div>
   <div class="package-toolbar__btn-group-right">
+    <%= if false do %>
+      <a href="#" data-ajax-post="<%= "/packages/#{@package.id}/unfollow" %>" class="btn btn--unfollow"><i class="icon-check_circle"></i> Following</a>
+    <% else %>
+      <a href="#" data-ajax-post="<%= "/packages/#{@package.id}/follow" %>" class="btn btn--follow"><i class="icon-plus"></i> Follow</a>
+    <% end %>
     <a href="#" data-ajax-post="<%= "/packages/#{@package.id}/rebuild" %>" class="btn btn--default"><i class="icon-refresh"></i> Sync</a>
   </div>
 </div>
 
+<h2>Links</h2>
+<%= if @package.source_url do %>
+  <p>
+    <a href="<%= @package.source_url %>" target="_blank"><%= @package.name %> on GitHub</a>
+  </p>
+<% end %>
 <%= if @package.source == "hex" do %>
   <a href="https://hex.pm/packages/<%= @package.name %>" target="_blank"><%= @package.name %> on hex.pm</a>
 <% end %>
 
-<pre><%= inspect @package.releases %></pre>
+<h2>Versions</h2>
+<ul>
+  <%= for %{"version" => version, "updated_at" => updated_at} <- @shown_releases do %>
+    <li><b><%= version %></b> - <%= updated_at %></li>
+  <% end %>
+  <%= for %{"version" => version, "updated_at" => updated_at} <- @hidden_releases do %>
+    <li class="release--hidden"><b><%= version %></b> - <%= updated_at %></li>
+  <% end %>
+</ul>
+<% if @hidden_releases |> Enum.any? do %>
+  <a href="#" id="js-more-versions" data-show-on-click=".release--hidden" data-hide-on-click="#js-more-versions">Show all versions</a>
+<% end %>
 
-<pre><%= inspect @package.project_id %></pre>
+<%= if @package.dependent_projects_by_current_user do %>
+  <h2>But what about your projects?</h2>
 
-<% if @package.dependent_projects_by_current_user do %>
+  <%= render HexFaktor.PackageView, "_tab_nav_show_projects.html", assigns %>
 
+  <%= for project <- @package.dependent_projects_by_current_user do %>
+    <%= render HexFaktor.ComponentView, "project-list-item.html", project: project %>
+  <% end %>
 <% end %>

@@ -2,8 +2,12 @@ defmodule HexFaktor.PackageController do
   use HexFaktor.Web, :controller
 
   alias HexFaktor.Persistence.Package
+  alias HexFaktor.Persistence.Project
+  alias HexFaktor.ProjectProvider
+  alias HexFaktor.Auth
 
   @hex_mirror HexSonar
+  @shown_release_count 5
 
   @filter_all "all"
   @filter_search "search"
@@ -42,11 +46,31 @@ defmodule HexFaktor.PackageController do
         nil -> fetch_package_from_hex(name)
         val -> val
       end
+
     perform_show(conn, package)
   end
 
   def perform_show(conn, package) do
-    render(conn, "show.html", package: package)
+    if user = Auth.current_user(conn) do
+      users_dep_projects = Project.all_with_dep_for_user(package.name, user)
+      {dependent_projects, _active_projects, _outdated_projects} =
+        ProjectProvider.user_projects(user, users_dep_projects)
+      package =
+        %HexFaktor.Package{package | dependent_projects_by_current_user: dependent_projects}
+    end
+    releases = package.releases |> List.wrap
+    {shown_releases, hidden_releases} =
+      if Enum.count(releases) > @shown_release_count do
+        {
+          releases |> Enum.slice(0..@shown_release_count-1),
+          releases |> Enum.slice(@shown_release_count..-1)
+        }
+      else
+        {releases, []}
+      end
+    assigns = [package: package, shown_releases: shown_releases, hidden_releases: hidden_releases]
+
+    render(conn, "show.html", assigns)
   end
 
   defp fetch_package_from_hex(name) do

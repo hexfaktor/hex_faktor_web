@@ -119,6 +119,17 @@
   @include darkLoadingStripes;
 }
 
+.btn--follow {
+  color: #FFFFFF;
+  background-color: #444444;
+  border-color: #000000;
+}
+.btn--unfollow {
+  color: #fff;
+  border-color: #3B9419;
+  background-color: #46B01E;
+}
+
 @keyframes animate-stripes {
     0% {background-position: 60px 0;} 100% {background-position: 0 0;}
 }

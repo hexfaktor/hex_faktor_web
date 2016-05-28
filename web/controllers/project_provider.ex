@@ -16,11 +16,16 @@ defmodule HexFaktor.ProjectProvider do
   @trigger_http_request "http_request"
 
   def user_projects(current_user) do
+    projects =
+      current_user
+      |> Project.all_for([:git_repo_branches, :project_hooks])
+    user_projects(current_user, projects)
+  end
+  def user_projects(current_user, preloaded_projects) do
     project_user_settings = ProjectUserSettings.find_by_user_id(current_user.id)
 
     all_projects =
-      current_user
-      |> Project.all_for([:git_repo_branches, :project_hooks])
+      preloaded_projects
       |> mark_outdated_projects(project_user_settings)
 
     active_projects =

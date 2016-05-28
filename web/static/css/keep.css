@@ -4,3 +4,7 @@
 .user-email--verified {
   color: #5C913B;
 }
+
+.release--hidden {
+  display: none;
+}

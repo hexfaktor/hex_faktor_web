@@ -29,7 +29,7 @@
       <tr>
         <td><%= link package.name, to: package_path(@conn, :show, package.name) %></td>
         <td>
-          <%= package.available_versions |> List.wrap |> List.last %>
+          <%= package.releases |> current_version() %>
         </td>
         <td><a href="https://hex.pm/packages/<%= package.name %>" target="_blank"><%= package.source %></a></td>
         <td><a href="<%= package.source_url %>" target="_blank"><%= package.source_url %></a></td>

@@ -11,10 +11,7 @@ defmodule HexFaktor.Persistence.Project do
   end
 
   def all_for(user, preload_list \\ []) do
-    query = from r in ProjectUser,
-            where: r.user_id == ^user.id,
-            select: r.project_id
-    project_ids = Repo.all(query)
+    project_ids = all_ids_for(user)
 
     query = from r in Project,
             where: r.id in ^project_ids,
@@ -22,6 +19,13 @@ defmodule HexFaktor.Persistence.Project do
             order_by: [asc: :name],
             preload: ^preload_list
 
+    Repo.all(query)
+  end
+
+  def all_ids_for(user) do
+    query = from r in ProjectUser,
+            where: r.user_id == ^user.id,
+            select: r.project_id
     Repo.all(query)
   end
 
@@ -38,9 +42,14 @@ defmodule HexFaktor.Persistence.Project do
     Repo.all(query)
   end
 
+  def all_with_dep_for_user(name, user) when is_binary(name) do
+    all_with_dep(name, all_ids_for(user))
+  end
+
   def all_with_dep(name) when is_binary(name) do
-    project_ids = all_active_ids
-    #
+    all_with_dep(name, all_active_ids)
+  end
+  def all_with_dep(name, project_ids) when is_binary(name) do
     query = from r in DepsObject,
             select: max(r.build_job_id),
             where: r.project_id in ^project_ids,
@@ -56,7 +65,8 @@ defmodule HexFaktor.Persistence.Project do
     query = from r in Project,
             select: r,
             where: r.id in ^project_ids,
-            preload: [:git_repo_branches]
+            # TODO: move to new parameter `preload_list`
+            preload: [:git_repo_branches, :project_hooks]
     Repo.all(query)
   end
 

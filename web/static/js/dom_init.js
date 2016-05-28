@@ -41,6 +41,24 @@ jQuery(function($) {
     jQuery.ajax(url, opts);
   }
 
+  $("body").on("click", "a[data-show-on-click]", function(event) {
+    event.preventDefault();
+
+    var selector = $(this).data("show-on-click");
+    $(selector).show();
+
+    return false;
+  });
+  $("body").on("click", "a[data-hide-on-click]", function(event) {
+    event.preventDefault();
+
+    var selector = $(this).data("hide-on-click");
+    console.log("hide:", selector)
+    $(selector).hide();
+
+    return false;
+  });
+
   $("body").on("click", "a[data-ajax-post]", function(event) {
     event.preventDefault();
     event.stopImmediatePropagation();

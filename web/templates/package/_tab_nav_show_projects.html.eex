@@ -1,0 +1,28 @@
+<!--
+  DESKTOP navi
+-->
+<div class="tab-nav tab-nav--desktop">
+  <div class="tab-nav__inner">
+    <div class="tab-nav__tab tab-nav__tab--active">
+      <a href="?filter=">Projects depending on <%= @package.name %></a>
+    </div>
+  </div>
+</div>
+
+<!--
+  MOBILE navi
+-->
+<div class="tab-nav tab-nav--mobile">
+  <div class="tab-nav__inner">
+    <div class="tab-nav__tab tab-nav__tab--active">
+      <a href="?filter=">Projects depending on <%= @package.name %></a>
+    </div>
+  </div>
+
+  <input type="checkbox" class="tab-nav__dropdown-checkbox" id="tab-nav__dropdown-checkbox">
+  <div class="tab-nav__dropdown">
+    <div class="tab-nav__dropdown__tab tab-nav__dropdown__tab--active">
+      <a href="?filter=">Projects depending on <%= @package.name %></a>
+    </div>
+  </div>
+</div>
