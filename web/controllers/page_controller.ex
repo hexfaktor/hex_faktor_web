@@ -5,6 +5,7 @@ defmodule HexFaktor.PageController do
   alias HexFaktor.Auth
   alias HexFaktor.AppEvent
   alias HexFaktor.Persistence.Project
+  alias HexFaktor.Persistence.Package
   alias HexFaktor.ProjectBuilder
 
   def index(conn, _params) do
@@ -28,9 +29,11 @@ defmodule HexFaktor.PageController do
   end
 
   # TODO: move to a proper controller
-  def hex_package_update(conn, %{"name" => name, "github_url" => github_url}) do
+  def hex_package_update(conn, %{"name" => name, "github_url" => github_url} = payload) do
     Logger.info "Received Hex package update: #{name}"
     HexFaktor.Endpoint.broadcast!("feeds:lobby", "update", %{name: name})
+
+    Package.ensure_and_update(name, payload)
 
     package_project = Project.find_by_html_url(github_url, [:git_repo_branches])
 

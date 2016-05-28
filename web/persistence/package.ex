@@ -15,8 +15,21 @@ defmodule HexFaktor.Persistence.Package do
     %Package{
       name: name,
       source: "hex",
-      source_url: params["github_url"]
+      source_url: params["github_url"],
+      description: params["description"]
     } |> Repo.insert!
+  end
+
+  def ensure(name) do
+    case find_by_name(name) do
+      nil -> %Package{name: name, source: "hex"} |> Repo.insert!
+      val -> val
+    end
+  end
+
+  def ensure_and_update(name, params) do
+    package = ensure(name)
+    update_from_hex(params, package)
   end
 
   def find_by_id(id, preload_list \\ []) do
@@ -24,6 +37,13 @@ defmodule HexFaktor.Persistence.Package do
             where: r.id == ^id,
             select: r,
             preload: ^preload_list
+    Repo.one(query)
+  end
+
+  def find_by_name(name) do
+    query = from u in Package,
+            where: u.name == ^name,
+            select: u
     Repo.one(query)
   end
 
@@ -37,12 +57,5 @@ defmodule HexFaktor.Persistence.Package do
         description: params["description"],
       })
     |> Repo.update!
-  end
-
-  def find_by_name(name) do
-    query = from u in Package,
-            where: u.name == ^name,
-            select: u
-    Repo.one(query)
   end
 end
