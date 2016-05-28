@@ -1,0 +1,53 @@
+@import "_config";
+
+.dropdown {
+  position: relative;
+  text-align: left;
+}
+.dropdown__label {
+  cursor: pointer;
+}
+.dropdown__menu {
+  display: none;
+  min-width: 150px;
+  @include clearAfter;
+}
+.dropdown__checkbox:checked ~ .dropdown__menu {
+  display: block;
+}
+/* Hide the branch checkbox that we toggle with `.project-title__branch-toggle` */
+.dropdown__checkbox {
+  display: none;
+}
+
+.dropdown__menu--default {
+  position: absolute;
+  z-index: 50;
+  right: 0;
+  background: #f1f1f1;
+  border: 1px solid #eee;
+  border-radius: 3px;
+}
+
+.dropdown__item {
+  padding: 5px 10px;
+}
+.dropdown__item--active {
+  font-weight: bold;
+}
+
+.dropdown__triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 10px 10px 10px;
+  border-color: transparent transparent #f1f1f1 transparent;
+  margin-top: -10px;
+  margin-left: 50%;
+}
+
+.dropdown--follow {
+  .dropdown__menu {
+    min-width: 300px;
+  }
+}

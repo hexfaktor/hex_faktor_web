@@ -9,14 +9,17 @@
     <%= @package.description %>
   </div>
   <div class="package-toolbar__btn-group-right">
-    <%= if false do %>
+    <%= if true do %>
       <a href="#" data-ajax-post="<%= "/packages/#{@package.id}/unfollow" %>" class="btn btn--unfollow"><i class="icon-check_circle"></i> Following</a>
     <% else %>
       <a href="#" data-ajax-post="<%= "/packages/#{@package.id}/follow" %>" class="btn btn--follow"><i class="icon-plus"></i> Follow</a>
     <% end %>
+
     <a href="#" data-ajax-post="<%= "/packages/#{@package.id}/rebuild" %>" class="btn btn--default"><i class="icon-refresh"></i> Sync</a>
   </div>
 </div>
+
+<%= render HexFaktor.PackageView, "_notification_settings.html", assigns %>
 
 <h2>Links</h2>
 <%= if @package.source_url do %>
@@ -31,10 +34,14 @@
 <h2>Versions</h2>
 <ul>
   <%= for %{"version" => version, "updated_at" => updated_at} <- @shown_releases do %>
-    <li><b><%= version %></b> - <%= updated_at %></li>
+    <li>
+      <b><%= version %></b> - <%= updated_at %> UTC
+    </li>
   <% end %>
   <%= for %{"version" => version, "updated_at" => updated_at} <- @hidden_releases do %>
-    <li class="release--hidden"><b><%= version %></b> - <%= updated_at %></li>
+    <li class="release--hidden">
+      <b><%= version %></b> - <%= updated_at %> UTC
+    </li>
   <% end %>
 </ul>
 <% if @hidden_releases |> Enum.any? do %>

@@ -8,3 +8,25 @@
 .release--hidden {
   display: none;
 }
+
+
+.package-follow {
+  background: #EEF3E7;
+  padding: 10px;
+  margin-top: -1.5rem;
+  border-radius: 5px;
+
+}
+.package-follow code {
+  color: #000;
+  background: #fff;
+}
+.package-follow__triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 10px 10px 10px;
+  border-color: transparent transparent #f1f1f1 transparent;
+  margin-top: -20px;
+  margin-left: 75%;
+}

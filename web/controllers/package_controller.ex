@@ -31,7 +31,8 @@ defmodule HexFaktor.PackageController do
       packages: packages,
       search: search_query
     ]
-    render(conn, "index.html", assigns)
+    #render(conn, "index.html", assigns)
+    render(conn, "404.html", assigns)
   end
 
   def rebuild_via_web(conn, %{"id" => package_id} = params) do
@@ -58,7 +59,7 @@ defmodule HexFaktor.PackageController do
       package =
         %HexFaktor.Package{package | dependent_projects_by_current_user: dependent_projects}
     end
-    releases = package.releases |> List.wrap
+    releases = package.releases |> List.wrap |> map_releases()
     {shown_releases, hidden_releases} =
       if Enum.count(releases) > @shown_release_count do
         {
@@ -70,7 +71,9 @@ defmodule HexFaktor.PackageController do
       end
     assigns = [package: package, shown_releases: shown_releases, hidden_releases: hidden_releases]
 
-    render(conn, "show.html", assigns)
+
+    #render(conn, "show.html", assigns)
+    render(conn, "404.html", assigns)
   end
 
   defp fetch_package_from_hex(name) do
@@ -83,5 +86,19 @@ defmodule HexFaktor.PackageController do
     package.name
     |> @hex_mirror.load
     |> Package.update_from_hex(package)
+  end
+
+  defp map_releases(releases) do
+    releases
+    |> Enum.map(fn(%{"version" => version, "updated_at" => updated_at}) ->
+        %{"version" => version, "updated_at" => cast_time(updated_at)}
+      end)
+  end
+
+  defp cast_time(string) do
+    case Ecto.DateTime.cast(string) do
+      {:ok, datetime} -> datetime
+      _ -> nil
+    end
   end
 end

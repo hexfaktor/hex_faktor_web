@@ -6,4 +6,6 @@ defmodule HexFaktor.PackageView do
 
   def render("ok.json", _), do: %{ok: true}
   def render("error.json", _), do: %{error: true}
+
+  def render("404.html", _), do: "Not found"
 end
