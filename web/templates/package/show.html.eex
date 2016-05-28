@@ -1,29 +1,18 @@
-<%= link "Back", to: "/packages" %>
 
-<a href="#" data-ajax-post="<%= "/packages/#{@package.id}/rebuild" %>" class="btn btn--default"><i class="icon-refresh"></i></a>
+<a href="/packages">&larr; back to packages</a>
 
-<h2>Show package</h2>
+<%= render HexFaktor.ComponentView, "package-title.html", package: @package %>
 
-<ul>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @package.name %>
-  </li>
-
-  <li>
-    <strong>Source:</strong>
-    <%= @package.source %>
-  </li>
-
-  <li>
-    <strong>Source url:</strong>
-    <%= @package.source_url %>
-  </li>
-
-  <li>
-    <strong>Description:</strong>
+<div class="package-toolbar">
+  <div class="package-toolbar__btn-group-left">
     <%= @package.description %>
-  </li>
+  </div>
+  <div class="package-toolbar__btn-group-right">
+    <a href="#" data-ajax-post="<%= "/packages/#{@package.id}/rebuild" %>" class="btn btn--default"><i class="icon-refresh"></i> Sync</a>
+  </div>
+</div>
 
-</ul>
+<%= if @package.source == "hex" do %>
+  <a href="https://hex.pm/packages/<%= @package.name %>" target="_blank"><%= @package.name %> on hex.pm</a>
+<% end %>

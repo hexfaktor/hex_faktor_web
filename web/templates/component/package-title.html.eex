@@ -1,0 +1,6 @@
+<div class="package-title">
+    <%= @package.name %>
+    <%= if @package.source_url do %>
+      <a href="<%= @package.source_url %>" target="_blank"><i class="icon-octopus"></i></a>
+    <% end %>
+</div>

@@ -1,4 +1,10 @@
-<div class="page-title">Listing packages</div>
+<div class="package-title">Hex packages</div>
+
+<div class="package-toolbar">
+  <div class="package-toolbar__btn-group-left">
+    Browsing packages is fun!
+  </div>
+</div>
 
 <%= render HexFaktor.PackageView, "_tab_nav_index.html", assigns %>
 

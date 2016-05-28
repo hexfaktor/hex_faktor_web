@@ -1,0 +1,56 @@
+@import "_config";
+
+$color: $headline_color;
+
+.package-title {
+  text-rendering: optimizeLegibility;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 2rem;
+  color: $color;
+
+  @include clearAfter;
+
+  @include phablet_landscape_and_bigger {
+    font-size: 2rem;
+  }
+
+  a,
+  a:hover {
+    color: $color;
+    text-decoration: none;
+  }
+}
+.package-title__btn-group {
+  float: right;
+}
+
+.package-toolbar {
+  text-rendering: optimizeLegibility;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  color: $color;
+
+  @include clearAfter;
+}
+.package-toolbar__sync-hint {
+  display: block;
+}
+.package-toolbar__btn-group-left {
+}
+.package-toolbar__btn-group-right {
+}
+
+@include phablet_landscape_and_bigger {
+  .package-toolbar__btn-group-left {
+    width: 70%;
+    float: left;
+  }
+  .package-toolbar__btn-group-right {
+    width: 30%;
+    float: right;
+    text-align: right;
+  }
+}
