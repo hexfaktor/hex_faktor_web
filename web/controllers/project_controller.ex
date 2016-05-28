@@ -350,7 +350,9 @@ defmodule HexFaktor.ProjectController do
     assigns =
       current_user
       |> ProjectProvider.assigns_for(params)
-    #mark_notifications_as_seen!(current_user, assigns)
+
+    mark_notifications_as_seen!(current_user, assigns)
+
     render conn, "show.html", assigns
   end
 
