@@ -6,7 +6,7 @@
 
   <%= if @project.latest_build_job_id do %>
     <div class="project-title__badge-container">
-      <a href="/projects/<%= @project.id %>/settings?section=badges"><img src="/badge/all/github/<%= @project.name %>.svg?branch=<%= if @branch, do: @branch.name %>"></a>
+      <a href="<%= if logged_in?(@conn), do: "/projects/#{@project.id}/settings?section=badges", else: "/help/badge" %>"><img src="/badge/all/github/<%= @project.name %>.svg?branch=<%= if @branch, do: @branch.name %>"></a>
     </div>
   <% end %>
 

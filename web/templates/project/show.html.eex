@@ -1,4 +1,4 @@
-<%= render HexFaktor.ComponentView, "project-title.html", project: @project, branch: @branch %>
+<%= render HexFaktor.ComponentView, "project-title.html", conn: @conn, project: @project, branch: @branch %>
 
 <%= if @enqueued_build? do %>
   <div data-auto-reload="on-build-end"></div>
