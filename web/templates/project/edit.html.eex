@@ -1,4 +1,4 @@
-<%= render HexFaktor.ComponentView, "project-title.html", project: @project, branch: @project.git_repo_branches |> Enum.find(&(&1.name == @project.default_branch)) %>
+<%= render HexFaktor.ComponentView, "project-title.html", conn: @conn, project: @project, branch: @project.git_repo_branches |> Enum.find(&(&1.name == @project.default_branch)) %>
 
 <div class="project-toolbar">
   <div class="project-toolbar__btn-group-left">
