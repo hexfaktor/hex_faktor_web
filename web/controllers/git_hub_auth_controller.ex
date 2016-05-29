@@ -52,6 +52,8 @@ defmodule HexFaktor.GitHubAuthController do
     user = Auth.current_user(conn)
     AppEvent.log(:sign_out, user)
 
+    Logger.info "Event: user.sign_out - #{user.id}"
+
     conn
     |> clear_session
     |> redirect(to: "/?just_signed_out=true")
@@ -73,10 +75,14 @@ defmodule HexFaktor.GitHubAuthController do
             Logger.error "adding email_token to user failed: User##{user.id}"
           end
         end
+        Logger.info "Event: user.sign_up - #{user.id}"
         AppEvent.log(:sign_up, user)
+
         user
       user ->
+        Logger.info "Event: user.sign_in - #{user.id}"
         AppEvent.log(:sign_in, user)
+
         user
     end
   end

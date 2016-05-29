@@ -300,7 +300,10 @@ defmodule HexFaktor.ProjectController do
         %{"pull_request" => _pull_request} ->
           nil
         %{"repository" => %{"id" => uid}} ->
-          Project.find_by_uid(uid)
+          project = Project.find_by_uid(uid)
+          Logger.info "Event: project.rebuild_via_hook - github - #{project.id}"
+
+          project
         value ->
           if Mix.env != :test do
             Logger.error("ProjectController.rebuild_via_hook: bad payload: #{inspect value}")
@@ -376,6 +379,9 @@ defmodule HexFaktor.ProjectController do
     # TODO: check permission to sync the project
     project =
       ProjectSyncer.sync_project_via_github!(current_user, access_token, "#{owner}/#{name}")
+
+    Logger.info "Event: project.sync_with_github - #{project.id}"
+
     conn
     |> redirect_for_html("/projects/#{project.id}/settings?section=github_sync")
   end
@@ -402,6 +408,8 @@ defmodule HexFaktor.ProjectController do
     spawn fn ->
       ProjectSyncer.sync_all_projects_via_github!(current_user, access_token)
     end
+
+    Logger.info "Event: user.sync_with_github - #{current_user.id}"
 
     conn
     |> redirect_for_html("/settings?section=github_sync")

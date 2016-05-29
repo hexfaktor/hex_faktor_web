@@ -31,6 +31,8 @@ defmodule HexFaktor.ProjectHookController do
   end
 
   defp perform_activate_webhook(conn, current_user, project_id) do
+    Logger.info "Event: project.activate_webhook - #{current_user.id} - #{project_id}"
+
     project = Project.find_by_id(project_id)
     if unsynced_project?(project) do
       current_user = Auth.current_user(conn)
@@ -61,6 +63,8 @@ defmodule HexFaktor.ProjectHookController do
   end
 
   defp perform_deactivate_webhook(conn, current_user, project_id) do
+    Logger.info "Event: project.deactivate_webhook - #{current_user.id} - #{project_id}"
+
     project = Project.find_by_id(project_id)
     set_github_hook(conn, project, false)
     Project.update_active(project, false)

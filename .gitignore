@@ -3,6 +3,7 @@
 /cover
 /db
 /deps
+/log
 /*.ez
 /tmp
 
