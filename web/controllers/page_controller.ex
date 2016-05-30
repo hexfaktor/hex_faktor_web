@@ -30,7 +30,7 @@ defmodule HexFaktor.PageController do
 
   # TODO: move to a proper controller
   def hex_package_update(conn, %{"name" => name, "github_url" => github_url} = payload) do
-    Logger.info "Event: package.hex_update - #{name}"
+    Logger.info "Event: package.update_hex - #{name}"
     HexFaktor.Endpoint.broadcast!("feeds:lobby", "update", %{name: name})
 
     package = Package.ensure_and_update(name, payload)

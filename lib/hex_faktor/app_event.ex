@@ -2,7 +2,7 @@ defmodule HexFaktor.AppEvent do
   alias HexFaktor.Persistence.AppEventLog
 
   def log(:hex_package_update, name, projects) do
-    AppEventLog.create(nil, "package.hex_update", %{
+    AppEventLog.create(nil, "package.update_hex", %{
                               "name" => name,
                               "source" => "hex",
                               "dependent_project_ids" => projects |> Enum.map(&(&1.id))
