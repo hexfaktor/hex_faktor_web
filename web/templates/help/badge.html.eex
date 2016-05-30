@@ -11,33 +11,35 @@
 </div>
 
 <p>
-  So, what do the colors in the bar represent?
+  The badge colors represent <b>your Mix envs</b>:
 </p>
 
 <p>
-  <img src="<%= static_path(@conn, "/images/badge.svg") %>" class="logo"/>
+  <img src="<%= static_path(@conn, "/images/badge-explanation.png") %>" class="logo" />
 </p>
 
-<p>
-  From left to right:
-</p>
+Green means "All is well!"
 
-<ol>
+<ul>
   <li>
-    <strong>Dark green:</strong> Prod deps which are up-to-date.
+    <strong style="color: #46B01E">Prod deps</strong> which are up-to-date.
   </li>
   <li>
-    <strong>Dark yellow/orange:</strong> Prod deps which are outdated.
+    <strong style="color: #8c3">Other deps</strong> which are up-to-date.
+  </li>
+</ul>
+
+Not green means "Look out!"
+
+<ul>
+  <li>
+    <strong style="color: #FF911D">Prod deps</strong> which are outdated.
   </li>
   <li>
-    <em>Light green:</em> Other deps which are up-to-date.
+    <strong style="color: #FFE100">Other deps</strong> which are outdated.
   </li>
-  <li>
-    <em>Light yellow:</em> Other deps which are outdated.
-  </li>
-</ol>
+</ul>
 
 <p>
   The basis for determining whether or not something is outdated is always the version requirement set in <code>mix.exs</code>.
-  You will never get a yellow/orange slice just because a new version of a package has been released, unless that release is inside your version requirement.
 </p>
