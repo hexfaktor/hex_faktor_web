@@ -21,32 +21,39 @@
 
 <%= render HexFaktor.PackageView, "_notification_settings.html", assigns %>
 
-<h2>Links</h2>
-<%= if @package.source_url do %>
-  <p>
-    <a href="<%= @package.source_url %>" target="_blank"><%= @package.name %> on GitHub</a>
-  </p>
-<% end %>
-<%= if @package.source == "hex" do %>
-  <a href="https://hex.pm/packages/<%= @package.name %>" target="_blank"><%= @package.name %> on hex.pm</a>
-<% end %>
+<div style="float: left; width: 50%">
 
-<h2>Versions</h2>
-<ul>
-  <%= for %{"version" => version, "updated_at" => updated_at} <- @shown_releases do %>
-    <li>
-      <b><%= version %></b> - <%= updated_at %> UTC
-    </li>
+  <h2>Links</h2>
+  <%= if @package.source_url do %>
+    <p>
+      <a href="<%= @package.source_url %>" target="_blank"><%= @package.name %> on GitHub</a>
+    </p>
   <% end %>
-  <%= for %{"version" => version, "updated_at" => updated_at} <- @hidden_releases do %>
-    <li class="release--hidden">
-      <b><%= version %></b> - <%= updated_at %> UTC
-    </li>
+  <%= if @package.source == "hex" do %>
+    <a href="https://hex.pm/packages/<%= @package.name %>" target="_blank"><%= @package.name %> on hex.pm</a>
   <% end %>
-</ul>
-<% if @hidden_releases |> Enum.any? do %>
-  <a href="#" id="js-more-versions" data-show-on-click=".release--hidden" data-hide-on-click="#js-more-versions">Show all versions</a>
-<% end %>
+
+  <h2>Versions</h2>
+  <ul>
+    <%= for %{"version" => version, "updated_at" => updated_at} <- @shown_releases do %>
+      <li>
+        <b><%= version %></b> - <%= updated_at %> UTC
+      </li>
+    <% end %>
+    <%= for %{"version" => version, "updated_at" => updated_at} <- @hidden_releases do %>
+      <li class="release--hidden">
+        <b><%= version %></b> - <%= updated_at %> UTC
+      </li>
+    <% end %>
+  </ul>
+  <% if @hidden_releases |> Enum.any? do %>
+    <a href="#" id="js-more-versions" data-show-on-click=".release--hidden" data-hide-on-click="#js-more-versions">Show all versions</a>
+  <% end %>
+</div>
+<div style="float: left; width: 50%">
+  <iframe frameborder="0" src="http://localhost:3000/embed/?q=<%= @package.name %>" width="100%" height="1400"></iframe>
+</div>
+<div style="clear:both"></div>
 
 <%= if @package.dependent_projects_by_current_user do %>
   <h2>But what about your projects?</h2>

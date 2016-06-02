@@ -31,8 +31,12 @@ defmodule HexFaktor.PackageController do
       packages: packages,
       search: search_query
     ]
-    #render(conn, "index.html", assigns)
-    render(conn, "404.html", assigns)
+
+    if Mix.env == :dev do
+      render(conn, "index.html", assigns)
+    else
+      render(conn, "404.html", assigns)
+    end
   end
 
   def rebuild_via_web(conn, %{"id" => package_id} = params) do
@@ -71,9 +75,11 @@ defmodule HexFaktor.PackageController do
       end
     assigns = [package: package, shown_releases: shown_releases, hidden_releases: hidden_releases]
 
-
-    #render(conn, "show.html", assigns)
-    render(conn, "404.html", assigns)
+    if Mix.env == :dev do
+      render(conn, "show.html", assigns)
+    else
+      render(conn, "404.html", assigns)
+    end
   end
 
   defp fetch_package_from_hex(name) do
