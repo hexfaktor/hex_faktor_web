@@ -2,13 +2,11 @@
   Badges: How do they work?
 </div>
 
-<div class="tab-nav">
-  <div class="tab-nav__inner">
-    <div class="tab-nav__tab tab-nav__tab--active">
-      <a href="#">About</a>
-    </div>
+<%= if !logged_in?(@conn) do %>
+  <div class="alert alert--info">
+    <a href="/auth">Sign in</a> to get your own badges!
   </div>
-</div>
+<% end %>
 
 <p>
   The badge colors represent <b>your Mix envs</b>:
