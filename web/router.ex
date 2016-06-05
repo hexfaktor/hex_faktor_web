@@ -82,6 +82,9 @@ defmodule HexFaktor.Router do
     pipe_through :api
     post "/hex_package_update", PageController, :hex_package_update
     post "/rebuild_via_hook", ProjectController, :rebuild_via_hook, as: :rebuild_via_hook
+
+    get "/packages", PackageController, :index_api
+    get "/packages/:name", PackageController, :show_api
   end
 
   scope "/rebuild", HexFaktor do

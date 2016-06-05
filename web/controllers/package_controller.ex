@@ -13,6 +13,14 @@ defmodule HexFaktor.PackageController do
   @filter_search "search"
 
   def index(conn, params) do
+    perform_index(conn, params, "html")
+  end
+
+  def index_api(conn, params) do
+    perform_index(conn, params, "json")
+  end
+
+  defp perform_index(conn, params, format) do
     search_query = params["q"] |> nil_if_empty
     current_package_filter = params["filter"] |> nil_if_empty
 
@@ -33,7 +41,7 @@ defmodule HexFaktor.PackageController do
     ]
 
     if Mix.env == :dev do
-      render(conn, "index.html", assigns)
+      render(conn, "index.#{format}", assigns)
     else
       render(conn, "404.html", assigns)
     end
@@ -46,16 +54,20 @@ defmodule HexFaktor.PackageController do
   end
 
   def show(conn, %{"name" => name}) do
+    perform_show(conn, name, "html")
+  end
+
+  def show_api(conn, %{"name" => name}) do
+    perform_show(conn, name, "json")
+  end
+
+  def perform_show(conn, name, format) do
     package =
       case Package.find_by_name(name) do
         nil -> fetch_package_from_hex(name)
         val -> val
       end
 
-    perform_show(conn, package)
-  end
-
-  def perform_show(conn, package) do
     if user = Auth.current_user(conn) do
       users_dep_projects = Project.all_with_dep_for_user(package.name, user)
       {dependent_projects, _active_projects, _outdated_projects} =
@@ -76,7 +88,7 @@ defmodule HexFaktor.PackageController do
     assigns = [package: package, shown_releases: shown_releases, hidden_releases: hidden_releases]
 
     if Mix.env == :dev do
-      render(conn, "show.html", assigns)
+      render(conn, "show.#{format}", assigns)
     else
       render(conn, "404.html", assigns)
     end

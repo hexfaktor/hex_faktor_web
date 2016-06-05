@@ -11,7 +11,8 @@ defmodule HexFaktor.Persistence.Package do
   def all_by_query(search_query) do
     search_query = "%#{search_query}%"
     query = from r in Package,
-            where: like(r.name, ^search_query),
+            where: like(r.name, ^search_query)
+                    or r.source_url == ^search_query,
             select: r
     Repo.all(query)
   end
