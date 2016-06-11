@@ -85,7 +85,12 @@ defmodule HexFaktor.PackageController do
       else
         {releases, []}
       end
-    assigns = [package: package, shown_releases: shown_releases, hidden_releases: hidden_releases]
+    assigns =
+      [
+        package: package,
+        shown_releases: shown_releases,
+        hidden_releases: hidden_releases
+      ]
 
     if Mix.env == :dev do
       render(conn, "show.#{format}", assigns)

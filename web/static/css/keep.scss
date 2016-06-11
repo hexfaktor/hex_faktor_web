@@ -1,3 +1,5 @@
+@import "config";
+
 .user-email--not-verified {
   color: #c00;
 }
@@ -28,5 +30,17 @@
   border-width: 0 10px 10px 10px;
   border-color: transparent transparent #f1f1f1 transparent;
   margin-top: -20px;
-  margin-left: 75%;
+  margin-left: 5%;
+}
+
+@include tablet_portrait_and_bigger {
+  .package-follow {
+    position: absolute;
+    z-index: 50;
+    right: 0;
+    width: 60%;
+  }
+  .package-follow__triangle {
+    margin-left: 95%;
+  }
 }
