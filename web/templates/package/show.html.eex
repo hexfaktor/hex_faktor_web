@@ -9,10 +9,10 @@
     <%= @package.description %>
   </div>
   <div class="package-toolbar__btn-group-right">
-    <%= if true do %>
-      <a href="#" data-ajax-post="<%= "/packages/#{@package.id}/unfollow" %>" class="btn btn--unfollow"><i class="icon-check_circle"></i> Following</a>
+    <%= if @package_user_settings |> following?() do %>
+      <%= link raw("<i class=icon-check_circle></i> Following"), to: package_path(@conn, :update_settings_none, @package.id), method: :POST, class: "btn btn--unfollow" %>
     <% else %>
-      <a href="#" data-ajax-post="<%= "/packages/#{@package.id}/follow" %>" class="btn btn--follow"><i class="icon-plus"></i> Follow</a>
+      <%= link raw("<i class=icon-plus></i> Follow"), to: package_path(@conn, :update_settings_all, @package.id), method: :POST, class: "btn btn--follow" %>
     <% end %>
 
     <!--

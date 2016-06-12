@@ -24,6 +24,8 @@ config :hex_faktor, HexFaktor.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
+config :hex_faktor, :hex_server, "http://test.hex.local"
+
 config :hex_faktor, :base_url, "http://test.host"
 
 config :hex_faktor, :salt_user_socket, "salt goes here"

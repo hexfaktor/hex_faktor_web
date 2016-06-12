@@ -4,6 +4,14 @@ defmodule HexFaktor.PackageView do
   def current_version([%{"version" => version}|tail]), do: version
   def current_version(_), do: nil
 
+  defp following?(nil), do: false
+  defp following?(package_user_settings) do
+    package_user_settings.notifications_for_major ||
+    package_user_settings.notifications_for_minor ||
+    package_user_settings.notifications_for_patch ||
+    package_user_settings.notifications_for_pre
+  end
+
   def render("index.json", %{packages: packages}) do
     packages |> Enum.map(&package_to_json/1)
   end

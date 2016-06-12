@@ -59,6 +59,11 @@ defmodule HexFaktor.Router do
     get "/", PackageController, :index
     get "/:name", PackageController, :show
 
+    post "/:id/follow", PackageController, :update_settings_all
+    post "/:id/unfollow", PackageController, :update_settings_none
+
+    post "/:id/update_settings", PackageController, :update_settings
+
     post "/:id/rebuild", PackageController, :rebuild_via_web
   end
 
@@ -80,6 +85,7 @@ defmodule HexFaktor.Router do
 
   scope "/api", HexFaktor do
     pipe_through :api
+
     post "/hex_package_update", PageController, :hex_package_update
     post "/rebuild_via_hook", ProjectController, :rebuild_via_hook, as: :rebuild_via_hook
 
