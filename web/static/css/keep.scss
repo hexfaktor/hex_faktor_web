@@ -32,6 +32,9 @@
   margin-top: -20px;
   margin-left: 5%;
 }
+.package-follow__inner {
+  padding-top: 10px;
+}
 
 @include tablet_portrait_and_bigger {
   .package-follow {
@@ -43,4 +46,62 @@
   .package-follow__triangle {
     margin-left: 95%;
   }
+}
+
+//
+// panel
+//
+
+.panel {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  height: 100%;
+  width: 30%;
+  background: #fff;
+  border-left: 4px solid #f5f5f5;
+}
+.panel__inner {
+  position: relative;
+  padding: 20px;
+}
+.panel__close {
+  position: absolute;
+  z-index: 51;
+  top: 0;
+  right: 0;
+  font-size: 32px;
+  line-height: 32px;
+  padding: 10px;
+  color: #aaa;
+  &:hover {
+    color: #666;
+    cursor: pointer;
+  }
+}
+
+.panel--right {
+  right: 0;
+}
+
+//
+// version/releases
+//
+
+.release {
+  padding: 3px 5px;
+  border-radius: 5px;
+}
+.release--major {
+  background: #9333ff;
+  color: #fff;
+}
+.release--minor,
+.release--minor-major {
+  background: #bb85f7;
+  color: #fff;
+}
+.release--patch {
+}
+.release--pre {
 }

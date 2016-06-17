@@ -74,7 +74,13 @@ defmodule HexFaktor.Fixtures do
   def package(1) do
     %Package{
       source: "hex",
-      name: "credo"
+      name: "credo",
+      releases: [
+        %{"updated_at" => "2015-11-16T20:46:19Z", "version" => "0.2.0"},
+        %{"updated_at" => "2015-11-16T20:46:19Z", "version" => "0.1.2"},
+        %{"updated_at" => "2015-11-16T19:08:47Z", "version" => "0.1.1"},
+        %{"updated_at" => "2015-11-16T19:03:57Z", "version" => "0.1.0"},
+        %{"updated_at" => "2015-11-09T12:38:50Z", "version" => "0.0.1-dev"}],
     }
   end
 end

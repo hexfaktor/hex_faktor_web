@@ -150,9 +150,4 @@ defmodule HexFaktor.ComponentView do
     end
   end
 
-  def news_time(nil), do: nil
-  def news_time(notification) do
-    notification.inserted_at
-  end
-
 end

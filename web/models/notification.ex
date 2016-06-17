@@ -4,6 +4,7 @@ defmodule HexFaktor.Notification do
   alias Refaktor.Job.Elixir.Deps.Model.DepsObject
   alias Refaktor.Builder.Model.GitBranch
   alias HexFaktor.Project
+  alias HexFaktor.Package
 
   schema "notifications" do
     field :reason, :string
@@ -13,6 +14,8 @@ defmodule HexFaktor.Notification do
 
     field :seen_at, Ecto.DateTime
     field :email_sent_at, Ecto.DateTime
+
+    field :metadata, :map
 
     timestamps
 
@@ -24,7 +27,7 @@ defmodule HexFaktor.Notification do
   end
 
   @required_fields ~w(user_id reason reason_hash)
-  @optional_fields ~w(project_id git_branch_id deps_object_id package_id resolved_by_build_job_id)
+  @optional_fields ~w(project_id git_branch_id deps_object_id package_id resolved_by_build_job_id metadata)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

@@ -92,6 +92,44 @@ defmodule HexFaktor.ViewHelpers do
         seconds
       end
 
+
+      def version_badge(version) do
+        klass =
+          case HexFaktor.VersionHelper.kind_of_release(version) do
+            :minor ->
+              if version |> String.match?(~r/0\./) do
+                "release--minor-major"
+              else
+                "release--minor"
+              end
+            value ->
+              "release--#{value}"
+          end
+        raw ~s(<span class="release #{klass}">#{version}</span>)
+      end
+
+      #
+      # Notifications
+      #
+
+      def notification_time(nil), do: nil
+      def notification_time(notification) do
+        notification.inserted_at
+      end
+
+
+      def notification_version(nil), do: nil
+      def notification_version(notification) do
+        notification.metadata["version"]
+      end
+
+      #
+      # Feature flag
+      #
+
+      def alpha_user?(user) do
+        user.id == 1
+      end
     end
   end
 end

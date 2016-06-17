@@ -9,6 +9,6 @@
 <%= render HexFaktor.NotificationView, "_tab_nav_index.html", assigns %>
 
 
-<%= for {{project_name, _project_id, _git_branch_id}, notifications} <- @notification_map do %>
-  <%= render HexFaktor.ComponentView, "news.html", current_user: @current_user, project_name: project_name, notifications: notifications %>
+<%= for {{kind_of, item_name, _project_id, _git_branch_id}, notifications} <- @notification_map do %>
+  <%= render HexFaktor.ComponentView, "notification-item-#{kind_of}.html", current_user: @current_user, item_name: item_name, notifications: notifications %>
 <% end %>

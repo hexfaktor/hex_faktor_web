@@ -62,10 +62,14 @@ export function init(socket) {
     channel.on("notification.new", resp => {
       console.log("~> notification.new", resp, resp.project_id, __notification__last_project_id);
 
-      if( resp.project_id != __notification__last_project_id ) {
+      if( resp.project_id && resp.project_id != __notification__last_project_id ) {
         __notification__last_project_id = resp.project_id;
         HexFaktor.updateComponent("notification-counter");
         HexFaktor.updateComponent("project-list-item", resp.project_id);
+      }
+      if( resp.package_id ) {
+        console.log("Updating counter ...");
+        HexFaktor.updateComponent("notification-counter");
       }
     })
   }

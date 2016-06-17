@@ -6,6 +6,10 @@ defmodule HexFaktor.EmailPublisher do
 
   require Logger
 
+  #
+  # notifications
+  #
+
   def send_daily_emails do
     all_users = User.find_by_verified_email_frequency("daily")
     user_ids = all_users |> Enum.map(&(&1.id))
@@ -39,6 +43,10 @@ defmodule HexFaktor.EmailPublisher do
     end
   end
 
+  #
+  # status report
+  #
+
   @doc "Sends status reports in the weekly email"
   def send_weekly_emails do
     all_users = User.find_by_verified_email_frequency("weekly")
@@ -50,9 +58,9 @@ defmodule HexFaktor.EmailPublisher do
 
   defp send_status_report(user) do
     {_, active_projects, outdated_projects} = ProjectProvider.user_projects(user)
+    package_notifications = Notification.all_unseen_for_packages_for(user, [:package])
 
-    #IO.puts "Sending mail to #{user.email}"
-    case NotificationMailer.send_status_report(user, active_projects, outdated_projects) do
+    case NotificationMailer.send_status_report(user, active_projects, outdated_projects, package_notifications) do
       :ok ->
         Notification.mark_as_email_sent_for_user!(user)
         Logger.info "[email] #{now} status_report sent to <#{user.email}>"

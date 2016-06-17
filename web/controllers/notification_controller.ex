@@ -35,14 +35,22 @@ defmodule HexFaktor.NotificationController do
 
   defp to_map(notifications) do
     notifications
-    |> Enum.reduce(%{}, fn(notification, memo) ->
-        key = {notification.project.name, notification.project_id, notification.git_branch_id}
-        if memo[key] do
-          Map.put(memo, key, [notification | memo[key]])
-        else
-          Map.put(memo, key, [notification])
-        end
-      end)
+    |> Enum.reduce(%{}, &reduce_notifications/2)
+  end
+
+  defp reduce_notifications(notification, memo) do
+    key =
+      if notification.package do
+        {:package, notification.package.name, notification.project_id, nil}
+      else
+        {:project, notification.project.name, notification.project_id, notification.git_branch_id}
+      end
+
+    if memo[key] do
+      Map.put(memo, key, [notification | memo[key]])
+    else
+      Map.put(memo, key, [notification])
+    end
   end
 
   def mark_as_read_for_branch(conn, %{"id" => id}) do

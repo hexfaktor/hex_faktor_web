@@ -1,3 +1,15 @@
+<%= if !Enum.empty?(@package_notifications) do %>
+  These <a href="<%= "#{@base_url}/packages" %>" style="color: #333;">packages</a> have been updated since the last report:<br>
+  <br>
+  <%= for notification <- @package_notifications do %>
+    <div style="padding: 10px; border-left: 3px solid #eee;">
+      <a href="<%= "#{@base_url}/packages/#{notification.package.name}" %>" style="color: #268bd2;"><%= notification.package.name %></a>
+      <strong><%= notification |> notification_version() %></strong>
+      has been released.
+    </div>
+  <% end %>
+  <br>
+<% end %>
 
 <%= if @outdated_projects |> Enum.empty? do %>
 

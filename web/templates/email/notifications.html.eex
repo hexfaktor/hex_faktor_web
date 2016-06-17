@@ -3,25 +3,30 @@ Greetings from <strong>HexFaktor</strong>,<br>
 these are your <a href="<%= "#{@base_url}/notifications" %>" style="color: #333;"><%= @notification_count %> unread notifications</a> at the moment:<br>
 <br>
 
-<%= for {{project_name, _project_id, _git_branch_id}, notifications} <- @notification_map do %>
-<div style="padding: 10px; border-left: 3px solid #eee;">
-  <a href="<%= "#{@base_url}/github/#{project_name}" %>" style="color: #268bd2;"><%= highlight_after_slash(project_name) %></a>
-  has <%= Enum.count(notifications) %> outdated deps:
+<%= for {{kind_of, item_name, _project_id, _git_branch_id}, notifications} <- @notification_map do %>
+  <div style="padding: 10px; border-left: 3px solid #eee;">
+    <%= if List.first(notifications).package do %>
+      <a href="<%= "#{@base_url}/packages/#{item_name}" %>" style="color: #268bd2;"><%= item_name %></a>
+      <strong><%= notifications |> List.first |> notification_version() %></strong>
+      has been released.
+    <% else %>
+      <a href="<%= "#{@base_url}/github/#{item_name}" %>" style="color: #268bd2;"><%= highlight_after_slash(item_name) %></a>
+      has <%= Enum.count(notifications) %> outdated deps:
 
 
-  <ul>
-    <%= for notification <- notifications do %>
-    <li>
-      <a href="<%= "#{@base_url}/github/#{project_name}" %>" style="color: #268bd2;"><%= notification.deps_object.name %></a>
+      <ul>
+        <%= for notification <- notifications do %>
+        <li>
+          <a href="<%= "#{@base_url}/github/#{item_name}" %>" style="color: #268bd2;"><%= notification.deps_object.name %></a>
 
-      <%= for mix_env <- notification.deps_object.mix_envs do %>
-        <a href="<%= "#{@base_url}/github/#{project_name}?env=#{mix_env}" %>" style="<%= mix_env_colors(mix_env) %> text-decoration: none; padding: .25em .5em; font-size: 85%; border-radius: 3px;"><code><%= mix_env %></code></a>
-      <% end %>
-    </li>
+          <%= for mix_env <- notification.deps_object.mix_envs do %>
+            <a href="<%= "#{@base_url}/github/#{item_name}?env=#{mix_env}" %>" style="<%= mix_env_colors(mix_env) %> text-decoration: none; padding: .25em .5em; font-size: 85%; border-radius: 3px;"><code><%= mix_env %></code></a>
+          <% end %>
+        </li>
+        <% end %>
+      </ul>
     <% end %>
-  </ul>
-</div>
-
+  </div>
 <% end %>
 
 <br>

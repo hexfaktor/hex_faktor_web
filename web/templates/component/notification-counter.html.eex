@@ -1,4 +1,4 @@
-<a class="sidebar-nav-item" href="/notifications">
+<a class="sidebar-nav-item" id="notification-counter" href="/notifications">
   <%= if @notification_count == 0 do %>
     <span class="sidebar__notification-count"><%= @notification_count %></span>
   <% else %>

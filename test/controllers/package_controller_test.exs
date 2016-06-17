@@ -1,6 +1,8 @@
 defmodule HexFaktor.PackageControllerTest do
   use HexFaktor.ConnCase
 
+  alias HexFaktor.PackageController
+
   @existent_package_id 1
 
 

@@ -19,8 +19,9 @@ defmodule HexFaktor.EmailController do
   def status_report(conn, params) do
     user = Auth.current_user(conn)
     {_, active_projects, outdated_projects} = ProjectProvider.user_projects(user)
+    package_notifications = Notification.all_unseen_for_packages_for(user, [:package])
 
-    assigns = NotificationMailer.status_report(user, active_projects, outdated_projects)
+    assigns = NotificationMailer.status_report(user, active_projects, outdated_projects, package_notifications)
     render(conn, "status_report.html", assigns ++ [layout: {LayoutView, "email.html"}])
   end
 

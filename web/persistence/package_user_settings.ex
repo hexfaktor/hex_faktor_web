@@ -25,6 +25,35 @@ defmodule HexFaktor.Persistence.PackageUserSettings do
     Repo.all(query)
   end
 
+  def find_user_ids_by_package_id_for(package_id, :major) do
+    query = from u in PackageUserSettings,
+            where: u.package_id == ^package_id and
+                    u.notifications_for_major == true,
+            select: u.user_id
+    Repo.all(query)
+  end
+  def find_user_ids_by_package_id_for(package_id, :minor) do
+    query = from u in PackageUserSettings,
+            where: u.package_id == ^package_id and
+                    u.notifications_for_minor == true,
+            select: u.user_id
+    Repo.all(query)
+  end
+  def find_user_ids_by_package_id_for(package_id, :patch) do
+    query = from u in PackageUserSettings,
+            where: u.package_id == ^package_id and
+                    u.notifications_for_patch == true,
+            select: u.user_id
+    Repo.all(query)
+  end
+  def find_user_ids_by_package_id_for(package_id, :pre) do
+    query = from u in PackageUserSettings,
+            where: u.package_id == ^package_id and
+                    u.notifications_for_pre == true,
+            select: u.user_id
+    Repo.all(query)
+  end
+
   def find_by_user_id(user_id) do
     query = from u in PackageUserSettings,
             where: u.user_id == ^user_id,

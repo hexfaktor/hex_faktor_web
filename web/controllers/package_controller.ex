@@ -1,6 +1,7 @@
 defmodule HexFaktor.PackageController do
   use HexFaktor.Web, :controller
 
+  alias HexFaktor.Persistence.Notification
   alias HexFaktor.Persistence.Package
   alias HexFaktor.Persistence.PackageUserSettings
   alias HexFaktor.Persistence.Project
@@ -41,11 +42,7 @@ defmodule HexFaktor.PackageController do
       search: search_query
     ]
 
-    if [:dev, :test] |> Enum.member?(Mix.env) do
-      render(conn, "index.#{format}", assigns)
-    else
-      render(conn, "404.html", assigns)
-    end
+    render(conn, "index.#{format}", assigns)
   end
 
   def rebuild_via_web(conn, %{"id" => package_id} = params) do
@@ -68,18 +65,20 @@ defmodule HexFaktor.PackageController do
         nil -> fetch_package_from_hex(name)
         val -> val
       end
-    user = Auth.current_user(conn)
+    current_user = Auth.current_user(conn)
     package_user_settings = nil
 
-    if user do
-      users_dep_projects = Project.all_with_dep_for_user(package.name, user)
+    mark_notifications_as_seen!(current_user, package)
+
+    if current_user do
+      users_dep_projects = Project.all_with_dep_for_user(package.name, current_user)
       {dependent_projects, _active_projects, _outdated_projects} =
-        ProjectProvider.user_projects(user, users_dep_projects)
+        ProjectProvider.user_projects(current_user, users_dep_projects)
       package =
         %HexFaktor.Package{package | dependent_projects_by_current_user: dependent_projects}
-      package_user_settings = PackageUserSettings.find(package.id, user.id)
+      package_user_settings = PackageUserSettings.find(package.id, current_user.id)
     end
-    releases = package.releases |> List.wrap |> map_releases()
+    releases = package.releases |> List.wrap |> map_and_sort_releases()
     {shown_releases, hidden_releases} =
       if Enum.count(releases) > @shown_release_count do
         {
@@ -97,11 +96,13 @@ defmodule HexFaktor.PackageController do
         package_user_settings: package_user_settings
       ]
 
-    if [:dev, :test] |> Enum.member?(Mix.env) do
-      render(conn, "show.#{format}", assigns)
-    else
-      render(conn, "404.html", assigns)
-    end
+    render(conn, "show.#{format}", assigns)
+  end
+
+  def mark_notifications_as_seen!(nil, _), do: nil
+  def mark_notifications_as_seen!(_, nil), do: nil
+  def mark_notifications_as_seen!(current_user, package) do
+    Notification.mark_as_seen_for_package!(current_user, package.id)
   end
 
   #
@@ -116,7 +117,8 @@ defmodule HexFaktor.PackageController do
       "notifications_for_pre" => false,
     }
     params = %{"id" => package_id, "package_user_settings" => update_params}
-    update_settings(conn, params)
+    success_message = :follow
+    update_settings(conn, params, success_message)
   end
 
   def update_settings_none(conn, %{"id" => package_id}) do
@@ -127,26 +129,27 @@ defmodule HexFaktor.PackageController do
       "notifications_for_pre" => false,
     }
     params = %{"id" => package_id, "package_user_settings" => update_params}
-    update_settings(conn, params)
+    success_message = :unfollow
+    update_settings(conn, params, success_message)
   end
 
-  def update_settings(conn, %{"id" => package_id, "package_user_settings" => update_params}) do
+  def update_settings(conn, %{"id" => package_id, "package_user_settings" => update_params}, success_message) do
     current_user = Auth.current_user(conn)
     if current_user do
       package = Package.find_by_id(package_id)
-      conn |> perform_update_settings(current_user, package, update_params)
+      conn |> perform_update_settings(current_user, package, update_params, success_message)
     else
       conn |> access_denied()
     end
   end
 
-  defp perform_update_settings(conn, current_user, package, update_params) do
+  defp perform_update_settings(conn, current_user, package, update_params, success_message) do
     package_user_settings =
       PackageUserSettings.ensure(package.id, current_user.id)
     changeset =
       PackageUserSettings.update_attributes(package_user_settings, update_params)
     if changeset.valid? do
-      conn = conn |> put_flash(:info, "Notification settings updated successfully.")
+      conn = conn |> put_flash(:info, success_message)
     end
     redirect(conn, to: package_path(conn, :show, package.name))
   end
@@ -163,10 +166,14 @@ defmodule HexFaktor.PackageController do
     |> Package.update_from_hex(package)
   end
 
-  defp map_releases(releases) do
+  defp map_and_sort_releases(releases) do
     releases
     |> Enum.map(fn(%{"version" => version, "updated_at" => updated_at}) ->
         %{"version" => version, "updated_at" => cast_time(updated_at)}
+      end)
+    |> Enum.sort(fn(a, b) ->
+        compare = Version.compare(a["version"], b["version"])
+        [:eq, :gt] |> Enum.member?(compare)
       end)
   end
 
@@ -176,4 +183,5 @@ defmodule HexFaktor.PackageController do
       _ -> nil
     end
   end
+
 end

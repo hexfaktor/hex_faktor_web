@@ -13,28 +13,20 @@
     No packages in this list.
   </p>
 <% else %>
-  <table class="table">
-    <!--
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th></th>
-        <th>Source</th>
-        <th>Source url</th>
-      </tr>
-    </thead>
-    -->
-    <tbody>
   <%= for package <- @packages do %>
-      <tr>
-        <td><%= link package.name, to: package_path(@conn, :show, package.name) %></td>
-        <td>
-          <%= package.releases |> current_version() %>
-        </td>
-        <td><a href="https://hex.pm/packages/<%= package.name %>" target="_blank"><%= package.source %></a></td>
-        <td><a href="<%= package.source_url %>" target="_blank"><%= package.source_url %></a></td>
-      </tr>
+    <div class="package-list-item">
+      <div class="package-list-item__inner">
+        <div class="package-list-item__title">
+          <%= link package.name, to: package_path(@conn, :show, package.name) %>
+          <div class="package-list-item__version">
+            <%= package.releases |> current_version() %>
+          </div>
+        </div>
+        <div class="package-list-item__meta">
+          <a href="https://hex.pm/packages/<%= package.name %>" target="_blank"><%= package.source %></a>
+          <a href="<%= package.source_url %>" target="_blank"><i class="icon-octopus"></i></a>
+        </div>
+      </div>
+    </div>
   <% end %>
-    </tbody>
-  </table>
 <% end %>

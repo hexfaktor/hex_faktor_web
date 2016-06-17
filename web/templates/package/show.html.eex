@@ -15,14 +15,13 @@
       <%= link raw("<i class=icon-plus></i> Follow"), to: package_path(@conn, :update_settings_all, @package.id), method: :POST, class: "btn btn--follow" %>
     <% end %>
 
-    <!--
-    <a href="#" data-ajax-post="<%= "/packages/#{@package.id}/rebuild" %>" class="btn btn--default"><i class="icon-refresh"></i> Sync</a>
-    -->
+    <%= if false do %>
+      <a href="#" data-ajax-post="<%= "/packages/#{@package.id}/rebuild" %>" class="btn btn--default"><i class="icon-refresh"></i> Sync</a>
+    <% end %>
   </div>
 </div>
 
-<%= render HexFaktor.PackageView, "_notification_settings.html", assigns %>
-
+<%= render HexFaktor.PackageView, "_notification_settings.html", conn: @conn, info: get_flash(@conn, :info) %>
 
 <h2>Links</h2>
 <%= if @package.source_url do %>
@@ -39,12 +38,12 @@
 <ul>
   <%= for %{"version" => version, "updated_at" => updated_at} <- @shown_releases do %>
     <li>
-      <b><%= version %></b> - <%= updated_at %> UTC
+      <%= version_badge(version) %> - <%= updated_at %> UTC
     </li>
   <% end %>
   <%= for %{"version" => version, "updated_at" => updated_at} <- @hidden_releases do %>
     <li class="release--hidden">
-      <b><%= version %></b> - <%= updated_at %> UTC
+      <%= version_badge(version) %> - <%= updated_at %> UTC
     </li>
   <% end %>
 </ul>
@@ -61,4 +60,25 @@
   <%= for project <- @package.dependent_projects_by_current_user do %>
     <%= render HexFaktor.ComponentView, "project-list-item.html", project: project %>
   <% end %>
+<% end %>
+
+<%= if false && Mix.env == :dev do %>
+  <div class="panel panel--right">
+    <div class="panel__inner">
+      <div class="panel__close">&times;</div>
+      <div class="">The BEAM Toolbox</div>
+      <p>
+        Build Status
+      </p>
+      <p>
+        http://toolbox.elixir.pm
+      </p>
+      <p>
+        A site to list Hex packages by category.
+      </p>
+      <p>
+        Name borrowed from Josh Adams of Elixir Sips with his blessing.
+      </p>
+    </div>
+  </div>
 <% end %>

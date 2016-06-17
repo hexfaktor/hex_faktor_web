@@ -1,0 +1,116 @@
+@import "_config";
+
+$padding: 10px;
+
+$border_color_prod: #46B01E;
+$border_color_prod_outdated: #FF911D;
+$border_color_not_prod_outdated: #FFE100;
+
+.package-list-item {
+  border: 1px solid #fff;
+  border-radius: 3px;
+  border-bottom: 1px solid #eee;
+}
+.package-list-item:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.package-list-item a {
+  color: $implicit_link_color;
+}
+.package-list-item .text {
+  font-size: 12px;
+  color: #aaa;
+  display: block;
+}
+
+.package-list-item__version,
+.package-list-item__status {
+  display: inline;
+}
+.package-list-item__version {
+  color: #aaa;
+}
+
+// .package-list-item__inner {}
+
+.package-list-item__title,
+.package-list-item__meta,
+.package-list-item__status,
+.package-list-item__webhook {
+  float: left;
+}
+.package-list-item__webhook,
+.package-list-item__status {
+  padding: $padding;
+}
+.package-list-item__title {
+  font-size: 26px;
+  width: 70%;
+
+  a {
+    display: inline-block;
+    padding: $padding;
+  }
+}
+.package-list-item__title {
+  width: 100%;
+}
+.package-list-item__meta {
+  width: 100%;
+  padding: 0 10px;
+}
+.package-list-item__webhook {
+  width: 30%;
+}
+.package-list-item__status {
+  width: 30%;
+}
+.package-list-item__webhook {
+  font-size: 0.75rem;
+
+  a {
+    display: inline-block;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: #eee;
+    white-space: nowrap;
+
+    &.loading {
+      @include darkLoadingStripes;
+    }
+  }
+}
+
+.package-list-item__webhook--active {
+  a {
+    background-color: #46B01E;
+    color: #fff;
+
+    &.loading {
+      @include lightLoadingStripes;
+    }
+  }
+}
+
+@include phablet_landscape_and_bigger {
+  .package-list-item {
+    border-bottom-color: #fff;
+  }
+  .package-list-item__title {
+    width: 70%;
+  }
+  .package-list-item__meta {
+    width: 30%;
+    text-align: right;
+  }
+  .package-list-item__status {
+    width: 50%;
+    padding-top: 10px + 4px; // vertically align with __webhook
+  }
+  .package-list-item__webhook {
+    width: 50%;
+    text-align: center
+  }
+}

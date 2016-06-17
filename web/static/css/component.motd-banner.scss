@@ -9,6 +9,7 @@
 @include tablet_landscape_and_bigger {
   .motd-banner {
     position: fixed;
+    z-index: 50;
     left: 0;
     top: 0;
     width: 100%;

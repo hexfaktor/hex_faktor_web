@@ -50,6 +50,8 @@ defmodule HexFaktor.PageController do
     dependent_projects_with_branches
     |> Enum.each(&ProjectBuilder.run_notification_branches(&1, "package_update"))
 
+    HexFaktor.NotificationPublisher.handle_new_package_update(package)
+
     render(conn, "ok.json")
   end
 end

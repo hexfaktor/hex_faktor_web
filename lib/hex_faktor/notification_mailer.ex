@@ -55,7 +55,7 @@ defmodule HexFaktor.NotificationMailer do
     :ok
   end
 
-  def status_report(user, active_projects, outdated_projects) do
+  def status_report(user, active_projects, outdated_projects, package_notifications) do
     [
       title: "You have #{outdated_projects |> Enum.count} projects with outdated dependencies!",
       html_title: "HexFaktor - Weekly Report",
@@ -63,12 +63,13 @@ defmodule HexFaktor.NotificationMailer do
       base_url: @base_url,
       unsubcribe_url: settings_url,
       active_projects: active_projects,
-      outdated_projects: outdated_projects
+      outdated_projects: outdated_projects,
+      package_notifications: package_notifications
     ]
   end
 
-  def send_status_report(user, active_projects, outdated_projects) do
-    assigns = status_report(user, active_projects, outdated_projects)
+  def send_status_report(user, active_projects, outdated_projects, package_notifications) do
+    assigns = status_report(user, active_projects, outdated_projects, package_notifications)
     send_email to: user.email,
                from: @from,
                subject: "[HexFaktor] #{assigns[:title]}",
@@ -91,13 +92,21 @@ defmodule HexFaktor.NotificationMailer do
 
   defp to_map(notifications) do
     notifications
-    |> Enum.reduce(%{}, fn(notification, memo) ->
-        key = {notification.project.name, notification.project_id, notification.git_branch_id}
-        if memo[key] do
-          Map.put(memo, key, [notification | memo[key]])
-        else
-          Map.put(memo, key, [notification])
-        end
-      end)
+    |> Enum.reduce(%{}, &reduce_notifications/2)
+  end
+
+  defp reduce_notifications(notification, memo) do
+    key =
+      if notification.package do
+        {:package, notification.package.name, notification.project_id, nil}
+      else
+        {:project, notification.project.name, notification.project_id, notification.git_branch_id}
+      end
+
+    if memo[key] do
+      Map.put(memo, key, [notification | memo[key]])
+    else
+      Map.put(memo, key, [notification])
+    end
   end
 end

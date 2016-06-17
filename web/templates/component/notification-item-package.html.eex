@@ -1,0 +1,13 @@
+<div class="notification-item">
+  <div class="notification-item__icon notification-item__icon--package <%= if List.first(@notifications).seen_at, do: " notification-item__icon--seen" %>">
+    <a href="/packages/<%= @item_name %>"><i class="icon-coverflow_line icon2x "></i></a>
+  </div>
+  <div class="notification-item__text">
+    <%= link @item_name, to: "/packages/#{@item_name}" %> was updated to
+    <%= @notifications |> List.first |> notification_version %>.
+  </div>
+  <div class="notification-item__time">
+    <%= @notifications |> List.first |> notification_time %>
+  </div>
+  <hr>
+</div>

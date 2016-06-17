@@ -1,46 +1,20 @@
-<div class="package-follow">
-  <div class="package-follow__triangle"></div>
-  <p>
-    Notify me for the following kind of releases:
-  </p>
-  <div class="form-section">
-    <%= form_for @conn, "/settings", [as: :package], fn f -> %>
-      <!--
-        <div class="form-section__input form-section__input--checkbox">
-          <label>
-            <%= checkbox(f, :foo) %>
-            <b>Major releases</b> - e.g. from <code>1.3.0</code> to <code>2.0.0</code>
-          </label>
-        </div>
-        <div class="form-section__input form-section__input--checkbox">
-          <label>
-            <%= checkbox(f, :foo) %>
-            <b>Minor releases</b> - e.g. from <code>1.2.5</code> to <code>1.3.0</code>
-          </label>
-        </div>
-        <div class="form-section__input form-section__input--checkbox">
-          <label>
-            <%= checkbox(f, :foo) %>
-            <b>Patch releases</b> - e.g. from <code>1.2.4</code> to <code>1.2.5</code>
-          </label>
-        </div>
-        -->
-      <div class="form-section__input form-section__input--checkbox">
-        <label>
-          <%= checkbox(f, :foo) %>
-          <b>Stable releases</b> - e.g. <code>1.3.4</code> or <code>2.0.0</code>
-        </label>
-      </div>
-      <div class="form-section__input form-section__input--checkbox">
-        <label>
-          <%= checkbox(f, :foo) %>
-          <b>Pre releases</b> - e.g. <code>2.0.0-beta1</code>
-        </label>
-      </div>
-
-      <div class="form-section__actions">
-        <input type="submit" class="btn btn--primary" value="Save changes">
-      </div>
-    <% end %>
+<%= if @info do %>
+  <div class="package-follow">
+    <div class="package-follow__triangle"></div>
+    <div class="package-follow__inner">
+      <%= if @info == :follow do %>
+        <p>
+          You will now receive notifications for this package each time a new stable version is published.
+        </p>
+        <p>
+          Check your <a href="/settings">e-mail settings</a>.
+        </p>
+      <% end %>
+      <%= if @info == :unfollow do %>
+        <p>
+          Got it! No notifications for this package.
+        </p>
+      <% end %>
+    </div >
   </div>
-</div>
+<% end %>

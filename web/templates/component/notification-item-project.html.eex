@@ -1,0 +1,15 @@
+<div class="notification-item">
+  <div class="notification-item__icon notification-item__icon--project <%= if List.first(@notifications).seen_at, do: " notification-item__icon--seen" %>">
+    <a href="/github/<%= @item_name %>"><i class="icon-warning_alt icon2x "></i></a>
+  </div>
+  <div class="notification-item__text">
+    <%= link @item_name, to: "/github/#{@item_name}" %> has <%= Enum.count(@notifications) %> outdated deps in
+    <%= for mix_env <- mix_envs_for_notifications(@notifications) do %>
+      <a href="<%= "/github/#{@item_name}?env=#{mix_env}" %>" class="notification-item__env-link--<%= mix_env %>"><code><%= mix_env %></code></a>
+    <% end %>
+  </div>
+  <div class="notification-item__time">
+    <%= @notifications |> List.first |> notification_time %>
+  </div>
+  <hr>
+</div>

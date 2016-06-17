@@ -29,6 +29,9 @@
         <a class="sidebar-nav-item" href="/projects?filter=elixir">My Projects</a>
         <%= render HexFaktor.ComponentView, "notification-counter.html", current_user: @current_user, notification_count: @conn.assigns[:notification_count] %>
         <div class="sidebar-nav-separator"></div>
+        <%= if alpha_user?(@current_user) do %>
+          <a class="sidebar-nav-item" href="/packages">Packages</a>
+        <% end %>
         <a class="sidebar-nav-item" href="<%= help_path(@conn, :index) %>">Help</a>
         <a class="sidebar-nav-item" href="/settings">
           <%= if is_nil(@current_user.email_verified_at) do %>

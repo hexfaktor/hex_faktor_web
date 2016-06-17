@@ -4,6 +4,28 @@ defmodule HexFaktor.Persistence.Notification do
   alias HexFaktor.Repo
   alias HexFaktor.Notification
 
+  def build_for_deps_object(user_id, deps_object, reason_hash) do
+    %{
+      user_id: user_id,
+      project_id: deps_object.project_id,
+      git_branch_id: deps_object.git_branch_id,
+      deps_object_id: deps_object.id,
+      reason: "dep",
+      reason_hash: reason_hash
+    }
+  end
+
+  def build_for_package(user_id, package, newest_version, reason_hash) do
+    %{
+      user_id: user_id,
+      project_id: package.project_id,
+      package_id: package.id,
+      reason: "package",
+      reason_hash: reason_hash,
+      metadata: %{"version" => newest_version}
+    }
+  end
+
   def all_unseen_for(user, preload_list \\ []) do
     query = from r in Notification,
             where: r.user_id == ^user.id and is_nil(r.seen_at),
@@ -12,14 +34,27 @@ defmodule HexFaktor.Persistence.Notification do
     Repo.all(query)
   end
 
-  def latest_for(user, limit, preload_list \\ []) do
+  def all_unseen_for_packages_for(user, preload_list \\ []) do
     query = from r in Notification,
-            where: r.user_id == ^user.id,
+            where: r.user_id == ^user.id and is_nil(r.seen_at)
+                    and not is_nil(r.package_id),
+            select: r,
+            preload: ^preload_list
+    Repo.all(query)
+  end
+
+  def latest_for(user, limit, preload_list \\ [])
+  def latest_for(user_id, limit, preload_list) when is_integer(user_id) do
+    query = from r in Notification,
+            where: r.user_id == ^user_id,
             order_by: [desc: :id],
             select: r,
             preload: ^preload_list,
             limit: ^limit
     Repo.all(query)
+  end
+  def latest_for(user, limit, preload_list) do
+    latest_for(user.id, limit, preload_list)
   end
 
   def all_unseen_for_branch(git_branch_id, preload_list \\ []) do
@@ -40,6 +75,13 @@ defmodule HexFaktor.Persistence.Notification do
     query = from r in Notification,
             where: r.user_id == ^user.id and r.project_id == ^project_id and
                     r.git_branch_id == ^git_branch_id and is_nil(r.seen_at)
+    Repo.update_all(query, set: [seen_at: now])
+  end
+
+  def mark_as_seen_for_package!(user, package_id) do
+    query = from r in Notification,
+            where: r.user_id == ^user.id and r.package_id == ^package_id and
+                    is_nil(r.seen_at)
     Repo.update_all(query, set: [seen_at: now])
   end
 
@@ -82,6 +124,13 @@ defmodule HexFaktor.Persistence.Notification do
     end
   end
 
+  def ensure_for_package(user_id, package, newest_version, reason_hash) do
+    case find_by_user_id_and_reason_hash(user_id, reason_hash) do
+      nil -> add_for_package(user_id, package, newest_version, reason_hash)
+      _val -> nil
+    end
+  end
+
   defp find_by_user_id_and_reason_hash(user_id, reason_hash) when is_binary(reason_hash) do
     query = from r in Notification,
             where: r.user_id == ^user_id and r.reason_hash == ^reason_hash,
@@ -104,15 +153,11 @@ defmodule HexFaktor.Persistence.Notification do
     |> Repo.insert!
   end
 
-  def build_for_deps_object(user_id, deps_object, reason_hash) do
-    %{
-      user_id: user_id,
-      project_id: deps_object.project_id,
-      git_branch_id: deps_object.git_branch_id,
-      deps_object_id: deps_object.id,
-      reason: "dep",
-      reason_hash: reason_hash
-    }
+  defp add_for_package(user_id, package, newest_version, reason_hash) do
+    attributes = build_for_package(user_id, package, newest_version, reason_hash)
+    %Notification{}
+    |> Notification.changeset(attributes)
+    |> Repo.insert!
   end
 
   defp now do

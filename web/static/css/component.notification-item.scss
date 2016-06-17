@@ -1,0 +1,52 @@
+@import "_config";
+
+.notification-item {
+  border: 1px solid #fff;
+  border-radius: 3px;
+  padding: 10px;
+}
+.notification-item:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.notification-item__icon {
+  position: absolute;
+  z-index: 100;
+}
+.notification-item__icon--package {
+  a {
+    color: #268bd2;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+.notification-item__icon--project {
+  a {
+    color: #e8bc54;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+.notification-item__icon--seen {
+  color: #aaa;
+  opacity: 0.1;
+}
+.notification-item__text,
+.notification-item__effect,
+.notification-item__time {
+  margin-left: 3rem;
+}
+.notification-item__time {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+.notification-item__text code {
+  background: #FFF184;
+}
+.notification-item__env-link--prod code {
+  background: #F9BE33;
+  color: #fff;
+}
