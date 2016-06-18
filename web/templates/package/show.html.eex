@@ -33,27 +33,12 @@
   <a href="https://hex.pm/packages/<%= @package.name %>" target="_blank"><%= @package.name %> on hex.pm</a>
 <% end %>
 
-
 <h2>Versions</h2>
-<ul>
-  <%= for %{"version" => version, "updated_at" => updated_at} <- @shown_releases do %>
-    <li>
-      <%= version_badge(version) %> - <%= updated_at %> UTC
-    </li>
-  <% end %>
-  <%= for %{"version" => version, "updated_at" => updated_at} <- @hidden_releases do %>
-    <li class="release--hidden">
-      <%= version_badge(version) %> - <%= updated_at %> UTC
-    </li>
-  <% end %>
-</ul>
-<%= if @hidden_releases |> Enum.any? do %>
-  <a href="#" id="js-more-versions" data-show-on-click=".release--hidden" data-hide-on-click="#js-more-versions">Show all versions</a>
-<% end %>
+<%= render HexFaktor.PackageView, "_versions.html", assigns %>
 
 
 <%= if @package.dependent_projects_by_current_user |> List.wrap |> Enum.any? do %>
-  <h2>But what about your projects?</h2>
+  <h2>Your monitored projects</h2>
 
   <%= render HexFaktor.PackageView, "_tab_nav_show_projects.html", assigns %>
 

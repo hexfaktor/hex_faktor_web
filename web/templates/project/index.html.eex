@@ -1,3 +1,5 @@
+<%= render HexFaktor.ComponentView, "tutorial-verify-email.html", current_user: @current_user %>
+
 <%= render HexFaktor.ComponentView, "user-title.html", user: @current_user, include_last_sync?: false %>
 
 <div class="sync-progress sync-progress--loading" style="display: none;">
@@ -17,7 +19,7 @@
   <% else %>
     <div class="project-toolbar__btn-group-left">
       <%= if @active_projects_count == 0 do %>
-        Howdy! Let's start monitoring your deps:
+        Howdy!
       <% else %>
         <%= @active_projects_count %> monitored projects,
         <%= if @outdated_projects_count == 0 do %>
@@ -35,6 +37,13 @@
   </div>
 </div>
 
+<%= if @active_projects_count == 0 do %>
+<div class="alert alert--tutorial">
+    Monitored projects are continuously watched and you will be notified when your dependencies need to be updated.
+    <br>
+    You can start <strong>monitoring projects</strong> by clicking "monitor this" in the list below.
+</div>
+<% end %>
 
 <%= if @fresh_user? do %>
   <!-- TODO: put text here -->

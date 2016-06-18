@@ -4,7 +4,7 @@
 <div class="tab-nav tab-nav--desktop">
   <div class="tab-nav__inner">
     <div class="tab-nav__tab tab-nav__tab--active">
-      <a href="?filter=">Projects depending on <%= @package.name %></a>
+      <a href="?filter=">Monitored projects depending on <strong><%= @package.name %></strong></a>
     </div>
   </div>
 </div>

@@ -1,0 +1,19 @@
+<div>
+  <%= for %{"version" => version, "updated_at" => updated_at} <- @shown_releases do %>
+    <div class="release">
+      <strong class="release__version"><%= version_badge(version) %></strong>
+      <span class="release__date" title="<%= updated_at %> UTC"><%= updated_at |> to_human_date %></span>
+    </div>
+  <% end %>
+
+  <%= for %{"version" => version, "updated_at" => updated_at} <- @hidden_releases do %>
+    <div class="release release--hidden">
+      <strong class="release__version"><%= version_badge(version) %></strong>
+      <span class="release__date" title="<%= updated_at %> UTC"><%= updated_at |> to_human_date %></span>
+    </div>
+  <% end %>
+</div>
+
+<%= if @hidden_releases |> Enum.any? do %>
+  <a href="#" id="js-more-versions" data-show-on-click=".release--hidden" data-hide-on-click="#js-more-versions">Show all versions</a>
+<% end %>

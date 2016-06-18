@@ -1,6 +1,7 @@
 @import "_config";
 
 .alert {
+  position: relative;
   display:block;
   margin-top: 1rem;
   padding: 0.5rem 1rem;
@@ -19,4 +20,25 @@
 .alert--info {
   background: #eee;
   color: #1A2642;
+}
+
+.alert--tutorial {
+  background: #fff3d0;
+  border-right: 2px solid #ffe7a0;
+  border-bottom: 2px solid #ffe7a0;
+  border-radius: 0;
+  margin-top: 0;
+
+  &:after {
+    display: inline-block;
+    position: absolute;
+    z-index: 50;
+    top: 0;
+    right: 0;
+    content: "HINT";
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #ffaa00;
+    background: #ffe7a0;
+  }
 }

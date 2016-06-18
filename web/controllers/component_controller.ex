@@ -1,8 +1,10 @@
 defmodule HexFaktor.ComponentController do
   use HexFaktor.Web, :controller
 
+  alias HexFaktor.Persistence.Package
   alias HexFaktor.Persistence.Project
   alias HexFaktor.Persistence.ProjectUserSettings
+  alias HexFaktor.PackageProvider
   alias HexFaktor.ProjectAccess
   alias HexFaktor.ProjectController
   alias HexFaktor.ProjectProvider
@@ -39,13 +41,16 @@ defmodule HexFaktor.ComponentController do
   def dep(conn, %{"id" => dep_id}) do
     # TODO: check rights
     dep = Refaktor.Job.Elixir.Deps.Persistence.find_by_id(dep_id, [:project])
+    current_user = Auth.current_user(conn)
+    package_assigns = PackageProvider.assigns_for(current_user, dep.name)
     assigns = [
       layout: blank_layout,
       dep: dep,
       project: dep.project,
       xhr: true
     ]
-    render conn, "dep.html", assigns
+
+    render conn, "dep.html", assigns ++ package_assigns
   end
 
   def notification_counter(conn, _) do

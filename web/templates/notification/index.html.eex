@@ -1,3 +1,5 @@
+<%= render HexFaktor.ComponentView, "tutorial-verify-email.html", current_user: @current_user %>
+
 <div class="notification-title">
   Notifications
   <div class="notification-toolbar__btn-group-right">

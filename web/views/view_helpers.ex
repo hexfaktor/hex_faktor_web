@@ -98,14 +98,14 @@ defmodule HexFaktor.ViewHelpers do
           case HexFaktor.VersionHelper.kind_of_release(version) do
             :minor ->
               if version |> String.match?(~r/0\./) do
-                "release--minor-major"
+                "version--minor-major"
               else
-                "release--minor"
+                "version--minor"
               end
             value ->
-              "release--#{value}"
+              "version--#{value}"
           end
-        raw ~s(<span class="release #{klass}">#{version}</span>)
+        raw ~s(<span class="version #{klass}">#{version}</span>)
       end
 
       #

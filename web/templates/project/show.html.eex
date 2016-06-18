@@ -1,3 +1,5 @@
+<%= render HexFaktor.ComponentView, "tutorial-verify-email.html", current_user: @current_user %>
+
 <%= render HexFaktor.ComponentView, "project-title.html", conn: @conn, project: @project, branch: @branch %>
 
 <%= if @enqueued_build? do %>

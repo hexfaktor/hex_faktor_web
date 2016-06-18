@@ -1,0 +1,6 @@
+<%= unless @current_user.email_verified_at do %>
+  <div class="alert alert--tutorial">
+    You will be able to <strong>receive notifications about updates via email</strong>.<br>
+    Verify your email by clicking the link we sent you (<a href="/settings">check email settings</a>).
+  </div>
+<% end %>
