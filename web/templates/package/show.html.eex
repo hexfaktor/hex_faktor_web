@@ -38,7 +38,7 @@
 
 
 <%= if @package.dependent_projects_by_current_user |> List.wrap |> Enum.any? do %>
-  <h2>Your monitored projects</h2>
+  <h2>Your projects</h2>
 
   <%= render HexFaktor.PackageView, "_tab_nav_show_projects.html", assigns %>
 
