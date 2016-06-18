@@ -5,7 +5,10 @@ defmodule HexFaktor.Persistence.Package do
   alias HexFaktor.Package
 
   def all do
-    Repo.all(Package)
+    query = from r in Package,
+            order_by: [desc: :updated_at],
+            select: r
+    Repo.all(query)
   end
 
   def all_by_query(search_query) do
@@ -13,6 +16,7 @@ defmodule HexFaktor.Persistence.Package do
     query = from r in Package,
             where: like(r.name, ^search_query)
                     or r.source_url == ^search_query,
+            order_by: [desc: :updated_at],
             select: r
     Repo.all(query)
   end
