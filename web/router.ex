@@ -72,6 +72,8 @@ defmodule HexFaktor.Router do
 
     get "/", HelpController, :index
     get "/badge", HelpController, :badge
+    get "/versions", HelpController, :versions
+    get "/version_requirements", HelpController, :version_requirements
   end
 
   scope "/auth", HexFaktor do

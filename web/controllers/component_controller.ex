@@ -10,6 +10,7 @@ defmodule HexFaktor.ComponentController do
   alias HexFaktor.ProjectProvider
   alias HexFaktor.Auth
   alias HexFaktor.LayoutView
+  alias HexFaktor.VersionHelper
 
   def project_list_item(conn, %{"id" => project_id}) do
     current_user = Auth.current_user(conn)
@@ -49,8 +50,10 @@ defmodule HexFaktor.ComponentController do
       project: dep.project,
       expanded?: true
     ]
+    shown_releases =
+      package_assigns[:shown_releases] |> releases_until_last_matching(dep)
 
-    render conn, "dep.html", assigns ++ package_assigns
+    render conn, "dep.html", assigns ++ package_assigns ++ [shown_releases: shown_releases]
   end
 
   def notification_counter(conn, _) do
@@ -64,5 +67,20 @@ defmodule HexFaktor.ComponentController do
 
   defp blank_layout do
     {LayoutView, "blank.html"}
+  end
+
+  defp releases_until_last_matching(releases, dep) do
+    not_matching_releases =
+      releases
+      |> Enum.take_while(fn(%{"version" => version}) ->
+          !VersionHelper.matching?(dep.required_version, version)
+        end)
+    last_matching_release =
+      releases
+      |> Enum.find(fn(%{"version" => version}) ->
+          VersionHelper.matching?(dep.required_version, version)
+        end)
+
+    not_matching_releases ++ [last_matching_release]
   end
 end

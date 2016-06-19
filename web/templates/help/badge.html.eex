@@ -1,4 +1,4 @@
-<div class="project-title">
+<div class="help-article__title">
   Badges: How do they work?
 </div>
 
@@ -8,36 +8,38 @@
   </div>
 <% end %>
 
-<p>
-  The badge colors represent <b>your Mix envs</b>:
-</p>
+<div class="help-article__text">
+  <p>
+    The badge colors represent <b>your Mix envs</b>:
+  </p>
 
-<p>
-  <img src="<%= static_path(@conn, "/images/badge-explanation.png") %>" class="logo" />
-</p>
+  <p>
+    <img src="<%= static_path(@conn, "/images/badge-explanation.png") %>" class="logo" />
+  </p>
 
-Green means "All is well!"
+  Green means "All is well!"
 
-<ul>
-  <li>
-    <strong style="color: #46B01E">Prod deps</strong> which are up-to-date.
-  </li>
-  <li>
-    <strong style="color: #8c3">Other deps</strong> which are up-to-date.
-  </li>
-</ul>
+  <ul>
+    <li>
+      <strong style="color: #46B01E">Prod deps</strong> which are up-to-date.
+    </li>
+    <li>
+      <strong style="color: #8c3">Other deps</strong> which are up-to-date.
+    </li>
+  </ul>
 
-Not green means "Look out!"
+  Not green means "Look out!"
 
-<ul>
-  <li>
-    <strong style="color: #FF911D">Prod deps</strong> which are outdated.
-  </li>
-  <li>
-    <strong style="color: #FFE100">Other deps</strong> which are outdated.
-  </li>
-</ul>
+  <ul>
+    <li>
+      <strong style="color: #FF911D">Prod deps</strong> which are outdated.
+    </li>
+    <li>
+      <strong style="color: #FFE100">Other deps</strong> which are outdated.
+    </li>
+  </ul>
 
-<p>
-  The basis for determining whether or not something is outdated is always the version requirement set in <code>mix.exs</code>.
-</p>
+  <p>
+    The basis for determining whether or not something is outdated is always the version requirement set in <code>mix.exs</code>.
+  </p>
+</div>

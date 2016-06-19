@@ -59,45 +59,29 @@
           Latest releases
         </div>
 
-        <div>
-          <%= if @dep.severity != "none" do %>
-            <div class="release release--requirement-not-matching">
-              <strong class="release__version"><i class="icon-warning_alt"></i> <span class="version version--major">2.0.0</span></strong>
-              <span class="release__date" title="2016-03-01 17:43:50 UTC">March 1, 2016</span>
-              <span class="release__date">(<a href="">changelog</a>, <a href="">docs</a>)</span>
-            </div>
-            <div class="release release--requirement-not-matching">
-              <strong class="release__version"><i class="icon-warning_alt"></i> <span class="version version--patch">1.0.1</span></strong>
-              <span class="release__date" title="2016-03-01 17:18:00 UTC">March 1, 2016</span>
-            </div>
-            <div class="release release--requirement-not-matching">
-              <strong class="release__version"><i class="icon-warning_alt"></i> <span class="version version--major">1.0.0</span></strong>
-              <span class="release__date" title="2016-02-29 20:45:24 UTC">February 29, 2016</span>
-            </div>
-          <% end %>
-          <div class="release release--requirement-matching">
-            <strong class="release__version"><i class="icon-check_circle"></i> <span class="version">0.7.1</span></strong>
-            <span class="release__date" title="2015-12-02 23:55:54 UTC">December 2, 2015</span>
-          </div>
-          <div class="release release--requirement-matching">
-            <strong class="release__version"><i class="icon-check_circle"></i> <span class="version">0.7.0</span></strong>
-            <span class="release__date" title="2015-12-01 23:12:32 UTC">December 1, 2015</span>
+
+        <div class="package-info__releases">
+          <div>
+            <%= for %{"version" => version, "updated_at" => updated_at} <- @shown_releases do %>
+
+              <%= render HexFaktor.ComponentView, "_dep_release_version.html", dep: @dep, version: version, updated_at: updated_at, release_class: nil %>
+            <% end %>
           </div>
         </div>
 
-        <%= if @dep.severity == "none" do %>
-          <p class="package-info__advice package-info__advice--requirement-matching">
-            <i class="icon-check_circle"></i>
-            This dependency is <strong>up-to-date</strong>.
-          </p>
-        <% else %>
+        <%= if outdated_or_not?(@dep, @dep.project) do %>
           <p class="package-info__advice package-info__advice--requirement-not-matching">
             <i class="icon-warning_alt"></i>
             The requirement is not matching the newest releases.
           </p>
           <p class="package-info__advice package-info__advice--requirement-not-matching">
             It needs to be updated it in order to use newer releases
-            (<a href="#">learn how</a>).
+            (<a href="/help/version_requirements">learn how</a>).
+          </p>
+        <% else %>
+          <p class="package-info__advice package-info__advice--requirement-matching">
+            <i class="icon-check_circle"></i>
+            This dependency is <strong>up-to-date</strong>.
           </p>
         <% end %>
         <p>

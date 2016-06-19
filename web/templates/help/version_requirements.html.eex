@@ -1,0 +1,19 @@
+<div class="help-article__title">
+  How do version requirements work?
+</div>
+
+<div class="help-article__section">
+  <p>
+    If you are not sure what semantic versioning means, checkout <a href="/help/versions">How do versions work?</a>
+  </p>
+</div>
+
+<div class="help-article__section">
+  <hr>
+  <p>
+    Further reading:
+  </p>
+  <p>
+    <a href="http://elixir-lang.org/docs/stable/elixir/Version.html" target="_blank">Elixir docs: Version</a>
+  </p>
+</div>

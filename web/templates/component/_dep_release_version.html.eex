@@ -1,0 +1,12 @@
+
+<div class="release release--requirement-<%= matching_or_not(@dep, @version) %> <%= @release_class %>">
+  <strong class="release__version">
+    <%= if matching_or_not?(@dep, @version) do %>
+      <i class="icon-check_circle"></i>
+    <% else %>
+      <i class="icon-warning_alt"></i>
+    <% end %>
+    <%= version_badge(@version) %>
+  </strong>
+  <span class="release__date" title="<%= @updated_at %> UTC"><%= @updated_at |> to_human_date() %></span>
+</div>

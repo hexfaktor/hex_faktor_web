@@ -45,11 +45,4 @@ defmodule HexFaktor.PackageView do
 
   def render("404.html", _), do: "Not found"
   def render("404.json", _), do: %{error: true}
-
-  @month_names [nil, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-  #[nil, "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-  def to_human_date(date) do
-    month_name = @month_names |> Enum.at(date.month)
-    "#{month_name} #{date.day}, #{date.year}"
-  end
 end

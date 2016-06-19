@@ -1,0 +1,61 @@
+<div class="help-article__title">
+  How do versions work?
+</div>
+
+<div class="help-article__sub-title">
+  Semantic versioning
+</div>
+
+<div class="help-article__section">
+  <p>
+    If we look at version numbers they are usually in this format:
+  </p>
+  <blockquote>
+    1.0.0<br>
+    1.2.3<br>
+    2.0.0-beta1
+  </blockquote>
+  <p>
+    This follows a convention called "<a href="http://semver.org/" target="_blank">Semantic versioning</a>", which defines the rules for increasing the individual parts of the version number:
+  </p>
+  <blockquote>
+    Given a version number <span class="semver--major">MAJOR</span>.<span class="semver--minor">MINOR</span>.<span class="semver--patch">PATCH</span>, increment the:
+
+    <p>
+      1. <span class="semver--major">MAJOR</span> version when you make incompatible API changes,<br>
+      2. <span class="semver--minor">MINOR</span> version when you add functionality in a backwards-compatible manner, and<br>
+      3. <span class="semver--patch">PATCH</span> version when you make backwards-compatible bug fixes.<br>
+    </p>
+
+    <em><small>Source: <a href="http://semver.org/" target="_blank">semver.org</a></small></em>
+  </blockquote>
+  <p>
+    Sometimes you may also want to apply a pre-release tag using a minus (-).
+  </p>
+  <blockquote>
+    <span class="semver--major">2</span>.<span class="semver--minor">0</span>.<span class="semver--patch">0</span>-beta1
+  </blockquote>
+  <p>
+    This is not a regular release, it is a pre-release which is not yet fit for public consumption. These are mostly used to provide potentially unstable releases to people for testing purposes.
+  </p>
+  <p>
+    Common pre-release tags are <code>-beta</code> often followed by an incremental number (check <a href="https://hex.pm/packages/ecto" target="_blank">Ecto's releases</a> for examples) or <code>-rc</code> (for "release candidate") also followed by a number (check <a href="https://hex.pm/packages/phoenix" target="_blank">Phoenix's releases</a> for examples).
+  </p>
+</div>
+
+<div class="help-article__sub-title">
+  Version requirements
+</div>
+
+<div class="help-article__section">
+  <hr>
+  <p>
+    Further reading:
+  </p>
+  <p>
+    <a href="/help/version_requirements">How do version requirements work?</a>
+  </p>
+  <p>
+    <a href="http://elixir-lang.org/docs/stable/elixir/Version.html" target="_blank">Elixir docs: Version</a>
+  </p>
+</div>

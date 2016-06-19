@@ -60,39 +60,6 @@ defmodule HexFaktor.ViewHelpers do
         |> HexFaktor.SortHelper.ensure_order(["prod"], ["test"])
       end
 
-      def time_ago_in_words(nil), do: nil
-      def time_ago_in_words(time1) do
-        case time_elapsed(time1) do
-          nil -> nil
-          seconds ->
-            in_words =
-              {0, seconds, 0}
-              |> Timex.Format.Time.Formatters.Humanized.format
-              |> String.replace(~r/(\d+ (day|hour|minute|second)s)(\,\ .+)$/, "\\1")
-              #|> String.replace(~r/(\,\ \d+ (day|hour|minute|second))s$/, "")
-              |> String.replace(~r/(1 (day|hour|minute|second))s/, "\\1")
-
-            "#{in_words} ago"
-        end
-      end
-
-      def time_elapsed(time1) do
-        {_, seconds, _} =
-          try do
-              time1
-              |> Ecto.DateTime.to_erl
-              |> Timex.Date.from
-              |> Timex.Date.to_timestamp
-              |> Timex.Time.elapsed
-          rescue
-            _ ->
-              {nil, nil, nil}
-          end
-
-        seconds
-      end
-
-
       def version_badge(version) do
         klass =
           case HexFaktor.VersionHelper.kind_of_release(version) do
@@ -130,6 +97,51 @@ defmodule HexFaktor.ViewHelpers do
       def alpha_user?(user) do
         user.id == 1
       end
+
+      #
+      # Date/Time helpers
+      #
+
+      @month_names [nil, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+      #[nil, "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+      def to_human_date(date) do
+        month_name = @month_names |> Enum.at(date.month)
+        "#{month_name} #{date.day}, #{date.year}"
+      end
+
+      def time_ago_in_words(nil), do: nil
+      def time_ago_in_words(time1) do
+        case time_elapsed(time1) do
+          nil -> nil
+          seconds ->
+            in_words =
+              {0, seconds, 0}
+              |> Timex.Format.Time.Formatters.Humanized.format
+              |> String.replace(~r/(\d+ (day|hour|minute|second)s)(\,\ .+)$/, "\\1")
+              #|> String.replace(~r/(\,\ \d+ (day|hour|minute|second))s$/, "")
+              |> String.replace(~r/(1 (day|hour|minute|second))s/, "\\1")
+
+            "#{in_words} ago"
+        end
+      end
+
+      def time_elapsed(time1) do
+        {_, seconds, _} =
+          try do
+              time1
+              |> Ecto.DateTime.to_erl
+              |> Timex.Date.from
+              |> Timex.Date.to_timestamp
+              |> Timex.Time.elapsed
+          rescue
+            _ ->
+              {nil, nil, nil}
+          end
+
+        seconds
+      end
+
+
     end
   end
 end

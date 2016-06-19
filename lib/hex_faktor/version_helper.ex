@@ -40,10 +40,11 @@ defmodule HexFaktor.VersionHelper do
     matching?(requirement, version)
   end
   def matching?(requirement, version) do
-    version
+    requirement
     |> Version.parse_requirement
     |> case do
-      {:ok, requirement} -> Version.matches?(requirement, version)
+      {:ok, requirement} ->
+        version |> Version.match?(requirement)
       _ -> false
     end
   end
