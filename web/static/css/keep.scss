@@ -78,34 +78,3 @@
 .panel--right {
   right: 0;
 }
-
-//
-// version/releases
-//
-
-.release__version {
-  font-size: 1.125rem;
-
-  i {
-    opacity: 0.5;
-  }
-}
-.release__date {
-  color: #777;
-}
-.release--hidden {
-  display: none;
-}
-
-.release--not-matching-requirement {
-  .release__version {
-    color: #ff911d;
-  }
-}
-
-.version {
-  color: #46b01e;
-}
-.version--pre {
-  color: #aaa;
-}

@@ -4,6 +4,16 @@ $explicit_link_color: #268bd2;
 $implicit_link_color: #515151;
 
 
+$color_dark_prod: #46B01E;
+$color_dark_prod_outdated: #FF911D;
+$color_dark_not_prod: #88cc33;
+$color_dark_not_prod_outdated: #FFE100;
+
+$color_version_matching: $color_dark_prod;
+$color_version_not_matching: $color_dark_prod_outdated;
+
+
+
 $desktop_width: 1280px;
 
 $tablet_landscape_width: 1024px;

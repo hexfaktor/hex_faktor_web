@@ -1,6 +1,8 @@
 defmodule HexFaktor.ComponentView do
   use HexFaktor.Web, :view
 
+  alias HExFaktor.VersionHelper
+
   @human_readable_severities %{
       # dep.project.use_lock_file == true
       true: %{
@@ -17,6 +19,14 @@ defmodule HexFaktor.ComponentView do
   def human_readable_severity(dep, project) do
     @human_readable_severities[project.use_lock_file][dep.severity] ||
       @default_human_readable_severity
+  end
+
+  def matching_or_not(dep, release_version) do
+    if dep |> VersionHelper.matching?(release_version) do
+      "matching"
+    else
+      "not-matching"
+    end
   end
 
   def prod_or_not(dep) do

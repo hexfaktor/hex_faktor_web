@@ -1,0 +1,56 @@
+@import "config";
+
+.package-info__advice--requirement-matching {
+  i {
+    color: $color_version_matching;
+    opacity: 0.5;
+  }
+}
+
+.package-info__advice--requirement-not-matching {
+  i {
+    color: $color_version_not_matching;
+    opacity: 0.5;
+  }
+}
+
+//
+// version/releases
+//
+
+.release__version {
+  font-size: 1.125rem;
+  i {
+    opacity: 0.5;
+  }
+}
+.release__date {
+  color: #777;
+}
+.release--hidden {
+  display: none;
+}
+
+.release--requirement-matching {
+  .release__version {
+    &,
+    .version {
+      color: $color_version_matching;
+    }
+  }
+}
+.release--requirement-not-matching {
+  .release__version {
+    &,
+    .version {
+      color: $color_version_not_matching;
+    }
+  }
+}
+
+.version {
+  color: #46b01e;
+}
+.version--pre {
+  color: #aaa;
+}

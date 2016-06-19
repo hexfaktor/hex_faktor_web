@@ -33,4 +33,18 @@ defmodule HexFaktor.VersionHelper do
       |> List.last
     hash["version"]
   end
+
+  def matching?(nil, _), do: false
+  def matching?(_, nil), do: false
+  def matching?(%{required_version: requirement}, version) do
+    matching?(requirement, version)
+  end
+  def matching?(requirement, version) do
+    version
+    |> Version.parse_requirement
+    |> case do
+      {:ok, requirement} -> Version.matches?(requirement, version)
+      _ -> false
+    end
+  end
 end

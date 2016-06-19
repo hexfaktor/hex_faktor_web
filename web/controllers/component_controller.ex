@@ -47,7 +47,7 @@ defmodule HexFaktor.ComponentController do
       layout: blank_layout,
       dep: dep,
       project: dep.project,
-      xhr: true
+      expanded?: true
     ]
 
     render conn, "dep.html", assigns ++ package_assigns

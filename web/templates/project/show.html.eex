@@ -1,3 +1,7 @@
+<%= if logged_in?(@conn) do %>
+  <a href="/projects">&larr; back to my projects</a>
+<% end %>
+
 <%= render HexFaktor.ComponentView, "tutorial-verify-email.html", conn: @conn %>
 
 <%= render HexFaktor.ComponentView, "project-title.html", conn: @conn, project: @project, branch: @branch %>
@@ -87,7 +91,7 @@
 
 <%= if @build do %>
   <%= for dep <- @deps_objects do %>
-    <%= render HexFaktor.ComponentView, "dep.html", dep: dep, project: @project %>
+    <%= render HexFaktor.ComponentView, "dep.html", dep: dep, project: @project, expanded?: false %>
   <% end %>
 
   <%= if @user_can_edit? do %>
