@@ -59,4 +59,9 @@ config :hex_faktor, :mailgun,
   mode: :test,
   test_file_path: "/tmp/mailgun.json"
 
+config :rollbax,
+  access_token: "",
+  environment: "",
+  enabled: :log
+
 import_config "dev.secret.exs"

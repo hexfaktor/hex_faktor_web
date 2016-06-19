@@ -19,7 +19,7 @@ defmodule HexFaktor.Mixfile do
   def application do
     [mod: {HexFaktor, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :oauth2, :poolboy]]
+                    :phoenix_ecto, :postgrex, :oauth2, :poolboy, :rollbax]]
   end
 
   # Specifies which paths to compile per environment.
