@@ -43,7 +43,8 @@ defmodule HexFaktor.Mixfile do
       {:oauth2, "~> 0.5.0"},
       {:mailgun, "~> 0.1.1"},
       {:timex, "~> 1.0.0"},
-      {:timex_ecto, "~> 0.7.0"}
+      {:timex_ecto, "~> 0.7.0"},
+      {:rollbax, "~> 0.6"}
     ]
   end
 

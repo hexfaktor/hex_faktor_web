@@ -23,6 +23,7 @@
   "poolboy": {:hex, :poolboy, "1.5.1", "6b46163901cfd0a1b43d692657ed9d7e599853b3b21b95ae5ae0a777cf9b6ca8", [:rebar], []},
   "postgrex": {:hex, :postgrex, "0.10.0", "98cf581bbb921d696db261d1a9e1740252714dbea1f9224d3291d58f2d88ea82", [:mix], [{:decimal, "~> 1.0", [hex: :decimal, optional: false]}, {:connection, "~> 1.0", [hex: :connection, optional: false]}]},
   "ranch": {:hex, :ranch, "1.2.0", "b286a948a0706a700a9f577e5cecbb2dc66097ea79f3ddb20ba5536069bdb7aa", [:make], []},
+  "rollbax": {:hex, :rollbax, "0.6.0", "ed5e4c29ca3b46d3a773f632bddc4cc1be19f28951a643bb2fe904894104f4d7", [:mix], [{:poison, "~> 1.4 or ~> 2.0", [hex: :poison, optional: false]}, {:hackney, "~> 1.1", [hex: :hackney, optional: false]}]},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.6", "45866d958d9ae51cfe8fef0050ab8054d25cba23ace43b88046092aa2c714645", [:make], []},
   "tentacat": {:hex, :tentacat, "0.2.1"},
   "timex": {:hex, :timex, "1.0.0", "c2f4c86c6ec1af5b6614c85b0afa6bd2422f6d72fa3e8ab42baacb801e3235b5", [:mix], [{:tzdata, "== 0.1.8 or ~> 0.5", [hex: :tzdata, optional: false]}, {:combine, "~> 0.7", [hex: :combine, optional: false]}]},

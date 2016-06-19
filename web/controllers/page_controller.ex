@@ -25,6 +25,7 @@ defmodule HexFaktor.PageController do
   end
 
   def status_500(conn, _params) do
+    1 / 0
     render conn, "500.html"
   end
 
