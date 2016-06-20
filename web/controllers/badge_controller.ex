@@ -19,11 +19,12 @@ defmodule HexFaktor.BadgeController do
   def all_deps(conn, %{"provider" => provider, "name" => name, "branch" => branch, "style" => style}) do
     #badge_source = nil # TODO: load from cache
     #if is_nil(badge_source) do
-      badge_source = perform_all_deps(conn, %{"provider" => provider, "name" => name, "branch" => branch, "style" => style})
+      {badge_source, build} = perform_all_deps(conn, %{"provider" => provider, "name" => name, "branch" => branch, "style" => style})
       # TODO: put into cache
     #end
 
     conn
+    |> set_resp_headers(build)
     |> put_resp_content_type("image/svg+xml")
     |> send_resp(200, badge_source)
   end
@@ -69,7 +70,9 @@ defmodule HexFaktor.BadgeController do
       bar_width: @bar_width,
       percentages_and_grades: percentages_and_grades
     ]
-    render_badge_to_string(:all_deps, to_style(style), assigns)
+    badge_source = render_badge_to_string(:all_deps, to_style(style), assigns)
+
+    {badge_source, build}
   end
 
   #
@@ -84,11 +87,12 @@ defmodule HexFaktor.BadgeController do
   def prod_deps(conn, %{"provider" => provider, "name" => name, "branch" => branch, "style" => style}) do
     #badge_source = nil # TODO: load from cache
     #if is_nil(badge_source) do
-      badge_source = perform_prod_deps(conn, %{"provider" => provider, "name" => name, "branch" => branch, "style" => style})
+      {badge_source, build} = perform_prod_deps(conn, %{"provider" => provider, "name" => name, "branch" => branch, "style" => style})
       # TODO: put into cache
     #end
 
     conn
+    |> set_resp_headers(build)
     |> put_resp_content_type("image/svg+xml")
     |> send_resp(200, badge_source)
   end
@@ -135,7 +139,9 @@ defmodule HexFaktor.BadgeController do
       bar_width: @bar_width,
       percentages_and_grades: percentages_and_grades
     ]
-    render_badge_to_string(:prod_deps, to_style(style), assigns)
+    badge_source = render_badge_to_string(:prod_deps, to_style(style), assigns)
+
+    {badge_source, build}
   end
 
   #
@@ -174,6 +180,7 @@ defmodule HexFaktor.BadgeController do
     #end
 
     conn
+    |> set_resp_headers(nil)
     |> put_resp_content_type("image/svg+xml")
     |> send_resp(200, badge_source)
   end
@@ -190,4 +197,24 @@ defmodule HexFaktor.BadgeController do
   defp to_style(nil), do: "default"
   defp to_style(style) when style in @valid_styles, do: style
   defp to_style(_), do: to_style(nil)
+
+  defp set_resp_headers(conn, build) do
+    header = conn.resp_headers |> List.keyfind("cache-control", 0)
+    resp_headers =
+      conn.resp_headers
+      |> List.delete(header)
+
+    if build do
+      expires = build.updated_at |> to_string
+      resp_headers =
+        [{"Expires", expires}]
+        ++ resp_headers
+    end
+
+    resp_headers =
+      [{"Cache-Control", "no-cache"}, {"Pragma", "no-cache"}]
+      ++ resp_headers
+
+    %Plug.Conn{conn | resp_headers: resp_headers}
+  end
 end
