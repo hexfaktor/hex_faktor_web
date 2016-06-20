@@ -31,6 +31,7 @@
     padding: 3px;
   }
 }
+.form-section__input--radio,
 .form-section__input--checkbox {
   margin-bottom: 1rem;
 
@@ -38,26 +39,24 @@
     display: inline-block;
   }
 }
-.form-section__input--radio {
-  margin-bottom: 1rem;
 
-  label {
-    display: inline-block;
-  }
-}
 .form-section__label {
   display: block;
   font-weight: bold;
+  span {
+    font-weight: normal;
+  }
 }
-.form-section__label--no-frequency,
-.form-section__label--newsletter {
-  font-weight: normal;
-  margin-top: 10px;
-}
-.form-section__label--daily-frequency {
-}
-.form-section__label--weekly-frequency {
-  margin-bottom: 10px;
+.form-section__label--radio,
+.form-section__label--checkbox {
+  position: relative;
+  padding-left: 26px;
+  input {
+    position: absolute;
+    z-index: 50px;
+    left: 0;
+    top: 3px;
+  }
 }
 
 @include phablet_landscape_and_bigger {

@@ -21,31 +21,47 @@
     </div>
 
     <label class="form-section__label">Frequency</label>
+
     <div class="form-section__input form-section__input--radio">
-      <label class="form-section__label form-section__label--weekly-frequency">
+      <label class="form-section__label form-section__label--radio">
+        <%= radio_button(f, :email_notification_frequency, "none") %>
+        <span>Do not send status report</span>
+      </label>
+    </div>
+    <div class="form-section__input form-section__input--radio">
+      <label class="form-section__label form-section__label--radio">
         <%= radio_button(f, :email_notification_frequency, "weekly") %>
         Weekly status report (every Monday)
       </label>
     </div>
+
     <div class="form-section__input form-section__input--radio">
-      <label class="form-section__label form-section__label--daily-frequency">
+      <label class="form-section__label form-section__label--radio">
         <%= radio_button(f, :email_notification_frequency, "daily") %>
         Daily status report in case of new updates (if there are none, you do not get an email)
       </label>
     </div>
-    <div class="form-section__input form-section__input--radio">
-      <label class="form-section__label form-section__label--no-frequency">
-        <%= radio_button(f, :email_notification_frequency, "none") %>
-        Do not send status report
+
+    <!--
+    <div class="form-section__input form-section__input--checkbox" style="">
+      <label class="form-section__label form-section__label--checkbox">
+        <%= checkbox(f, :email_notification_only_if_actionable) %>
+        Only send daily/weekly report if there are updates
+        <span class="">
+         (uncheck if you want to receive an email regardless)
+        </span>
       </label>
     </div>
+    -->
 
     <div class="form-section__input form-section__input--checkbox">
-      <label class="form-section__label form-section__label--newsletter">
+      <label class="form-section__label form-section__label--radio">
         <%= checkbox(f, :email_newsletter) %>
         Subscribe to newsletter
+        <span class="">
+          (covers my projects like <a href="https://github.com/rrrene/credo" target="_blank">Credo</a>, <a href="https://github.com/rrrene/elixirstatus-web" target="_blank">ElixirStatus</a> and <a href="https://inch-ci.org/" target="_blank">Inch CI</a> next to new features and developments for HexFaktor)
+        </span>
       </label>
-       (covers projects like <a href="https://github.com/rrrene/elixirstatus-web" target="_blank">ElixirStatus</a>, <a href="https://github.com/rrrene/credo" target="_blank">Credo</a> and <a href="https://inch-ci.org/" target="_blank">Inch CI</a> next to new features and developments for HexFaktor)
     </div>
 
     <div class="form-section__actions">

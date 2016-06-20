@@ -4,6 +4,7 @@ defmodule HexFaktor.NotificationMailer do
   alias Phoenix.View
   alias HexFaktor.LayoutView
   alias HexFaktor.EmailView
+  alias HexFaktor.User
 
   @base_url Application.get_env(:hex_faktor, :base_url)
   @from "HexFaktor <notifications@hexfaktor.org>"
@@ -68,6 +69,10 @@ defmodule HexFaktor.NotificationMailer do
     ]
   end
 
+  #def send_status_report(%User{email_notification_only_if_actionable: true},
+  #                        active_projects, [], []) do
+  #  :ok
+  #end
   def send_status_report(user, active_projects, outdated_projects, package_notifications) do
     assigns = status_report(user, active_projects, outdated_projects, package_notifications)
     send_email to: user.email,

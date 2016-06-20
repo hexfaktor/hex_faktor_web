@@ -122,5 +122,4 @@ defmodule HexFaktor.Router do
       get "/validation", EmailController, :validation
     end
   end
-
 end
