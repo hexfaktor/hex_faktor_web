@@ -204,12 +204,21 @@ defmodule HexFaktor.BadgeController do
       conn.resp_headers
       |> List.delete(header)
 
-    if build do
-      expires = build.updated_at |> to_string
-      resp_headers =
-        [{"Expires", expires}]
-        ++ resp_headers
-    end
+    resp_headers =
+      if build do
+        expires =
+          build.updated_at
+          |> Ecto.DateTime.to_erl
+          |> Timex.Date.from
+          |> Timex.DateFormat.format("{RFC1123}")
+
+        case expires do
+          {:ok, value} ->
+            [{"Expires", value}, {"Last-Modified", value}] ++ resp_headers
+          _ ->
+            resp_headers
+        end
+      end
 
     resp_headers =
       [{"Cache-Control", "no-cache"}, {"Pragma", "no-cache"}]
