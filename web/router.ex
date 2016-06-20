@@ -121,10 +121,4 @@ defmodule HexFaktor.Router do
     end
   end
 
-  # Enable Rollbar error reporting
-  # Reports the exception and re-raises it
-  use Plug.ErrorHandler
-  defp handle_errors(conn, %{kind: kind, reason: reason, stack: stack}) do
-    Rollbax.report(kind, reason, stack, %{params: conn.params})
-  end
 end

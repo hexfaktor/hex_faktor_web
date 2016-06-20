@@ -39,3 +39,8 @@ config :hex_faktor, :mailgun,
   key: "something",
   mode: :test,
   test_file_path: "/tmp/mailgun.json"
+
+config :rollbax,
+  access_token: "zrdz",
+  environment: "test",
+  enabled: :log

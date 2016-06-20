@@ -24,8 +24,8 @@ defmodule HexFaktor.BadgeController do
     #end
 
     conn
-    |> set_resp_headers(build)
     |> put_resp_content_type("image/svg+xml")
+    |> set_resp_headers(build)
     |> send_resp(200, badge_source)
   end
 
@@ -92,8 +92,8 @@ defmodule HexFaktor.BadgeController do
     #end
 
     conn
-    |> set_resp_headers(build)
     |> put_resp_content_type("image/svg+xml")
+    |> set_resp_headers(build)
     |> send_resp(200, badge_source)
   end
 
@@ -180,8 +180,8 @@ defmodule HexFaktor.BadgeController do
     #end
 
     conn
-    |> set_resp_headers(nil)
     |> put_resp_content_type("image/svg+xml")
+    |> set_resp_headers(nil)
     |> send_resp(200, badge_source)
   end
 
@@ -218,6 +218,8 @@ defmodule HexFaktor.BadgeController do
           _ ->
             resp_headers
         end
+      else
+        resp_headers
       end
 
     resp_headers =
