@@ -1,4 +1,4 @@
-<%= render HexFaktor.ComponentView, "tutorial-verify-email.html", current_user: @current_user %>
+<%= render HexFaktor.ComponentView, "tutorial-verify-email.html", conn: @conn %>
 
 <div class="notification-title">
   Notifications
