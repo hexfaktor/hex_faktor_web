@@ -70,21 +70,21 @@ defmodule HexFaktor.ProjectBuilder do
     Project.ensure_repo(project, [branch_name])
     {git_repo, git_branch} = Refaktor.UseCase.Git.get_repo_and_branch(project.clone_url, branch_name)
 
-    opts = [
-      trigger: trigger,
-      jobs: [Refaktor.Job.Elixir.Deps],
-      meta: [
-        trigger: trigger,
-        project_id: project.id,
-        git_repo_id: git_repo.id,
-        git_branch_id: git_branch.id,
-        use_lock_file: project.use_lock_file,
-        progress_callback: progress_callback_data
-      ]
-    ]
+    options = %{
+      "trigger" => trigger,
+      "jobs" => [Refaktor.Job.Elixir.Deps],
+      "meta" => %{
+        "trigger" => trigger,
+        "project_id" => project.id,
+        "git_repo_id" => git_repo.id,
+        "git_branch_id" => git_branch.id,
+        "use_lock_file" => project.use_lock_file,
+        "progress_callback_data" => progress_callback_data
+      }
+    }
 
     spawn fn ->
-      Refaktor.Builder.add_and_run_repo(git_repo.url, git_branch.name, opts)
+      Refaktor.Builder.add_and_run_repo(git_repo.url, git_branch.name, options)
     end
   end
 end

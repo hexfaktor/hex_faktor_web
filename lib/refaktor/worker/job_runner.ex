@@ -23,8 +23,8 @@ defmodule Refaktor.Worker.JobRunner do
   def run_job(job_id, job_dir, job, meta) do
     update_job(job_id, "running", [], :started_at)
 
-    if meta[:project_id] do
-      Project.update_latest_build_job(meta[:project_id], job_id)
+    if meta["project_id"] do
+      Project.update_latest_build_job(meta["project_id"], job_id)
     end
 
     try do

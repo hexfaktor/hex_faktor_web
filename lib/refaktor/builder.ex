@@ -15,9 +15,9 @@ defmodule Refaktor.Builder do
   @filename_repo_info "git.json"
 
   def add_and_run_repo(repo_url, branch_name, options \\ []) do
-    trigger = options[:trigger]
-    jobs = options[:jobs]
-    meta = options[:meta]
+    trigger = options["trigger"]
+    jobs = options["jobs"]
+    meta = options["meta"]
 
     {git_repo, git_branch} = Refaktor.UseCase.Git.get_repo_and_branch(repo_url, branch_name)
 
@@ -35,10 +35,8 @@ defmodule Refaktor.Builder do
   end
 
   def run_clone(build, git_repo, git_branch, jobs_to_schedule, meta, parent_pid) do
-    progress_callback = ProgressCallback.cast(meta[:progress_callback])
+    progress_callback = ProgressCallback.cast(meta["progress_callback_data"])
     progress_callback.("cloning")
-
-    IO.inspect {:__meta__, meta}
 
     %{"job" => job, "job_id" => first_job_id} = Enum.at(jobs_to_schedule, 0)
 
@@ -96,7 +94,7 @@ defmodule Refaktor.Builder do
   Clones a Git repo.
   """
   def clone_for_job(repo_url, branch_name, job_id) do
-    job_dir = generate_job_dir(job_id)
+    job_dir = ensure_job_dir(job_id)
 
     case Refaktor.Builder.Git.clone(repo_url, job_dir, branch: branch_name) do
       {:ok, repo_info} ->
@@ -113,7 +111,7 @@ defmodule Refaktor.Builder do
     File.write(filename, content)
   end
 
-  defp generate_job_dir(job_id) do
+  defp ensure_job_dir(job_id) do
     dirname = Job.dir(job_id)
     File.mkdir_p dirname
     dirname

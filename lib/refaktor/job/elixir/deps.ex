@@ -19,12 +19,12 @@ defmodule Refaktor.Job.Elixir.Deps do
   def script_to_run, do: "run-#{language}-#{intent}"
 
   def handle_success(job_id, job_dir, _output, meta) do
-    trigger = meta[:trigger]
-    project_id = meta[:project_id]
-    git_repo_id = meta[:git_repo_id]
-    git_branch_id = meta[:git_branch_id]
-    use_lock_file = meta[:use_lock_file]
-    progress_callback = ProgressCallback.cast(meta[:progress_callback])
+    trigger = meta["trigger"]
+    project_id = meta["project_id"]
+    git_repo_id = meta["git_repo_id"]
+    git_branch_id = meta["git_branch_id"]
+    use_lock_file = meta["use_lock_file"]
+    progress_callback = ProgressCallback.cast(meta["progress_callback_data"])
 
     case Job.read_result(job_dir) do
       {:error, error, info} ->
@@ -55,12 +55,12 @@ defmodule Refaktor.Job.Elixir.Deps do
     end
   end
   def handle_error(_job_id, _hub_dir, output, exit_code, meta) do
-    progress_callback = ProgressCallback.cast(meta[:progress_callback])
+    progress_callback = ProgressCallback.cast(meta["progress_callback_data"])
     progress_callback.("error")
     {exit_code, output}
   end
   def handle_timeout(_job_id, _hub_dir, _summary, meta) do
-    progress_callback = ProgressCallback.cast(meta[:progress_callback])
+    progress_callback = ProgressCallback.cast(meta["progress_callback_data"])
     progress_callback.("timeout")
     {}
   end
