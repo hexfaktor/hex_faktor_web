@@ -51,8 +51,10 @@ defmodule HexFaktor.ProjectBuilder do
   def run_if_was_never_built(_build, _project, _branch, _trigger, _current_user), do: nil
 
   def run(current_user, project, branch_name, trigger) do
+    current_user_id = if current_user, do: current_user.id, else: nil
+
     progress_callback_data = %{
-      "current_user_id" => current_user.id,
+      "current_user_id" => current_user_id,
       "project_id" => project.id,
       "branch_name" => branch_name,
       "event_name" => @event_build,
