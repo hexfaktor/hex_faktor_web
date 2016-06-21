@@ -26,7 +26,7 @@ defmodule Refaktor.Worker.Supervisor do
   def enqueue_clone(build, git_repo, branch_name, jobs_to_schedule, meta) do
     parent = self()
     spawn(fn() ->
-      {_, first_job_id} = Enum.at(jobs_to_schedule, 0)
+      %{"job_id" => first_job_id} = Enum.at(jobs_to_schedule, 0)
       run_clone(build, git_repo, branch_name, jobs_to_schedule, meta, parent)
     end)
   end
@@ -35,7 +35,7 @@ defmodule Refaktor.Worker.Supervisor do
     :poolboy.transaction(
       @pool_name,
       fn(pid) ->
-        {_, first_job_id} = Enum.at(jobs_to_schedule, 0)
+        %{"job_id" => first_job_id} = Enum.at(jobs_to_schedule, 0)
         :gen_server.call(pid, {:run_clone, build, git_repo, branch_name, jobs_to_schedule, meta, parent})
       end,
       @pool_timeout

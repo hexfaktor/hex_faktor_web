@@ -5,6 +5,8 @@ defmodule HexFaktor.ProjectBuilder do
   alias HexFaktor.Persistence.ProjectUserSettings
   alias HexFaktor.ProjectProvider
 
+  alias Refaktor.Worker.ProgressCallback
+
   @event_build "project.build"
 
   def run_notification_branches(project, trigger) do
@@ -49,20 +51,18 @@ defmodule HexFaktor.ProjectBuilder do
   def run_if_was_never_built(_build, _project, _branch, _trigger, _current_user), do: nil
 
   def run(current_user, project, branch_name, trigger) do
-    run_rebuild_for(project, branch_name, trigger, fn(status) ->
-        payload = %{
-          "project_id" => project.id,
-          "branch_name" => branch_name,
-          "status" => status,
-        }
-        HexFaktor.Broadcast.to_project(project.id, @event_build, payload)
-        if current_user do
-          HexFaktor.Broadcast.to_user(current_user.id, @event_build, payload)
-        end
-      end)
+    progress_callback_data = %{
+      "current_user_id" => current_user.id,
+      "project_id" => project.id,
+      "branch_name" => branch_name,
+      "event_name" => @event_build,
+    }
+
+    run_rebuild_for(project, branch_name, trigger, progress_callback_data)
   end
 
-  defp run_rebuild_for(project, branch_name, trigger, progress_callback) do
+  defp run_rebuild_for(project, branch_name, trigger, progress_callback_data) do
+    progress_callback = ProgressCallback.cast(progress_callback_data)
     progress_callback.("scheduling")
 
     branch_name = branch_name || project.default_branch
@@ -79,7 +79,7 @@ defmodule HexFaktor.ProjectBuilder do
         git_repo_id: git_repo.id,
         git_branch_id: git_branch.id,
         use_lock_file: project.use_lock_file,
-        progress_callback: progress_callback
+        progress_callback: progress_callback_data
       ]
     ]
 

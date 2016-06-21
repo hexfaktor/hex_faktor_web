@@ -9,7 +9,7 @@ defmodule Refaktor.Builder do
   alias Refaktor.Persistence.BuildJob
   alias Refaktor.Persistence.GitRevision
   alias Refaktor.Util.JSON
-  alias Refaktor.Job
+  alias Refaktor.Worker.ProgressCallback
 
   @work_dir Application.get_env :hex_faktor, :work_dir
   @filename_repo_info "git.json"
@@ -25,7 +25,8 @@ defmodule Refaktor.Builder do
     jobs_to_schedule =
       Enum.map(jobs, fn(job) ->
         build_job = Build.add_job(build.id, git_branch.id, job.language, job.intent)
-        {job, build_job.id}
+
+        %{"job" => job, "job_id" => build_job.id}
       end)
 
     # this puts the "cloning" jobs in a queue. runs &run_clone/5 below.
@@ -34,14 +35,17 @@ defmodule Refaktor.Builder do
   end
 
   def run_clone(build, git_repo, git_branch, jobs_to_schedule, meta, parent_pid) do
-    progress_callback = meta[:progress_callback] || fn(_) -> nil end
+    progress_callback = ProgressCallback.cast(meta[:progress_callback])
     progress_callback.("cloning")
-    {_, first_job_id} = Enum.at(jobs_to_schedule, 0)
+
+    IO.inspect {:__meta__, meta}
+
+    %{"job" => job, "job_id" => first_job_id} = Enum.at(jobs_to_schedule, 0)
 
     case clone_for_job(git_repo.url, git_branch.name, first_job_id) do
       {:ok, _job_id, first_job_dir, repo_info} ->
         # repo cloned succesfully, let's duplicate it!
-        duplicate_job_dir! first_job_dir, jobs_to_schedule
+        duplicate_job_dir!(first_job_dir, jobs_to_schedule)
 
         progress_callback.("running")
 
@@ -71,7 +75,7 @@ defmodule Refaktor.Builder do
     end
   end
 
-  defp run_job({job, job_id}, meta, parent) do
+  defp run_job(%{"job" => job, "job_id" => job_id}, meta, parent) do
     result = Refaktor.Worker.JobRunner.run_job(job_id, Job.dir(job_id), job, meta)
     send(parent, {:job_done, job_id, result})
   end
@@ -79,12 +83,12 @@ defmodule Refaktor.Builder do
   defp duplicate_job_dir!(first_job_dir, jobs_to_schedule) do
     jobs_to_schedule
     |> Enum.slice((1..-1))
-    |> Enum.each(fn {_, id} ->
-          File.cp_r first_job_dir, Job.dir(id)
+    |> Enum.each(fn %{"job_id" => job_id} ->
+          File.cp_r first_job_dir, Job.dir(job_id)
         end)
   end
 
-  defp update_git_revision({_job, job_id}, git_revision_id) do
+  defp update_git_revision(%{"job" => _job, "job_id" => job_id}, git_revision_id) do
     BuildJob.update_git_revision(job_id, git_revision_id)
   end
 

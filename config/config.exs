@@ -9,6 +9,7 @@ config :hex_faktor, tool_dir: Path.join([System.cwd!, "dockertools"])
 
 config :hex_faktor, code_dirname: "code"
 config :hex_faktor, eval_dirname: "eval"
+config :hex_faktor, progress_callback_converter: HexFaktor.ProjectProgressCallback
 
 config :hex_faktor, git_hub_auth_module: GitHubAuth
 config :hex_faktor, git_hub_api_module: GitHubAPI

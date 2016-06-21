@@ -4,6 +4,7 @@ defmodule Refaktor.Job.Elixir.Deps do
   alias HexFaktor.NotificationResolver
   alias Refaktor.Job
   alias Refaktor.Job.Elixir.Deps.Persistence
+  alias Refaktor.Worker.ProgressCallback
 
   @behaviour Job
 
@@ -23,7 +24,7 @@ defmodule Refaktor.Job.Elixir.Deps do
     git_repo_id = meta[:git_repo_id]
     git_branch_id = meta[:git_branch_id]
     use_lock_file = meta[:use_lock_file]
-    progress_callback = meta[:progress_callback] || noop_callback
+    progress_callback = ProgressCallback.cast(meta[:progress_callback])
 
     case Job.read_result(job_dir) do
       {:error, error, info} ->
@@ -54,12 +55,12 @@ defmodule Refaktor.Job.Elixir.Deps do
     end
   end
   def handle_error(_job_id, _hub_dir, output, exit_code, meta) do
-    progress_callback = meta[:progress_callback] || noop_callback
+    progress_callback = ProgressCallback.cast(meta[:progress_callback])
     progress_callback.("error")
     {exit_code, output}
   end
   def handle_timeout(_job_id, _hub_dir, _summary, meta) do
-    progress_callback = meta[:progress_callback] || noop_callback
+    progress_callback = ProgressCallback.cast(meta[:progress_callback])
     progress_callback.("timeout")
     {}
   end
@@ -156,7 +157,6 @@ defmodule Refaktor.Job.Elixir.Deps do
       # there is a newer release outside the specified requirements
       :newer_major_release
     end
-
   end
   defp severity_for(_locked_version, a, a) do
     # there is a newer release within the specified requirements
@@ -181,6 +181,4 @@ defmodule Refaktor.Job.Elixir.Deps do
   defp classify(:eq, _), do: :current
   defp classify(:gt, true), do: :newer_match
   defp classify(:gt, false), do: :newer_nomatch
-
-  defp noop_callback, do: fn(_) -> nil end
 end
