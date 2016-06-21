@@ -6,6 +6,20 @@
   <p>
     If you are not sure what semantic versioning means, checkout <a href="/help/versions">How do versions work?</a>
   </p>
+  <p>
+    Version requirements allow you to express which versions of another package are compatible with your software.
+  </p>
+  <pre>== 1.0.0  # compatible with exactly version 1.0.0
+ > 1.0.0  # compatible with any version greater than 1.0.0
+>= 1.0.0  # compatible with any version greater than or equal 1.0.0</pre>
+  <p>
+    Most of the time, you want to stay in a stable range of releases. This is were the `~>` operator comes into play:
+  </p>
+  <pre>~> 1.0.0  # compatible with all versions 1.0.x
+~> 1.0    # compatible with all versions 1.x.y</pre>
+  <p>
+    So if your dependency is locked at <code>== 1.2.3</code> and then <code>2.0.0</code> is released, you test it against the new version. In most situations you will then want to lock to <code>== 2.0.0</code> or, usually more appropriate, to <code>~> 2.0.0</code> so that future patches are automatically included.
+  </p>
 </div>
 
 <div class="help-article__section">
