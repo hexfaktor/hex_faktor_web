@@ -35,9 +35,9 @@ defmodule HexFaktor.Persistence.Project do
     Repo.all(query)
   end
 
-  def all_active_ids do
+  defp all_active_or_elixir_ids do
     query = from r in Project,
-            where: r.active == true,
+            where:  r.active == true or r.language == "Elixir",
             select: r.id
     Repo.all(query)
   end
@@ -47,7 +47,7 @@ defmodule HexFaktor.Persistence.Project do
   end
 
   def all_with_dep(name) when is_binary(name) do
-    all_with_dep(name, all_active_ids)
+    all_with_dep(name, all_active_or_elixir_ids)
   end
   def all_with_dep(name, project_ids) when is_binary(name) do
     query = from r in DepsObject,

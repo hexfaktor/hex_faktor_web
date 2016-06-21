@@ -31,7 +31,7 @@ defmodule HexFaktor.Deps do
       |> Enum.flat_map(&(&1.available_versions |> List.wrap))
       |> Enum.empty?
 
-    if all_deps |> Enum.any? && no_available_versions_loaded do
+    if Enum.any?(all_deps) && no_available_versions_loaded do
       {:error, :could_not_reach_hex_server}
     else
       {:ok, all_deps}

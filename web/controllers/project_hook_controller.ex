@@ -1,13 +1,16 @@
 defmodule HexFaktor.ProjectHookController do
   use HexFaktor.Web, :controller
 
+  alias HexFaktor.AppEvent
   alias HexFaktor.Auth
   alias HexFaktor.Broadcast
-  alias HexFaktor.ProjectAccess
-  alias HexFaktor.ProjectBuilder
-  alias HexFaktor.ProjectSyncer
+  alias HexFaktor.Persistence.Package
   alias HexFaktor.Persistence.Project
   alias HexFaktor.Persistence.ProjectHook
+  alias HexFaktor.ProjectAccess
+  alias HexFaktor.ProjectBuilder
+  alias HexFaktor.ProjectBuilder
+  alias HexFaktor.ProjectSyncer
 
   require Logger
 
@@ -19,6 +22,8 @@ defmodule HexFaktor.ProjectHookController do
 
   #
   # /activate_webhook
+  #
+  # Creates webhooks on GitHub to be notified of pushes.
   #
 
   def activate_webhook(conn, %{"id" => id}) do
@@ -51,6 +56,8 @@ defmodule HexFaktor.ProjectHookController do
 
   #
   # /deactivate_webhook
+  #
+  # Deletes webhooks on GitHub.
   #
 
   def deactivate_webhook(conn, %{"id" => id}) do
@@ -98,5 +105,36 @@ defmodule HexFaktor.ProjectHookController do
 
   defp unsynced_project?(project) do
     project.last_github_sync |> is_nil()
+  end
+
+  #
+  # /receive_hex_package_update
+  #
+  # Receives the webhooks created with the functions above.
+  #
+  def receive_hex_package_update(conn, %{"name" => name, "github_url" => github_url} = payload) do
+    Logger.info "Event: package.update_hex - #{name}"
+    HexFaktor.Endpoint.broadcast!("feeds:lobby", "update", %{name: name})
+
+    package = Package.ensure_and_update(name, payload)
+
+    package_project = Project.find_by_html_url(github_url, [:git_repo_branches])
+
+    if package_project && package_project.id != package.project_id do
+      package |> Package.update_project_id(package_project.id)
+    end
+
+    dependent_projects_with_branches =
+      ([package_project] ++ Project.all_with_dep(name))
+      |> Enum.reject(&is_nil/1)
+
+    AppEvent.log(:hex_package_update, name, dependent_projects_with_branches)
+
+    dependent_projects_with_branches
+    |> Enum.each(&ProjectBuilder.run_notification_branches(&1, "package_update"))
+
+    HexFaktor.NotificationPublisher.handle_new_package_update(package)
+
+    render(conn, "ok.json")
   end
 end
