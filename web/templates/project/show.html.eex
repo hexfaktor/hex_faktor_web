@@ -93,6 +93,9 @@
   <%= for dep <- @deps_objects do %>
     <%= render HexFaktor.ComponentView, "dep.html", dep: dep, project: @project, expanded?: false %>
   <% end %>
+  <%= if @expand_dep_name do %>
+    <div data-click-on-load="a[data-dep-name=<%= @expand_dep_name %>]"></div>
+  <% end %>
 
   <%= if @user_can_edit? do %>
     <div class="project-actions">

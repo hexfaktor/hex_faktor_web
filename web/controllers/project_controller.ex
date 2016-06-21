@@ -345,7 +345,15 @@ defmodule HexFaktor.ProjectController do
   #
 
   def show_github(conn, %{"owner" => owner, "name" => name} = params) do
-    show(conn, %{"provider" => "github", "name" => "#{owner}/#{name}", "branch" => params["branch"], "env" => params["env"], "filter" => params["filter"]})
+    params = %{
+      "provider" => "github",
+      "name" => "#{owner}/#{name}",
+      "branch" => params["branch"],
+      "env" => params["env"],
+      "filter" => params["filter"],
+      "expand_dep_name" => params["expand_dep_name"]
+    }
+    show(conn, params)
   end
 
   def show(conn, %{"provider" => _, "name" => _} = params) do
@@ -356,7 +364,7 @@ defmodule HexFaktor.ProjectController do
 
     mark_notifications_as_seen!(current_user, assigns)
 
-    render conn, "show.html", assigns
+    render conn, "show.html", assigns ++ [expand_dep_name: params["expand_dep_name"]]
   end
 
   def mark_notifications_as_seen!(nil, _), do: nil

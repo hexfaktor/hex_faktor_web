@@ -11,13 +11,22 @@ jQuery(function($) {
   });
 
   if( $("[data-sync-github-repos]").length > 0 ) {
-    jQuery.ajax("/projects/sync_github", {"method": "POST"});
+    $.ajax("/projects/sync_github", {"method": "POST"});
     HexFaktor.ensureSyncProgressBar();
     HexFaktor.deactivateSyncRepoButton();
   }
   if( $("[data-sync-github-repo]").length > 0 ) {
     var name = $("[data-sync-github-repo]").data("sync-github-repo")
-    jQuery.ajax("/projects/sync_github/"+name, {"method": "POST"})
+    $.ajax("/projects/sync_github/"+name, {"method": "POST"})
+  }
+  if( $("[data-click-on-load]").length > 0 ) {
+    var selector = $("[data-click-on-load]").data("click-on-load");
+    var $element = $(selector);
+    if( $element.data("ajax-get") ) {
+      ajax($element.data("ajax-get"), "GET", $element.data("ajax-replace"))
+    } else {
+      $element[0].click();
+    }
   }
 
 
@@ -38,7 +47,7 @@ jQuery(function($) {
   function ajax(url, method, replace_query) {
     let opts = {"method": method};
     if( replace_query ) opts.success = function(data) { $(replace_query).replaceWith(data); };
-    jQuery.ajax(url, opts);
+    $.ajax(url, opts);
   }
 
   $("body").on("click", "a[data-show-on-click]", function(event) {

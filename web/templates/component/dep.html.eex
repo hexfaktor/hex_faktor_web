@@ -1,7 +1,8 @@
 <div class="dep dep--<%= prod_or_not(@dep) %> dep--<%= outdated_or_not(@dep, @project) %> dep--<%= use_lock_file_or_not(@project) %><%= if @expanded?, do: " dep--expanded" %>" id="dep-<%= @dep.id %>">
   <div class="dep__inner">
     <div class="dep__title">
-      <a href="#" data-ajax-get="/component/dep/<%= @dep.id %>" data-ajax-replace="#dep-<%= @dep.id %>"><%= @dep.name %></a>
+      <a href="?expand_dep_name=<%= @dep.name %>" data-ajax-get="/component/dep/<%= @dep.id %>" data-ajax-replace="#dep-<%= @dep.id %>" data-dep-name="<%= @dep.name %>"><%= @dep.name %></a>
+
       <%= if @expanded? do %>
         <%= if @package.source_url |>String.match?(~r/github\.com/) do %>
           <a href="<%= @package.source_url %>" target="_blank" class="dep__github-link"><i class="icon-octopus"></i></a>
@@ -64,7 +65,7 @@
           <div>
             <%= for %{"version" => version, "updated_at" => updated_at} <- @shown_releases do %>
 
-              <%= render HexFaktor.ComponentView, "_dep_release_version.html", dep: @dep, version: version, updated_at: updated_at, release_class: nil %>
+              <%= render HexFaktor.ComponentView, "_dep_release_version.html", dep: @dep, version: version, use_lock_file: @project.use_lock_file, updated_at: updated_at, release_class: nil %>
             <% end %>
           </div>
         </div>
@@ -72,17 +73,34 @@
         <%= if outdated_or_not?(@dep, @dep.project) do %>
           <p class="package-info__advice package-info__advice--requirement-not-matching">
             <i class="icon-warning_alt"></i>
-            The requirement is not matching the newest releases.
+            <%= if @project.use_lock_file do %>
+              The locked version is not matching the newest releases.
+            <% else %>
+              The requirement is not matching the newest releases.
+            <% end %>
           </p>
           <p class="package-info__advice package-info__advice--requirement-not-matching">
-            It needs to be updated it in order to use newer releases
-            (<a href="/help/version_requirements">learn how</a>).
+            <%= if @project.use_lock_file do %>
+              The dependency is locked at <code><%= @dep.locked_version %></code> and newer releases are available.
+            <% else %>
+              It needs to be updated it in order to use newer releases
+              (<a href="/help/version_requirements">learn how</a>).
+            <% end %>
           </p>
         <% else %>
-          <p class="package-info__advice package-info__advice--requirement-matching">
-            <i class="icon-check_circle"></i>
-            This dependency is <strong>up-to-date</strong>.
-          </p>
+          <%= if @dep.required_version do %>
+            <p class="package-info__advice package-info__advice--requirement-matching">
+              <i class="icon-check_circle"></i>
+              This dependency is <strong>up-to-date</strong>.
+            </p>
+          <% else %>
+            <p class="package-info__advice package-info__advice--requirement-matching">
+              <%= if @dep.source == "git" do %>
+                <i class="icon-git"></i>
+                This dependency is linked directly to a <a href="<%= @dep.source_url %>" target="_blank">Git repo</a> and therefore <strong>up-to-date</strong>.
+              <% end %>
+            </p>
+          <% end %>
         <% end %>
         <p>
           <small>
