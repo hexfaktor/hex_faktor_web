@@ -1,24 +1,7 @@
 defmodule Refaktor.Worker.JobRunner do
-  use GenServer
-
+  alias HexFaktor.Persistence.Project
   alias Refaktor.Job
   alias Refaktor.Persistence.BuildJob
-
-  alias HexFaktor.Persistence.Project
-
-  def start_link([]) do
-    GenServer.start_link(__MODULE__, [], [])
-  end
-
-  def init(state) do
-    {:ok, state}
-  end
-
-  def handle_call({:run_clone, build, git_repo, branch_name, jobs_to_schedule, meta, parent}, _from, state) do
-    Refaktor.Builder.run_clone(build, git_repo, branch_name, jobs_to_schedule, meta, parent)
-
-    {:reply, [], state}
-  end
 
   def run_job(job_id, job_dir, job, meta) do
     update_job(job_id, "running", [], :started_at)

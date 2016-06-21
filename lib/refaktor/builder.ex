@@ -34,7 +34,7 @@ defmodule Refaktor.Builder do
     {:ok, build, pid}
   end
 
-  def run_clone(build, git_repo, git_branch, jobs_to_schedule, meta, parent_pid) do
+  def run_clone(build, git_repo, git_branch, jobs_to_schedule, meta) do
     progress_callback = ProgressCallback.cast(meta["progress_callback_data"])
     progress_callback.("cloning")
 
@@ -56,16 +56,15 @@ defmodule Refaktor.Builder do
         # now schedule the jobs for execution
         pids =
           jobs_to_schedule
-          |> Enum.map(&run_job(&1, meta, parent_pid))
+          |> Enum.map(&run_job(&1, meta))
 
         {:ok, build, pids}
       {:error, _job_id, _job_dir, _output, _exit_code} = error_tuple ->
         # we couldn't even clone this repo
         progress_callback.("error")
-        send(parent_pid, error_tuple)
 
         jobs_to_schedule
-        |> Enum.each(fn({_, job_id}) ->
+        |> Enum.each(fn(%{"job_id" => job_id}) ->
             BuildJob.update_status(job_id, "failure", error_tuple)
             BuildJob.update_timestamp(job_id, :finished_at)
           end)
@@ -73,17 +72,16 @@ defmodule Refaktor.Builder do
     end
   end
 
-  defp run_job(%{"job" => job, "job_id" => job_id}, meta, parent) do
-    result = Refaktor.Worker.JobRunner.run_job(job_id, Job.dir(job_id), job, meta)
-    send(parent, {:job_done, job_id, result})
+  defp run_job(%{"job" => job, "job_id" => job_id}, meta) do
+    Refaktor.Worker.JobRunner.run_job(job_id, Job.dir(job_id), job, meta)
   end
 
   defp duplicate_job_dir!(first_job_dir, jobs_to_schedule) do
     jobs_to_schedule
     |> Enum.slice((1..-1))
     |> Enum.each(fn %{"job_id" => job_id} ->
-          File.cp_r first_job_dir, Job.dir(job_id)
-        end)
+        File.cp_r first_job_dir, Job.dir(job_id)
+      end)
   end
 
   defp update_git_revision(%{"job" => _job, "job_id" => job_id}, git_revision_id) do

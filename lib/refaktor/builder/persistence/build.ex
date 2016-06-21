@@ -35,6 +35,10 @@ defmodule Refaktor.Persistence.Build do
       preload: [build_jobs: :git_revision])
   end
 
+  def find_by_id(id) do
+    Repo.one(from r in Build, where: r.id == ^id)
+  end
+
   def last(count \\ 5) do
     Repo.all(from r in Build,
       order_by: [desc: :id],

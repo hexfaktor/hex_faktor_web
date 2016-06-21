@@ -1,44 +1,28 @@
 defmodule Refaktor.Worker.Supervisor do
-  use Supervisor
+  alias Refaktor.Persistence.Build
+  alias Refaktor.Persistence.GitRepo
+  alias Refaktor.Persistence.GitBranch
 
-  @pool_name :refaktor_pool
-  @pool_size Application.get_env(:hex_faktor, :worker_pool_size)
-  @pool_overflow Application.get_env(:hex_faktor, :worker_pool_overflow)
-  @pool_timeout :infinity
-
-  def start_link do
-    Supervisor.start_link(__MODULE__, [])
+  def enqueue_clone(build, git_repo, git_branch, jobs_to_schedule, meta) do
+    queue = trigger_to_queue(build.trigger)
+    params = [build.id, git_repo.id, git_branch.id, jobs_to_schedule, meta]
+    Exq.enqueue(Exq, queue, __MODULE__, params) # calls perform below
   end
 
-  def init([]) do
-    poolboy_config = [
-      {:name, {:local, @pool_name}},
-      {:worker_module, Refaktor.Worker.JobRunner},
-      {:size, @pool_size},
-      {:max_overflow, @pool_overflow}
-    ]
-    children = [:poolboy.child_spec(@pool_name, poolboy_config, [])]
-    options = [strategy: :one_for_one]
+  def perform(build_id, git_repo_id, git_branch_id, jobs_to_schedule, meta) do
+    build = Build.find_by_id(build_id)
+    git_repo = GitRepo.find_by_id(git_repo_id)
+    git_branch = GitBranch.find_by_id(git_branch_id)
+    jobs_to_schedule = jobs_to_schedule |> Enum.map(&stringify_job/1)
 
-    supervise(children, options)
+    Refaktor.Builder.run_clone(build, git_repo, git_branch, jobs_to_schedule, meta)
   end
 
-  def enqueue_clone(build, git_repo, branch_name, jobs_to_schedule, meta) do
-    parent = self()
-    spawn(fn() ->
-      %{"job_id" => first_job_id} = Enum.at(jobs_to_schedule, 0)
-      run_clone(build, git_repo, branch_name, jobs_to_schedule, meta, parent)
-    end)
+  # job was serialized into a String/binary and needs to be an Atom again
+  defp stringify_job(%{"job" => job, "job_id" => job_id}) do
+    %{"job" => Module.safe_concat([job]), "job_id" => job_id}
   end
 
-  def run_clone(build, git_repo, branch_name, jobs_to_schedule, meta, parent) do
-    :poolboy.transaction(
-      @pool_name,
-      fn(pid) ->
-        %{"job_id" => first_job_id} = Enum.at(jobs_to_schedule, 0)
-        :gen_server.call(pid, {:run_clone, build, git_repo, branch_name, jobs_to_schedule, meta, parent})
-      end,
-      @pool_timeout
-    )
-  end
+  defp trigger_to_queue("manual"), do: "priority"
+  defp trigger_to_queue(_), do: "default"
 end

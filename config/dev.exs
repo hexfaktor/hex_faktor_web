@@ -64,4 +64,10 @@ config :rollbax,
   environment: "",
   enabled: :log
 
+config :exq,
+  host: "127.0.0.1",
+  port: 6379,
+  namespace: "exq",
+  queues: [{"priority", 10}, {"default", 10}]
+
 import_config "dev.secret.exs"

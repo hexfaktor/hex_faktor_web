@@ -17,4 +17,8 @@ defmodule Refaktor.Persistence.GitRepo do
   def by_uid(uid) do
     Repo.one(from r in GitRepo, where: r.uid == ^uid)
   end
+
+  def find_by_id(id) do
+    Repo.one(from r in GitRepo, where: r.id == ^id)
+  end
 end

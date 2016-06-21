@@ -11,7 +11,6 @@ defmodule HexFaktor do
       supervisor(HexFaktor.Endpoint, []),
       # Start the Ecto repository
       supervisor(HexFaktor.Repo, []),
-      supervisor(Refaktor.Worker.Supervisor, []),
       # Here you could define other workers and supervisors as children
       # worker(HexFaktor.Worker, [arg1, arg2, arg3]),
     ]
