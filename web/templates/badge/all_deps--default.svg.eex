@@ -4,54 +4,26 @@
   <rect rx="3" width="80" height="20" fill="url(#a)"/>
 
   <linearGradient id="gradA" x2="0" y2="100%">
-    <stop offset="0" stop-color="#46b01e" />
-    <stop offset=".1" stop-color="#46b01e" />
-    <stop offset=".5" stop-color="#46b01e" />
-    <stop offset=".9" stop-color="#46b01e" />
-    <stop offset="1" stop-color="#46b01e" />
+    <stop offset="0" stop-color="<%= grade_color("A", @project) %>" />
+    <stop offset="1" stop-color="<%= grade_color("A", @project) %>" />
   </linearGradient>
   <linearGradient id="gradB" x2="0" y2="100%">
-    <stop offset="0" stop-color="#88cc33" />
-    <stop offset=".1" stop-color="#88cc33" />
-    <stop offset=".5" stop-color="#88cc33" />
-    <stop offset=".9" stop-color="#88cc33" />
-    <stop offset="1" stop-color="#88cc33" />
+    <stop offset="0" stop-color="<%= grade_color("B", @project) %>" />
+    <stop offset="1" stop-color="<%= grade_color("B", @project) %>" />
   </linearGradient>
   <linearGradient id="gradC" x2="0" y2="100%">
-    <stop offset="0" stop-color="#FFE100" />
-    <stop offset=".1" stop-color="#FFE100" />
-    <stop offset=".5" stop-color="#FFE100" />
-    <stop offset=".9" stop-color="#FFE100" />
-    <stop offset="1" stop-color="#FFE100" />
+    <stop offset="0" stop-color="<%= grade_color("C", @project) %>" />
+    <stop offset="1" stop-color="<%= grade_color("C", @project) %>" />
   </linearGradient>
   <linearGradient id="gradD" x2="0" y2="100%">
-    <stop offset="0" stop-color="#FF911D" />
-    <stop offset=".1" stop-color="#FF911D" />
-    <stop offset=".5" stop-color="#FF911D" />
-    <stop offset=".9" stop-color="#FF911D" />
-    <stop offset="1" stop-color="#FF911D" />
+    <stop offset="0" stop-color="<%= grade_color("D", @project) %>" />
+    <stop offset="1" stop-color="<%= grade_color("D", @project) %>" />
   </linearGradient>
-  <linearGradient id="gradE" x2="0" y2="100%">
-    <stop offset="0" stop-color="#ee6f47" />
-    <stop offset=".1" stop-color="#ee6f47" />
-    <stop offset=".5" stop-color="#ee6f47" />
-    <stop offset=".9" stop-color="#ee6f47" />
-    <stop offset="1" stop-color="#ee6f47" />
+
+  <linearGradient id="gradN" x2="0" y2="100%">
+    <stop offset="0" stop-color="#6a6a6a" />
+    <stop offset="1" stop-color="#6a6a6a" />
   </linearGradient>
-  <linearGradient id="gradU" x2="0" y2="100%">
-    <stop offset="0" stop-color="#7a67a0" />
-    <stop offset=".1" stop-color="#7a67a0" />
-    <stop offset=".5" stop-color="#7a67a0" />
-    <stop offset=".9" stop-color="#7a67a0" />
-    <stop offset="1" stop-color="#7a67a0" />
-  </linearGradient>
-    <linearGradient id="gradN" x2="0" y2="100%">
-      <stop offset="0" stop-color="#9B9B9B" />
-      <stop offset=".1" stop-color="#9B9B9B" />
-      <stop offset=".5" stop-color="#9B9B9B" />
-      <stop offset=".9" stop-color="#9B9B9B" />
-      <stop offset="1" stop-color="#9B9B9B" />
-    </linearGradient>
 
 
   <%= if @percentages_and_grades do %>

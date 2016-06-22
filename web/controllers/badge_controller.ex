@@ -68,7 +68,8 @@ defmodule HexFaktor.BadgeController do
 
     assigns = [
       bar_width: @bar_width,
-      percentages_and_grades: percentages_and_grades
+      percentages_and_grades: percentages_and_grades,
+      project: project
     ]
     badge_source = render_badge_to_string(:all_deps, to_style(style), assigns)
 
@@ -137,7 +138,8 @@ defmodule HexFaktor.BadgeController do
 
     assigns = [
       bar_width: @bar_width,
-      percentages_and_grades: percentages_and_grades
+      percentages_and_grades: percentages_and_grades,
+      project: project
     ]
     badge_source = render_badge_to_string(:prod_deps, to_style(style), assigns)
 
