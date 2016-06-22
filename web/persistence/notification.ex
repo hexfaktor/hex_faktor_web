@@ -100,10 +100,10 @@ defmodule HexFaktor.Persistence.Notification do
   def count_unseen_for(user_id) when is_integer(user_id) do
     query = from r in Notification,
             where: r.user_id == ^user_id and is_nil(r.seen_at),
-            group_by: r.project_id,
-            select: r.project_id
+            select: [r.package_id, r.project_id, r.git_branch_id]
     query
     |> Repo.all
+    |> Enum.uniq
     |> Enum.count
   end
   def count_unseen_for(nil), do: nil
