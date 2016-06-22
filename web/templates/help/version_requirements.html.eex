@@ -1,6 +1,9 @@
 <div class="help-article__title">
   How do version requirements work?
 </div>
+<div class="help-article__sub-title">
+  Requirement basics
+</div>
 
 <div class="help-article__section">
   <p>
@@ -19,6 +22,29 @@
 ~> 1.0    # compatible with all versions 1.x.y</pre>
   <p>
     So if your dependency is locked at <code>== 1.2.3</code> and then <code>2.0.0</code> is released, you test it against the new version. In most situations you will then want to lock to <code>== 2.0.0</code> or, usually more appropriate, to <code>~> 2.0.0</code> so that future patches are automatically included.
+  </p>
+</div>
+
+<div class="help-article__sub-title">
+  Using <code>or</code> to ensure compatibility
+</div>
+
+<div class="help-article__section">
+  <p>
+    Sometimes you depend on, say, a JSON parser like <code>poison</code> and your requirement says <code>~> 1.0</code> because you know that the functions you rely on are there in each release.
+  </p>
+  <p>
+    Now there is a new release, <code>2.0.0</code>, so you change your requirement to <code>~> 2.0</code> - but now you have prevented people from using something that depends on Poison <code>1.2.3</code> and your package (because your requirement states that Poison has to be Version 2 or higher).
+  </p>
+  <p>
+    In this case, you can either use <code>&gt;= 1.0</code> if you are confident that Poison's API won't change, or you could use <code>or</code>:
+  </p>
+  <pre>~> 1.0 or ~> 2.0    # compatible with all versions 1.x.y AND 2.x.y</pre>
+  <p>
+    This is useful when there is an important bugfix in 1.5 and later, since you can set the requirement <code>~> 1.5 or ~> 2.0</code> and be sure that only fixed versions of Poison are used.
+  </p>
+  <p>
+    As long as you can safely rely on the used parts of another package, <code>or</code> is a way to stay compatible with less recent packages, which are still "a major version behind".
   </p>
 </div>
 
