@@ -30,9 +30,9 @@ RUN apt-get install -y erlang erlang-ssl erlang-inets && rm erlang-solutions_1.0
 # update and install some software requirements
 RUN apt-get install -y unzip
 
-# Elixir 1.0.5
+# Elixir
 WORKDIR /elixir
-RUN wget -q https://github.com/elixir-lang/elixir/releases/download/v1.1.0/Precompiled.zip && \
+RUN wget -q https://github.com/elixir-lang/elixir/releases/download/v1.2.6/Precompiled.zip && \
     unzip Precompiled.zip && \
     rm -f Precompiled.zip && \
     ln -s /elixir/bin/elixirc /usr/local/bin/elixirc && \
