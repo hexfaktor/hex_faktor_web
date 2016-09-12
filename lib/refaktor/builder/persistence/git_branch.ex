@@ -21,7 +21,8 @@ defmodule Refaktor.Persistence.GitBranch do
 
   def by_name(repo_id, name) do
     Repo.one(from r in GitBranch,
-      where: r.git_repo_id == ^repo_id and r.name == ^name)
+      where: r.git_repo_id == ^repo_id and r.name == ^name,
+      limit: 1) # TODO: remove me. I was added because there were two branches named "master" on the same project o_O
   end
 
   def latest_build(branch) do
