@@ -1,5 +1,5 @@
-# HexFaktor Website
+# HexFaktor discontinued
 
-This is the Phoenix app that runs http://hexfaktor.org
+This service is currently unavailable. I will have to find the time to make it GDPR compliant.
 
-Please report any issue, so we can improve this service together.
+In the meantime you can look at alternatives like [Dependabot for Elixir](https://dependabot.com/elixir.html).
